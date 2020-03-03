@@ -10,7 +10,9 @@ const FormGroup = styled.div`
 
 // language=SCSS prefix=&{ suffix=}
 const Label = styled.label`
-    position: absolute;
+display: flex;
+align-items: flex-start;
+    /* position: absolute; */
     right: 76%;
     top: 6px;
     transition: .5s;
@@ -36,6 +38,7 @@ const Input = styled.input`
     border: 1px solid #DADDE1;
     border-radius: 4px;
     font-family: Kanit;
+    display: flex;
     @media (max-width: 700px) {
       width: 80% !important;
     }

@@ -110,66 +110,61 @@ class Home extends Component {
         <div style={{ width: '100%' }}>
           <Logo />
         </div>
-         
+
         <div style={{ width: '100%' }}>
           <Tiltle>
             LECTURER APPOINTMENTS
           </Tiltle>
           <BoxSpace />
-          <form onSubmit={handleSubmit(this.handleLogin)}>
-       
-          {/* <Container> */}
-            <FormWrapper>
-              <BodyWrapper>
-                <Field
-                  label='EMAIL'
-                  name='email'
-                  component={renderInput}
-                  type='email'
-                  placeholder='Email'
-                />
-                <Field
-                  label='PASSWORD'
-                  name='password'
-                  component={renderInput}
-                  type='password'
-                  placeholder='Password'
-                />
+          <form onSubmit={handleSubmit(this.handleLogin)} >
 
-                <FormButton
-                  disabled={pristine || submitting}
-                  type='cancel'
-                  txtButton='CANCEL'
-                  width='50%'
-                  onClick={() => {
-                    Router.replace('/home')
-                  }}
-                />
+            <Field
+              label='EMAIL :'
+              name='email'
+              component={renderInput}
+              type='email'
+              placeholder='Email'
+            />
+            <Field
+              label='PASSWORD :'
+              name='password'
+              component={renderInput}
+              type='password'
+              placeholder='Password'
+            />
+
+            <FormButton
+              margin='8px 0 25px 0'
+              colorButton='#9e7fc6'
+              disabled={pristine || submitting}
+              type='submit'
+              txtButton='SIGN UP'
+              width='50%'
+              onClick={() => {
+                Router.replace('/register')
+              }}
+            />
                    &nbsp; &nbsp;
-                <FormButton
-                  colorButton='#006765'
-                  disabled={submitting}
-                  type='submit'
-                  txtButton='LOGIN'
-                  width='50%'
-                  onClick={() => {
-                  }}
-                />
+            <FormButton
+              margin='8px 0 25px 0'
+              colorButton='#9e7fc6'
+              disabled={submitting}
+              type='submit'
+              txtButton='LOGIN'
+              width='50%'
+              onClick={() => {
+              }}
+            />
 
-              </BodyWrapper>
-            </FormWrapper>
-          {/* </Container> */}
-          <ErrorModal
-            open={login_modal_error}
-            content='Error'
-            message={errorMessage}
-            onClick={this.handleCloseModal}
-            txtButton='Close'
-          />
-       
-      </form>
+            <ErrorModal
+              open={login_modal_error}
+              content='Error'
+              message={errorMessage}
+              onClick={this.handleCloseModal}
+              txtButton='Close'
+            />
+          </form>
         </div>
-
       </AppWrapper>
     )
   }
@@ -201,6 +196,7 @@ const AppWrapper = styled.div`
   background-color: #ffffff;
   font-family: sans-serif;
   width: 100%;
+  height: 720px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -228,71 +224,8 @@ const AppWrapper = styled.div`
 const Tiltle = styled.div`
   font-family: inherit;
   font-size: 36px;
+  font-weight: 900;
   `
 const BoxSpace = styled.div`
   height: 12px;
 `
-const CustomButton = styled(Button)`
-.ant-btn {
-  color: #0000;
-    background-color: #9e7fc6;
-    border-color: #9e7fc6;
-}
-`
-const HeaderCustom = styled.div`
-  background-color: #000000;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-`
-const Container = styled.section`
-    width: 100%;
-    height: calc(100vh - 57px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-`
-const FormWrapper = styled.section`
-    max-width: 650px;
-    position: absolute;
-    top: auto;
-    left: auto;
-    width: 90%;
-    height: fit-content !important;
-    display: flex;
-    font-size: 1em;
-    flex-direction: column;
-    text-align: center;
-    border-radius: 41px;
-`
-
-const BodyWrapper = styled.div`
-    width: 100%;
-    margin: 20px 0px;
-    height: fit-content;
-`
-const HomeWrapper = styled.div`
-    display: block;
-    position: relative;
-
-    .rc-slider-handle {
-      width: 30px;
-      height: 30px;
-      bottom: -8px;
-      border: solid 2px #F37021;
-
-      :focus {
-        box-shadow: none;
-      }
-    }
-
-    .rc-slider-track {
-      background: #F37021;
-    }
-`
-

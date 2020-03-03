@@ -5,10 +5,16 @@ import PropTypes from 'prop-types'
 const FormGroup = styled.div`
     margin: 30px 0;
     position: relative;
+    width: 100%;
+    display: block;
+    left: 22%;
+
 `
 
 const Label = styled.label`
-    position: absolute;
+display: flex;
+align-items: flex-start;
+    /* position: absolute; */
     right: 80%;
     top: 7px;
     transition: .5s;
@@ -30,6 +36,7 @@ const Label = styled.label`
 `
 
 const Input = styled.input`
+display: flex;
     width: 56% !important;
     height: 40px;
     border: 1px solid ${props => (props.error ? '#CA5353' : '#DADDE1')} !important;

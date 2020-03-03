@@ -6,7 +6,7 @@ import withRedux from 'next-redux-wrapper'
 import withReduxSaga from 'next-redux-saga'
 import styled, { createGlobalStyle } from 'styled-components'
 import Head from 'next/head'
-import withIntl from '~/helpers/withIntl'
+// import withIntl from '~/helpers/withIntl'
 
 import { DefaultTheme as ThemeProvider } from '~/hocs/ThemeProvider'
 import { textRegular, textHeader } from '~/styles/constant'
@@ -55,7 +55,7 @@ class CustomApp extends App {
 export default compose(
   withReduxSaga,
   withRedux(createStore),
-  withIntl,
+  // withIntl,
 )(CustomApp)
 
 const Wrapper = styled.div`

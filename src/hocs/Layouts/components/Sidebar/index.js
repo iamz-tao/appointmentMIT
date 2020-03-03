@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 
 import { userAction } from '~/modules/user/actions'
 import { loginAction } from '~/modules/authentication/actions'
-import withIntl from '~/helpers/withIntl'
+// import withIntl from '~/helpers/withIntl'
 
 import {
   Menus,
@@ -45,4 +45,4 @@ const Sidebar = (props) => {
   )
 }
 
-export default memo(withIntl(Sidebar))
+export default memo(Sidebar)

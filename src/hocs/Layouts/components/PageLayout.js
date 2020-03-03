@@ -7,7 +7,7 @@ import Cookie from 'js-cookie'
 
 import Header from '~/hocs/Layouts/components/Header'
 import Sidebar from '~/hocs/Layouts/components/Sidebar'
-import withIntl from '~/helpers/withIntl'
+// import withIntl from '~/helpers/withIntl'
 
 
 const PageLayout = ({ children }) => {
@@ -78,7 +78,7 @@ const mapStateToProps = state => ({
 export default compose(
   memo,
   connect(mapStateToProps, null),
-  withIntl,
+  // withIntl,
 )(PageLayout)
 
 const Box = styled.div`

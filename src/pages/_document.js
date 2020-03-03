@@ -11,15 +11,15 @@ class MyDocument extends Document {
       renderPage,
     } = ctx
 
-    const {
-      localeDataScript,
-    } = req
+    // const {
+    //   localeDataScript,
+    // } = req
 
     const { html, head, chunks } = renderPage()
 
     return {
       ...props,
-      localeDataScript,
+      // localeDataScript,
       html,
       head,
       chunks,

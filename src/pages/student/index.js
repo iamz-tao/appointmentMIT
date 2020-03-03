@@ -1,78 +1,108 @@
 import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
-import Cookie from 'js-cookie'
 import { createStructuredSelector } from 'reselect'
 import { bindActionCreators, compose } from 'redux'
 import { connect } from 'react-redux'
 import { Modal, notification } from 'antd'
-import isNil from 'lodash/isNil'
+import Router from 'next/router'
 
-import FilterAndCriteria from './components/FilterAndCriteria'
-import BeaconsList from './components/BeaconsList'
-import HeaderAdmin from '~/components/HeaderNavbar/Admin'
+import Cookie from 'js-cookie'
+
 
 import NotFound from '~/components/Table/NotFound'
 import LoadingPulse from '~/components/LoadingPulse'
 import FormButton from '~/components/Form/Button'
 
 import withLayout from '~/hocs/Layouts/withLayout'
-import { beaconAction } from '~/modules/admin/actions'
-import { beaconSelector } from '~/modules/admin/selectors'
+import { userAction } from '~/modules/admin/actions'
+import { userSelector } from '~/modules/admin/selectors'
 
 const { confirm } = Modal
 
 const TableHeader = () => (
   <Wrapper>
+    <ButtonWrapper>
+      <FormButton
+        colorButton='#006765'
+        type='submit'
+        txtButton='NEW'
+        width='50%'
+        onClick={() => {
+          Router.push('/adminRegister')
+        }}
+      />
+    </ButtonWrapper>
+
     <Row>
       <UserDetailGroup>
-        <ListHeader style={{ flex: 2 }}>
+        <ListHeader style={{ paddingLeft: '40px' }}>
           <ItemHeader>
-           UUID
+            ID
           </ItemHeader>
         </ListHeader>
-        <ListHeader>
+        <ListHeader style={{ flex: 2 }}>
           <ItemHeader>
             NAME
           </ItemHeader>
         </ListHeader>
-        <ListHeader>
+        <ListHeader style={{ flex: 2 }}>
+          <ItemHeader>
+            EMAIL
+          </ItemHeader>
+        </ListHeader>
+        <ListHeader style={{ justifyContent: 'center' }}>
           <ItemHeader>
             STATUS
           </ItemHeader>
         </ListHeader>
+        <ListHeader />
       </UserDetailGroup>
-      <DeleteWrapper />
     </Row>
   </Wrapper>
 )
 
-class ListBeacons extends Component {
+class StudentHomePage extends Component {
   state = {
-    beaconList: null,
-    beacon: '',
-    loading: false,
+    users: null,
     filter: {
+      user_role: [],
       keyword: '',
     },
   }
 
   componentDidMount() {
-    const token = Cookie.get('token')
-    if (isNil(token)) {
-      window.location.href = '/login'
-    }
-    const { getBeaconAll } = this.props
-    getBeaconAll({})
+    // const authToken = Cookie.get('token')
+    // if (!authToken) {
+    //   Router.push('/login')
+    // }
+    // const { getUsers } = this.props
+    // getUsers({})
   }
 
   fetch = () => {
     const { filter } = this.state
-    const { getBeaconAll } = this.props
-    getBeaconAll({
+    const { getUsers } = this.props
+    getUsers({
       filter: {
         ...filter,
       },
     })
+  }
+
+  handleCheckboxUserType = async (e, data) => {
+    const { value } = data
+    const { filter } = this.state
+
+    const newUserType = [value]
+
+    await this.setState({
+      filter: {
+        ...filter,
+        user_role: newUserType,
+      },
+    })
+
+    this.fetch()
   }
 
   handleInputChange = async ({ target }) => {
@@ -86,30 +116,34 @@ class ListBeacons extends Component {
     this.fetch()
   }
 
-  handleInput = (type, e) => {
-    const { change } = this.props
-    change(type, e)
-  }
-
   handleResetFilter = () => {
     this.setState({
       filter: {
+        user_role: [],
         keyword: '',
       },
     })
   }
 
-  handleDeleteBeacon = (id) => {
-    const { deleteBeacon } = this.props
+  openNotificationDeleteSuccess = (type) => {
+    notification[type]({
+      message: 'Delete Success!',
+      description:
+        'Action completed successfully.',
+    })
+  }
+
+  showDeleteConfirm = (id) => {
+    const { deleteUser } = this.props
     const success = 'success'
     confirm({
       title: 'Confirm Deletion',
-      content: 'Are you sure delete this year? You can\'t undo this action.',
+      content: 'Are you sure delete this user? You can\'t undo this action.',
       okText: 'Delete',
       okType: 'danger',
       cancelText: 'Cancel',
       onOk() {
-        deleteBeacon({ id })
+        deleteUser({ id })
         notification[success]({
           message: 'Delete Success!',
           description:
@@ -123,7 +157,7 @@ class ListBeacons extends Component {
 
   render() {
     const {
-      beaconList,
+      users,
     } = this.props
 
     const {
@@ -132,38 +166,29 @@ class ListBeacons extends Component {
 
     return (
       <PageWrapper>
-        <HeaderAdmin />
         <RowContainer>
-          <FilterWrapper>
-            <FilterAndCriteria
-              filter={filter}
-              handleInputChange={this.handleInputChange}
-              handleResetFilter={this.handleResetFilter}
-            />
-          </FilterWrapper>
           <RowContainer style={{ paddingTop: 0 }}>
             <ListCol
               style={{
                 position: 'relative',
               }}
             >
-
               <Fragment>
                 <Space />
-                {
-                    beaconList === null && (
+                {/* {
+                    users === null && (
                       <LoadingPulse />
                     )
                   }
                 {
-                    beaconList !== null && beaconList.size > 0 && (
+                    users !== null && users.size > 0 && (
                       <ListCol>
                         <TableHeader />
                         <ListCol>
-                          <BeaconsList
-                            beaconList={beaconList}
+                          <ListUsers
+                            users={users}
                             filter={filter}
-                            handleDeleteBeacon={this.handleDeleteBeacon}
+                            handleDeleteUser={this.showDeleteConfirm}
                           />
                         </ListCol>
                       </ListCol>
@@ -171,10 +196,10 @@ class ListBeacons extends Component {
                   }
 
                 {
-                    beaconList !== null && beaconList.size === 0 && (
+                    users !== null && users.size === 0 && (
                       <NotFound />
                     )
-                  }
+                  } */}
               </Fragment>
             </ListCol>
           </RowContainer>
@@ -185,18 +210,18 @@ class ListBeacons extends Component {
 }
 
 const mapStateToProps = (state, props) => createStructuredSelector({
-  beaconList: beaconSelector.getAllBeacon,
+  users: userSelector.getUsers,
 })(state, props)
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  getBeaconAll: beaconAction.getBeaconAll,
-  deleteBeacon: beaconAction.deleteBeacon,
+  getUsers: userAction.getUsers,
+  deleteUser: userAction.deleteUser,
 }, dispatch)
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withLayout,
-)(ListBeacons)
+)(StudentHomePage)
 
 const PageWrapper = styled.div`
   font-family: Sarabun;
@@ -219,8 +244,7 @@ const ItemHeader = styled.span`
 
 const OtherWrapper = styled.div`
     display: flex;
-    justify-content: center;
-    text-align: center;
+    text-align: start;
 `
 
 const RowContainer = styled.div`
@@ -257,31 +281,29 @@ const Space = styled.div`
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  padding: 24px 0px 0px 0px;
+  padding: 0px 0px 16px 0px;
 `
 
 const ListHeader = styled(OtherWrapper)`
   flex: 1;
-  display: inline-block;
-  padding-left: 35px;
-  text-align: left;
-`
-const UserDetailGroup = styled.div`
   display: flex;
-  flex: 4;
-  color: #929598;
-  font-size: 16px;
 `
 
 const Row = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 76px;
+  height: 32%;
   width: 100%;
 `
-const DeleteWrapper = styled.div`
+const UserDetailGroup = styled.div`
   display: flex;
-  width: 128px;
+  color: #929598;
+  font-size: 16px;
+  flex: 5;
+`
+const ButtonWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
 `

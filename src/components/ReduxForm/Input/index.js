@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 const FormGroup = styled.div`
-    margin: 30px 0;
+    margin: 22px 0;
     position: relative;
     width: 100%;
     display: block;

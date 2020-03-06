@@ -116,15 +116,15 @@ class RegisterPage extends Component {
           </FormHeader>
           <br />
           <Wrapper>
-            <Grid style={{ display: 'flex', alignItems: 'center' }}>
+            {/* <Grid style={{ display: 'flex', alignItems: 'center' }}>
               <Avatar />
-            </Grid>
+            </Grid> */}
             <StyleBorder
               container
               centered
             >
 
-              <StyledForm>
+              {/* <StyledForm>
                 <Field
                   label='LECTURER ID :'
                   name='professor_id'
@@ -132,7 +132,7 @@ class RegisterPage extends Component {
                   type='text'
                   placeholder='Lecturer ID'
                 />
-              </StyledForm>
+              </StyledForm> */}
               <StyledForm>
                 <Field
                   label='NAME :'
@@ -169,7 +169,7 @@ class RegisterPage extends Component {
                   placeholder='Password'
                 />
               </StyledForm>
-              <StyledForm>
+              {/* <StyledForm>
                 <Field
                   label='PHONE NUMBER:'
                   name='mobile_phone'
@@ -177,7 +177,16 @@ class RegisterPage extends Component {
                   type='phone'
                   placeholder='Mobile Phone'
                 />
-              </StyledForm>
+              </StyledForm> */}
+              {/* <StyledForm>
+                <Field
+                  label='STUDENT ID:'
+                  name='student_id'
+                  component={renderInput}
+                  type='id'
+                  placeholder='Student Id'
+                />
+              </StyledForm> */}
               <FormButton
                 disabled={ pristine || submitting }
                 type='cancel'
@@ -190,7 +199,7 @@ class RegisterPage extends Component {
                   &nbsp; &nbsp;
               <FormButton
                 disabled={submitting}
-                colorButton='#006765'
+                colorButton='#8c72c0'
                 type='submit'
                 txtButton='REGISTER'
                 width='50%'
@@ -251,15 +260,18 @@ const Wrapper = styled.div`
   position: relative;
   margin: 0px;
   max-width: 100%;
-  @media (max-width: 320px) {
-    width: 325px;
+  @media (max-width: 320px) 
+  {
+    width: 100px
   }
 
   .ui.grid {
     display: flex;
     flex: 1;
     justify-content: center;
-    margin: 20px;
+    // margin: 20px;
+    margin:3px;
+    padding-top: 17px;
   }
 
 
@@ -279,9 +291,9 @@ const Wrapper = styled.div`
   .ui.checkbox label {
     color: rgba(0,0,0,.87);
     transition: color .1s ease;
-    padding-left: 22px;
-    @media (max-width: 360px) {
-      padding-left: 26px;
+    padding-left: 2px;
+    @media (max-width: 60px) {
+      padding-left: 2px;
   }
   }
 
@@ -357,9 +369,12 @@ const FormInput = styled(Form)`
 `
 
 const StyleBorder = styled(Grid)`
-  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%), #ECECEC;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  
+  background: linear-gradient(180deg, #BFCCF6 0%, rgba(255, 0, 0, 0) 10%), #FABEAFF;
+  box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 41px;
   background-color: #fff;
-  background: linear-gradient(180deg,#FFFFFF 0%,rgba(255,255,255,0) 100%),#ECECEC;
+  background: #fff;
+  width: 50px
+  background: linear-gradient(180deg,#BFCCF6 0%,rgba(255,255,255,0) 100%),#C8CDDF;
 `

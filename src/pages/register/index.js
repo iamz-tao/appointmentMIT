@@ -4,7 +4,7 @@ import {
   Grid,
   Form,
 } from 'semantic-ui-react'
-import { notification } from 'antd'
+import { notification, Button } from 'antd'
 import styled from 'styled-components'
 import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
@@ -27,6 +27,7 @@ import { registerAction } from '~/modules/authentication/actions'
 
 import LoadingPulse from '~/components/LoadingPulse'
 import renderInput from '~/components/ReduxForm/NomalInput'
+import { marginLeft } from 'styled-system'
 
 const FORM_NAME = 'CREATE_ACCOUNT'
 
@@ -48,16 +49,21 @@ class RegisterPage extends Component {
 
     return {}
   }
+  state = {
+    status: '',
+  }
+
 
   componentDidMount() {
-    const authToken = Cookie.get('token')
-    if (!isNil(authToken)) {
-      Router.push('/profile')
-    }
+ 
   }
 
   handleInputChange = ({ target }) => {
     this.setState({ [target.name]: target.value })
+  }
+
+  handleState = (status)=> {
+  this.setState({ status  })
   }
 
   openNotificationRegisterSuccess = (type) => {
@@ -69,29 +75,32 @@ class RegisterPage extends Component {
   }
 
   handleRegister = (values) => {
+    // console.log(values.toJS())
+    
+    // const { status } = this.state
     const {
+      id,
+      firstname,
+      lastname,
       email,
       password,
-      professor_id,
-      mobile_phone,
-      name,
-      surname,
     } = values.toJS()
 
-    const { role } = this.state
+    const user = this.state.status
+    console.log(user)
     const { registerUser } = this.props
 
     registerUser({
       data: {
         email,
         password,
-        id: professor_id,
-        mobile: mobile_phone,
-        firstname: name,
-        lastname: surname,
-        role,
+        id,
+        firstname,
+        lastname,
+        role: user,
       },
-    })
+    }
+    )
 
     this.openNotificationRegisterSuccess('success')
   }
@@ -104,7 +113,6 @@ class RegisterPage extends Component {
       submitting,
       handleSubmit,
     } = this.props
-
 
     if (get(getAuthenticationRegisterState, 'isFetching')) {
       return (<LoadingPulse />)
@@ -126,19 +134,19 @@ class RegisterPage extends Component {
               centered
             >
 
-              {/* <StyledForm>
+              <StyledForm>
                 <Field
-                  label='LECTURER ID :'
-                  name='professor_id'
+                  label='User ID :'
+                  name='id'
                   component={renderInput}
                   type='text'
-                  placeholder='Lecturer ID'
+                  placeholder='ID'
                 />
-              </StyledForm> */}
+              </StyledForm>
               <StyledForm>
                 <Field
                   label='NAME :'
-                  name='name'
+                  name='firstname'
                   component={renderInput}
                   type='text'
                   placeholder='Name'
@@ -147,7 +155,7 @@ class RegisterPage extends Component {
               <StyledForm>
                 <Field
                   label='SURNAME :'
-                  name='surname'
+                  name='lastname'
                   component={renderInput}
                   type='text'
                   placeholder='Surname'
@@ -171,25 +179,16 @@ class RegisterPage extends Component {
                   placeholder='Password'
                 />
               </StyledForm>
-              {/* <StyledForm>
-                <Field
-                  label='PHONE NUMBER:'
-                  name='mobile_phone'
-                  component={renderInput}
-                  type='phone'
-                  placeholder='Mobile Phone'
-                />
-              </StyledForm> */}
-              {/* <StyledForm>
-                <Field
-                  label='STUDENT ID:'
-                  name='student_id'
-                  component={renderInput}
-                  type='id'
-                  placeholder='Student Id'
-                />
-              </StyledForm> */}
-              <FormButton
+
+              <div role="group" >
+                <Button onClick={() => this.handleState('NISIT')}>STUDENT</Button>  &nbsp;
+                <Button onClick={() => this.handleState('PROFESSOR')}>PROFESSOR</Button>
+                <br/><br/>
+              </div>
+              
+          
+              
+                 <FormButton
                 disabled={ pristine || submitting }
                 type='cancel'
                 txtButton='CANCEL'
@@ -208,12 +207,14 @@ class RegisterPage extends Component {
                 onClick={() => {
                 }}
               />
+              
+            
 
             </StyleBorder>
           </Wrapper>
         </FormWrapper>
         <StyleWrapperImg>
-        <img src={Regis} style={{     transform: 'scaleX(-1)' }} />
+        <img src={Regis} style={{    transform: 'scaleX(-1)' }} />
         </StyleWrapperImg>
       </form> 
     )
@@ -385,4 +386,7 @@ width: 100%;
 display: flex;
 justify-content: flex-end;
 margin-top: 12px;
+`
+const styleButton= styled.div`
+
 `

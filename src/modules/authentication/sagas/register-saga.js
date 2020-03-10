@@ -20,10 +20,10 @@ import {
 
 export function* registerUserRequest({ payload }) {
   try {
+    console.log('wwwww',payload)
     const token = Cookie.get('token', '')
     const {
       email,
-      mobile,
       password,
       firstname,
       lastname,
@@ -32,11 +32,10 @@ export function* registerUserRequest({ payload }) {
     } = payload.data
     
     const response = yield call(http.post, {
-      url: '/api/register',
+      url: '/api/Register',
       method: 'post',
       payload: {
         email,
-        mobile,
         password,
         firstname,
         lastname,
@@ -63,7 +62,7 @@ export function* registerUserRequest({ payload }) {
 export function* registerUserSuccess() {
   try {
     yield put(registerAction.registerUserReset())
-      window.location.href = '/login'
+      window.location.href = '/home'
   } catch (exception) {
     yield put(registerAction.registerUserFailure({ errorMessage: 'Internal Error' }))
   }

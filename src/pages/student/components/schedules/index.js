@@ -1,29 +1,61 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Segment } from 'semantic-ui-react'
+import { Segment, Icon } from 'semantic-ui-react'
 import { Button } from 'antd'
+
 import FormButton from '~/components/Form/Button'
+import AddAppointment from './components/addAppointment'
 // import DeleteIcon from '~/components/DeleteIcon'
-import { Icon } from 'semantic-ui-react'
 
 const Schdules = (props) => {
+  const { lecturer, open, handleModal, handleInput,handleInputChange } = props
+  const name = `${lecturer.getIn([0, 'firstname'])} ${lecturer.getIn([0, 'lastname'])}`
+  // console.log(lecturer.toJS())
   return (
     <Column>
+      <AddAppointment
+        open={open}
+        handleInput={handleInput}
+        handleModal={handleModal}
+        handleInputChange={handleInputChange}
+      />
+      <ItemHeader>
+        <div style={{ flex: 1 }}>
+          SCHEDULE
+          <br />
+          Lecturer :
+          {' '}
+          {name}
+        </div>
+        <div>
+          <ButtonWrapper>
+            <Button
+              type='submit'
+              size='large'
+              onClick={() => {
+                handleModal()
+              }}
+            >
+              ADD APPOINTMENT
+            </Button>
+          </ButtonWrapper>
+        </div>
+      </ItemHeader>
       <Wrapper>
         <Column>
           {/* {lecturerList.map(lec => ( */}
-            <ItemWrapper>
-              <Row>
-                <UserDetailGroup>
-                  <ListDetail style={{ flex: 2 }}>
-                    <ItemSpan>
-                      {/* {lec.get('firstname')}
+          <ItemWrapper>
+            <Row>
+              <UserDetailGroup>
+                <ListDetail style={{ flex: 2 }}>
+                  <ItemSpan>
+                    {/* {lec.get('firstname')}
                     &nbsp;
                       {lec.get('lastname')} */}
-                      xxxxxxx
-                    </ItemSpan>
-                  </ListDetail>
-                  {/* <CustomDelete>
+                    xxxxxxx
+                  </ItemSpan>
+                </ListDetail>
+                {/* <CustomDelete>
                   <Trash
       name='table'
       onClick={(e) => {
@@ -32,11 +64,11 @@ const Schdules = (props) => {
       }}
     />
                   </CustomDelete> */}
-                </UserDetailGroup>
+              </UserDetailGroup>
 
-              </Row>
-            </ItemWrapper>
-           {/* ))}  */}
+            </Row>
+          </ItemWrapper>
+          {/* ))}  */}
         </Column>
       </Wrapper>
     </Column>
@@ -134,4 +166,21 @@ const Trash = styled(Icon)`
   line-height: 24px !important;
   font-size: 1.7em !important;
   cursor: pointer;
+`
+
+const ItemHeader = styled.div`
+    display: flex; 
+    width: 100% ;
+    justify-content: flex-start;
+    font-family: kanit;
+    font-size: 18px;
+    margin: 0;
+    color: black;
+    cursor: pointer;
+    margin: 18px 0px 18px 0px;
+`
+const ButtonWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
 `

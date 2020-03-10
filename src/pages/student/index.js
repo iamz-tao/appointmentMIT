@@ -4,17 +4,8 @@ import { createStructuredSelector } from 'reselect'
 import { bindActionCreators, compose } from 'redux'
 import { connect } from 'react-redux'
 import {
-  Modal, notification, Menu, Button,
+  Modal, notification, Menu,
 } from 'antd'
-import {
-  AppstoreOutlined,
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  PieChartOutlined,
-  DesktopOutlined,
-  InboxOutlined,
-  MailOutlined,
-} from '@ant-design/icons'
 import Router from 'next/router'
 
 import Cookie from 'js-cookie'
@@ -61,6 +52,13 @@ const TableHeader = () => (
 
 class StudentHomePage extends Component {
   state = {
+    lecturer_id: '',
+    open: false,
+    title: '',
+    detail: '',
+    day: '',
+    start_time: '',
+    end_time: ''
   }
 
   componentDidMount() {
@@ -73,16 +71,27 @@ class StudentHomePage extends Component {
   }
 
   handleOpenSchedule = (id) => {
-    console.log('id',id)
+    this.setState({
+      lecturer_id: id,
+    })
+  }
+
+  handleModal = () => {
+    const { open } = this.state
+    this.setState({
+      open: !open,
+    })
+  }
+
+  handleInput = (type, e) => {
+    const { change } = this.props
+    change(type, e)
   }
 
   handleInputChange = async ({ target }) => {
     await this.setState(state => ({
       ...state,
-      filter: {
-        ...state.filter,
         [target.name]: target.value,
-      },
     }))
     this.fetch()
   }
@@ -122,6 +131,15 @@ class StudentHomePage extends Component {
     const {
       lecturerList,
     } = this.props
+    const {
+      lecturer_id,
+      open,
+    } = this.state
+    let lecturer_detail = null
+    if (lecturer_id !== '') {
+      lecturer_detail = lecturerList.filter(lec => lec.get('id') === lecturer_id)
+    }
+
     return (
       <PageWrapper>
         <RowContainer>
@@ -137,14 +155,16 @@ class StudentHomePage extends Component {
                     )
                     }
           </RowContainer>
-          <RowContainer style={{ paddingTop: 0, flex: 2 }}>
-            <ListCol>
-              <TableHeader />
-              <ListCol>
-                <Schedules  />
-              </ListCol>
-            </ListCol>
-
+          <RowContainer style={{ paddingTop: 0, flex: 3 }}>
+            {
+                    lecturer_id !== '' ? (
+                      <ListCol style={{ padding: '0px 28px' }}>
+                        <Schedules lecturer={lecturer_detail} handleModal={this.handleModal} open={open} handleInput={this.handleInput} handleInputChange={this.handleInputChange} />
+                      </ListCol>
+                    ) : (
+                      <NotFound message='Please select lecturer.' />
+                    )
+                    }
           </RowContainer>
         </RowContainer>
       </PageWrapper>

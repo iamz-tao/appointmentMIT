@@ -1,18 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Segment } from 'semantic-ui-react'
+import { Segment, Icon } from 'semantic-ui-react'
 import { Button } from 'antd'
 import FormButton from '~/components/Form/Button'
 import DeleteIcon from '~/components/DeleteIcon'
-import { Icon } from 'semantic-ui-react'
+
 
 const LecturerList = (props) => {
   const {
     lecturerList,
     handleOpenSchedule,
   } = props
-
-
 
   return (
     <Column>
@@ -30,19 +28,19 @@ const LecturerList = (props) => {
                     </ItemSpan>
                   </ListDetail>
                   <CustomDelete>
-                  <Trash
-      name='table'
-      onClick={(e) => {
-        e.preventDefault()
+                    <Trash
+                      name='table'
+                      onClick={(e) => {
+                        e.preventDefault()
                         handleOpenSchedule(lec.get('id'))
-      }}
-    />
+                      }}
+                    />
                   </CustomDelete>
                 </UserDetailGroup>
 
               </Row>
             </ItemWrapper>
-           ))} 
+          ))}
         </Column>
       </Wrapper>
     </Column>

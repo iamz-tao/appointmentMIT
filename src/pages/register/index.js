@@ -4,7 +4,7 @@ import {
   Grid,
   Form,
 } from 'semantic-ui-react'
-import { notification } from 'antd'
+import { notification, Button } from 'antd'
 import styled from 'styled-components'
 import { createStructuredSelector } from 'reselect'
 import { connect } from 'react-redux'
@@ -18,6 +18,8 @@ import isNil from 'lodash/isNil'
 
 import validate from './validate'
 
+import Regis from '~/static/images/regis.png'
+
 import Avatar from '~/components/UploadProfile'
 import FormButton from '~/components/Form/Button'
 import { registerSelector } from '~/modules/authentication/selectors'
@@ -25,6 +27,7 @@ import { registerAction } from '~/modules/authentication/actions'
 
 import LoadingPulse from '~/components/LoadingPulse'
 import renderInput from '~/components/ReduxForm/NomalInput'
+import { marginLeft } from 'styled-system'
 
 const FORM_NAME = 'CREATE_ACCOUNT'
 
@@ -46,16 +49,22 @@ class RegisterPage extends Component {
 
     return {}
   }
+  state = {
+    status: '',
+  }
+
 
   componentDidMount() {
-    const authToken = Cookie.get('token')
-    if (!isNil(authToken)) {
-      Router.push('/profile')
-    }
+ 
   }
 
   handleInputChange = ({ target }) => {
     this.setState({ [target.name]: target.value })
+  }
+
+  handleState = (status)=> {
+    console.log(status)
+  this.setState({ status  })
   }
 
   openNotificationRegisterSuccess = (type) => {
@@ -67,29 +76,30 @@ class RegisterPage extends Component {
   }
 
   handleRegister = (values) => {
+    // console.log(values.toJS())
+    
+    // const { status } = this.state
     const {
+      id,
+      firstname,
+      lastname,
       email,
       password,
-      professor_id,
-      mobile_phone,
-      name,
-      surname,
     } = values.toJS()
 
-    const { role } = this.state
+    const user = this.state.status
     const { registerUser } = this.props
-
     registerUser({
       data: {
         email,
         password,
-        id: professor_id,
-        mobile: mobile_phone,
-        firstname: name,
-        lastname: surname,
-        role,
+        id,
+        firstname,
+        lastname,
+        role: user,
       },
-    })
+    }
+    )
 
     this.openNotificationRegisterSuccess('success')
   }
@@ -103,7 +113,6 @@ class RegisterPage extends Component {
       handleSubmit,
     } = this.props
 
-
     if (get(getAuthenticationRegisterState, 'isFetching')) {
       return (<LoadingPulse />)
     }
@@ -116,9 +125,9 @@ class RegisterPage extends Component {
           </FormHeader>
           <br />
           <Wrapper>
-            <Grid style={{ display: 'flex', alignItems: 'center' }}>
+            {/* <Grid style={{ display: 'flex', alignItems: 'center' }}>
               <Avatar />
-            </Grid>
+            </Grid> */}
             <StyleBorder
               container
               centered
@@ -126,17 +135,17 @@ class RegisterPage extends Component {
 
               <StyledForm>
                 <Field
-                  label='LECTURER ID :'
-                  name='professor_id'
+                  label='User ID :'
+                  name='id'
                   component={renderInput}
                   type='text'
-                  placeholder='Lecturer ID'
+                  placeholder='ID'
                 />
               </StyledForm>
               <StyledForm>
                 <Field
                   label='NAME :'
-                  name='name'
+                  name='firstname'
                   component={renderInput}
                   type='text'
                   placeholder='Name'
@@ -145,7 +154,7 @@ class RegisterPage extends Component {
               <StyledForm>
                 <Field
                   label='SURNAME :'
-                  name='surname'
+                  name='lastname'
                   component={renderInput}
                   type='text'
                   placeholder='Surname'
@@ -169,16 +178,20 @@ class RegisterPage extends Component {
                   placeholder='Password'
                 />
               </StyledForm>
-              <StyledForm>
-                <Field
-                  label='PHONE NUMBER:'
-                  name='mobile_phone'
-                  component={renderInput}
-                  type='phone'
-                  placeholder='Mobile Phone'
-                />
-              </StyledForm>
-              <FormButton
+            
+
+              <div role="group" style={{width: 'inherit', marginTop: '2%'}} >
+              
+                <Button style={{backgroundColor:'#c4b1e8'}} onClick={() => this.handleState('NISIT')}>STUDENT</Button>  &nbsp;
+                <Button style={{backgroundColor:'rgb(253, 224, 224)'}}onClick={() => this.handleState('PROFESSOR')}>PROFESSOR</Button>
+                <br/><br/>
+            
+              </div>
+              
+              {/* style={{backgroundColor:'#c4b1e8'}} */}
+              {/* style={{backgroundColor:'#93acf3'}} */}
+              <div style={{marginTop: '-4%'}}>
+                <FormButton
                 disabled={ pristine || submitting }
                 type='cancel'
                 txtButton='CANCEL'
@@ -190,18 +203,25 @@ class RegisterPage extends Component {
                   &nbsp; &nbsp;
               <FormButton
                 disabled={submitting}
-                colorButton='#006765'
+                colorButton='#8c72c0'
                 type='submit'
                 txtButton='REGISTER'
                 width='50%'
                 onClick={() => {
                 }}
               />
+              </div>
+               
+              
+            
 
             </StyleBorder>
           </Wrapper>
         </FormWrapper>
-      </form>
+        <StyleWrapperImg>
+        <img src={Regis} style={{    transform: 'scaleX(-1)' }} />
+        </StyleWrapperImg>
+      </form> 
     )
   }
 }
@@ -238,7 +258,7 @@ const FormWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 36px 90px 0px 90px;
+  margin: 16px 90px 0px 90px;
   @media (max-width: 750px) {
     margin-top: 16px;
     margin-bottom: 16px;
@@ -250,16 +270,21 @@ const Wrapper = styled.div`
   flex-direction: row;
   position: relative;
   margin: 0px;
-  max-width: 100%;
-  @media (max-width: 320px) {
-    width: 325px;
-  }
+  max-width: 46%;
 
   .ui.grid {
     display: flex;
     flex: 1;
     justify-content: center;
-    margin: 20px;
+    // margin: 20px;
+    margin:3px;
+    padding-top: 17px;
+  }
+
+  .ant-btn:hover {
+    color: #a915f1;
+    background-color: #fff;
+    border-color: #a915f1;
   }
 
 
@@ -279,9 +304,9 @@ const Wrapper = styled.div`
   .ui.checkbox label {
     color: rgba(0,0,0,.87);
     transition: color .1s ease;
-    padding-left: 22px;
-    @media (max-width: 360px) {
-      padding-left: 26px;
+    padding-left: 2px;
+    @media (max-width: 60px) {
+      padding-left: 2px;
   }
   }
 
@@ -357,9 +382,19 @@ const FormInput = styled(Form)`
 `
 
 const StyleBorder = styled(Grid)`
-  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%), #ECECEC;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  
+  background: linear-gradient(180deg, #BFCCF6 0%, rgba(255, 0, 0, 0) 10%), #FABEAFF;
+  box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 41px;
   background-color: #fff;
-  background: linear-gradient(180deg,#FFFFFF 0%,rgba(255,255,255,0) 100%),#ECECEC;
+  background: #fff;
+  width: 50px
+  background: linear-gradient(180deg,#BFCCF6 0%,rgba(255,255,255,0) 100%),#C8CDDF;
+`
+
+const StyleWrapperImg = styled.div`
+width: 100%;
+display: flex;
+justify-content: flex-end;
+margin-top: 12px;
 `

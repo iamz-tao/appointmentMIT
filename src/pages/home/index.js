@@ -136,7 +136,6 @@ class Home extends Component {
             <FormButton
               margin='8px 0 25px 0'
               colorButton='#9e7fc6'
-              disabled={pristine || submitting}
               type='submit'
               txtButton='SIGN UP'
               width='50%'

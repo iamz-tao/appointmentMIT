@@ -1,71 +1,49 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Segment } from 'semantic-ui-react'
-import DeleteIcon from '~/components/DeleteIcon'
+import { Button } from 'antd'
+import FormButton from '~/components/Form/Button'
+// import DeleteIcon from '~/components/DeleteIcon'
+import { Icon } from 'semantic-ui-react'
 
-const BeaconList = (props) => {
-  const {
-    beaconList,
-    filter,
-    handleDeleteBeacon,
-  } = props
-
+const Schdules = (props) => {
   return (
     <Column>
       <Wrapper>
         <Column>
-          {beaconList.map(y => (
+          {/* {lecturerList.map(lec => ( */}
             <ItemWrapper>
               <Row>
                 <UserDetailGroup>
                   <ListDetail style={{ flex: 2 }}>
                     <ItemSpan>
-                      {y.get('uuid')}
+                      {/* {lec.get('firstname')}
+                    &nbsp;
+                      {lec.get('lastname')} */}
+                      xxxxxxx
                     </ItemSpan>
                   </ListDetail>
-                  <ListDetail>
-                    <ItemSpan>
-                      {y.get('name')}
-                    </ItemSpan>
-                  </ListDetail>
-                  <ListDetail>
-                    <ItemSpan>
-                      {
-                        y.get('status') === 'DISABLE' && (
-                          <ItemSpan style={{ color: '#D94646' }}>
-                            DISABLE
-                          </ItemSpan>
-                        )
-                      }
-                      {
-                        y.get('status') === 'ACTIVE' && (
-                          <ItemSpan style={{ color: '#001AFF' }}>
-                            ACTIVE
-                          </ItemSpan>
-                        )
-                      }
-                    </ItemSpan>
-                  </ListDetail>
+                  {/* <CustomDelete>
+                  <Trash
+      name='table'
+      onClick={(e) => {
+        e.preventDefault()
+                        handleOpenSchedule(lec.get('id'))
+      }}
+    />
+                  </CustomDelete> */}
                 </UserDetailGroup>
-                <DeleteWrapper>
-                  <DeleteIcon
-                    className='trash'
-                    onClick={(e) => {
-                      e.preventDefault()
-                      handleDeleteBeacon(y.get('id'))
-                    }}
-                  />
-                </DeleteWrapper>
+
               </Row>
             </ItemWrapper>
-          ))}
+           {/* ))}  */}
         </Column>
       </Wrapper>
     </Column>
   )
 }
 
-export default BeaconList
+export default Schdules
 
 const Wrapper = styled.div`
   display: flex;
@@ -85,9 +63,6 @@ const Wrapper = styled.div`
       color: #CA5353 !important;
     }
   }
-  .ant-switch-checked {
-    background-color: #FFCDCD;
-}
 `
 
 const ItemWrapper = styled(Segment)`
@@ -96,17 +71,12 @@ const ItemWrapper = styled(Segment)`
   border-radius: 4px;
   margin-bottom: 0px !important;
   padding: 0 !important;
+  cursor: pointer;
   background: #FFFFFF !important;
   border: 1px solid #D0CDCD !important;
   box-sizing: border-box !important;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
   border-radius: 18px !important;
-`
-
-const DeleteWrapper = styled.div`
-  display: flex;
-  width: 128px;
-  justify-content: center;
 `
 
 const Column = styled.div`
@@ -121,7 +91,7 @@ const Row = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 76px;
+  height: 52px;
   width: 100%;
 `
 
@@ -139,16 +109,29 @@ const ItemSpan = styled.span`
 const OtherWrapper = styled.div`
     display: flex;
     line-height: 40px;
-    padding-left: 8px;
+    padding-left: 16px;
 `
 
 const ListDetail = styled(OtherWrapper)`
   flex: 1;
-  display: inline-block;
-  padding-left: 40px;
-  text-align: left;
+  display: flex;
+  text-align: start;
+`
+
+const CustomDelete = styled(OtherWrapper)`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 const UserDetailGroup = styled.div`
   display: flex;
-  flex: 4;
+  flex: 5;
+`
+const Trash = styled(Icon)`
+  color: #E1E1E1;
+  margin: 0px !important;
+  line-height: 24px !important;
+  font-size: 1.7em !important;
+  cursor: pointer;
 `

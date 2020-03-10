@@ -9,6 +9,9 @@ routes
   // Professor
   .add('professor', '/professor', '/professor')
   
+  // Student 
+  .add('student', '/student', '/student')
+  
   // Admin
   .add('admin', '/admin', '/admin')
   .add('register-admin', '/adminRegister', '/admin/adminRegister')

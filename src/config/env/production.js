@@ -4,7 +4,7 @@ const production = {
 
   debug: false,
 
-  apiEndpoint: 'https://us-central1-kpscheckin.cloudfunctions.net',
+  apiEndpoint: 'https://us-central1-mitproject-895cc.cloudfunctions.net',
 
   googleFileID: '',
   googleAPIKey: '',

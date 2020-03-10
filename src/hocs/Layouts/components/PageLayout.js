@@ -84,10 +84,6 @@ export default compose(
 const Box = styled.div`
   width: ${props => props.width || 20}px;
   height: ${props => props.height || 20}px;
-  
-  /* @media screen and (max-width: 800px) {
-    height: 57px;
-  } */
 `
 
 const NavWrapper = styled.div`

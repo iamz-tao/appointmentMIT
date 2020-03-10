@@ -4,6 +4,7 @@ import userSaga from '~/modules/user/sagas'
 import uploadSaga from '~/modules/upload/sagas'
 import cookieSaga from '~/modules/storage/sagas'
 import adminSaga from '~/modules/admin/sagas'
+import student from '~/modules/student/sagas'
 
 const sagas = [
   all(authenticationSaga),
@@ -11,6 +12,7 @@ const sagas = [
   all(userSaga),
   all(uploadSaga),
   all(adminSaga),
+  all(student),
 ]
 
 export default function* rootSaga() {

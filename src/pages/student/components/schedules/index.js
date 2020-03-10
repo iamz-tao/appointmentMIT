@@ -1,23 +1,31 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Segment, Icon } from 'semantic-ui-react'
-import { Button } from 'antd'
+import {
+  Row, Col, Button, Divider,
+} from 'antd'
 
 import FormButton from '~/components/Form/Button'
 import AddAppointment from './components/addAppointment'
 // import DeleteIcon from '~/components/DeleteIcon'
 
 const Schdules = (props) => {
-  const { lecturer, open, handleModal, handleInput,handleInputChange } = props
+  const {
+    lecturer, open, handleModal, handleInputChange, getTimeFrom, getTimeTo, handleSubmit, handleCancel, handleSelectDay,
+  } = props
   const name = `${lecturer.getIn([0, 'firstname'])} ${lecturer.getIn([0, 'lastname'])}`
   // console.log(lecturer.toJS())
   return (
-    <Column>
+    <>
       <AddAppointment
         open={open}
-        handleInput={handleInput}
         handleModal={handleModal}
         handleInputChange={handleInputChange}
+        getTimeFrom={getTimeFrom}
+        getTimeTo={getTimeTo}
+        handleSubmit={handleSubmit}
+        handleCancel={handleCancel}
+        handleSelectDay={handleSelectDay}
       />
       <ItemHeader>
         <div style={{ flex: 1 }}>
@@ -41,37 +49,81 @@ const Schdules = (props) => {
           </ButtonWrapper>
         </div>
       </ItemHeader>
-      <Wrapper>
-        <Column>
-          {/* {lecturerList.map(lec => ( */}
-          <ItemWrapper>
-            <Row>
-              <UserDetailGroup>
-                <ListDetail style={{ flex: 2 }}>
-                  <ItemSpan>
-                    {/* {lec.get('firstname')}
-                    &nbsp;
-                      {lec.get('lastname')} */}
-                    xxxxxxx
-                  </ItemSpan>
-                </ListDetail>
-                {/* <CustomDelete>
-                  <Trash
-      name='table'
-      onClick={(e) => {
-        e.preventDefault()
-                        handleOpenSchedule(lec.get('id'))
-      }}
-    />
-                  </CustomDelete> */}
-              </UserDetailGroup>
-
-            </Row>
-          </ItemWrapper>
-          {/* ))}  */}
-        </Column>
-      </Wrapper>
-    </Column>
+      <Divider orientation='left' style={{ color: '#333', fontWeight: 'normal' }}>
+        {/* sub-element align left */}
+      </Divider>
+      <Row
+        justify='start'
+        style={{
+          height: '54px', display: 'flex', alignItems: 'center', backgroundColor: '#e8d4fa',
+        }}
+      >
+        <Col span={4} style={{ width: '11%' }}>DAY</Col>
+        <Col span={4} style={{ width: '11%' }}>08.00 - 09.00</Col>
+        <Col span={4} style={{ width: '11%' }}>09.00 - 10.00</Col>
+        <Col span={4} style={{ width: '11%' }}>10.00 - 11.00</Col>
+        <Col span={4} style={{ width: '11%' }}>11.00 - 12.00</Col>
+        <Col span={4} style={{ width: '11%' }}>12.00 - 13.00</Col>
+        <Col span={4} style={{ width: '11%' }}>13.00 - 14.00</Col>
+        <Col span={4} style={{ width: '11%' }}>14.00 - 15.00</Col>
+        <Col span={4} style={{ width: '11%' }}>15.00 - 16.00</Col>
+      </Row>
+      <Row justify='start' style={{ height: '54px' }}>
+        <Col span={4} style={{ width: '11%' }}>MONDAY</Col>
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+      </Row>
+      <Row justify='start' style={{ height: '54px' }}>
+        <Col span={4} style={{ width: '11%' }}>TUESDAY</Col>
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+      </Row>
+      <Row justify='start' style={{ height: '54px' }}>
+        <Col span={4} style={{ width: '11%' }}>WEDNESDAY</Col>
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+      </Row>
+      <Row justify='start' style={{ height: '54px' }}>
+        <Col span={4} style={{ width: '11%' }}>THURSDAY</Col>
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+      </Row>
+      <Row justify='start' style={{ height: '54px' }}>
+        <Col span={4} style={{ width: '11%' }}>FRIDAY</Col>
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+        <Col span={4} style={{ width: '11%' }} />
+      </Row>
+    </>
   )
 }
 
@@ -119,7 +171,7 @@ const Column = styled.div`
   width: 100%;
 `
 
-const Row = styled.div`
+const RowWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;

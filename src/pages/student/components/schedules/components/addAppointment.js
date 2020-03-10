@@ -10,10 +10,7 @@ import {
   Button,
   Input,
 } from 'antd'
-import {
-  SemanticInput,
-  DropdownWithLabel,
-} from '~/components/ReduxForm'
+import FormButton from '~/components/Form/Button'
 
 import { day } from '~/config/constants'
 import DefaultForm from '~/components/DefaultForm'
@@ -23,19 +20,13 @@ const format = 'h:mm a'
 const AddAppointment = (props) => {
   const {
     open,
-    // getTimeFrom,
-    // getTimeTo,
-    // getTimeFrom2,
-    // getTimeTo2,
+    getTimeFrom,
+    getTimeTo,
     handleModal,
-    handleInput,
-    // handleCancel,
-    // handleAddDay,
-    // addDay,
-    // handleButtonClick,
-    // handleButtonClick2,
-    // semester,
-    // year,
+    handleInputChange,
+    handleSubmit,
+    handleCancel,
+    handleSelectDay,
   } = props
 
   return (
@@ -47,7 +38,7 @@ const AddAppointment = (props) => {
     >
       <Modal.Content>
         <Header>
-          ADD ADDAPPOINTMENT
+          CREATE APPOINTMENT
         </Header>
         <br />
         <Wrapper>
@@ -57,7 +48,15 @@ const AddAppointment = (props) => {
             width='103px'
             marginBottom='6px'
           >
-            <StyleInput placeholder='Title' />
+            <StyleInput placeholder='Title' name='title' onChange={handleInputChange} />
+          </DefaultForm>
+          <DefaultForm
+            isRequired
+            label='DETAIL'
+            width='103px'
+            marginBottom='6px'
+          >
+            <StyleInput style={{ height: 152 }} placeholder='Detail' name='detail' onChange={handleInputChange} />
           </DefaultForm>
           <DefaultForm
             isRequired
@@ -70,6 +69,8 @@ const AddAppointment = (props) => {
               fluid
               selection
               options={day}
+              onChange={handleSelectDay}
+              name='day'
             />
           </DefaultForm>
           <BlankWrapper>
@@ -78,27 +79,28 @@ const AddAppointment = (props) => {
               label=''
               width='103px'
               marginBottom='10px'
+              label='SELECT TIME'
             >
               <ShowTimeWrapper>
                 <TimePicker
                   format={format}
                   placeholder='Start Time'
-                //   onChange={getTimeFrom}
+                  onChange={getTimeFrom}
                 />
       &nbsp;&nbsp;&nbsp;~&nbsp;&nbsp;&nbsp;
                 <TimePicker
                   format={format}
                   placeholder='End Time'
-                //   onChange={getTimeTo}
+                  onChange={getTimeTo}
                 />
               </ShowTimeWrapper>
             </DefaultForm>
           </BlankWrapper>
-            <br />
+          <br />
           <ButtonWrapper>
-            <ButtonCancel>CANCEL</ButtonCancel>
+            <ButtonCancel onClick={handleCancel}>CANCEL</ButtonCancel>
             &nbsp;&nbsp;&nbsp;
-            <ButtonSave onClick={handleModal}>SAVE</ButtonSave>
+            <ButtonSave onClick={handleSubmit}>SAVE</ButtonSave>
           </ButtonWrapper>
         </Wrapper>
       </Modal.Content>
@@ -138,6 +140,12 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
   border-radius: 21px;
+
+  .ant-btn:hover {
+    color: #a030a2;
+    background-color: #fff;
+    border-color: #a030a2;
+  }
 `
 
 const StyleInput = styled(Input)`
@@ -156,6 +164,13 @@ const StyledWrapper = styled(Modal)`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
   font-family: kanit;
   font-size: 14px !important;
+
+  .ant-btn:hover {
+    color: #a030a2;
+    background-color: #fff;
+    border-color: #a030a2;
+  }
+
   .ant-input {
     height: 38px;
     border-radius: 21px;

@@ -9,6 +9,7 @@ import {
 import Router from 'next/router'
 
 import Cookie from 'js-cookie'
+import moment from 'moment'
 
 import LecturerList from './components/LecturerList'
 import Schedules from './components/schedules'
@@ -76,10 +77,50 @@ class StudentHomePage extends Component {
     })
   }
 
+  handleSelectDay = (e, { value }) => {
+    this.setState({
+      day: value,
+    })
+  }
+
+  handleSubmit = () => {
+    console.log('xxxxxx')
+    const { open, title, start_time, end_time, detail, day, lecturer_id } = this.state
+    const { createAppointment } = this.props
+    const data = {
+      Title: title,
+      Detail: detail,
+      day,
+      start_time,
+      end_time,
+      teacher_id: lecturer_id,
+    }
+
+    createAppointment({
+      data,
+    })
+
+    this.setState({
+      open: !open,
+    })
+  }
+
   handleModal = () => {
     const { open } = this.state
     this.setState({
       open: !open,
+    })
+  }
+
+  handleCancel = () => {
+    const { open } = this.state
+    this.setState({
+      open: !open,
+      title: '',
+      detail: '',
+      start_time: '',
+      end_time: '',
+      day: '',
     })
   }
 
@@ -88,14 +129,27 @@ class StudentHomePage extends Component {
     change(type, e)
   }
 
+
   handleInputChange = async ({ target }) => {
     await this.setState(state => ({
       ...state,
         [target.name]: target.value,
     }))
-    this.fetch()
   }
 
+  getTimeFrom = (from) => {
+    const newForm = new Date(from)
+    this.setState({
+      start_time: moment(newForm).format('h:mm A'),
+    })
+  }
+
+  getTimeTo = (to) => {
+    const newForm = new Date(to)
+    this.setState({
+      end_time: moment(newForm).format('h:mm A'),
+    })
+  }
 
   openNotificationDeleteSuccess = (type) => {
     notification[type]({
@@ -159,7 +213,17 @@ class StudentHomePage extends Component {
             {
                     lecturer_id !== '' ? (
                       <ListCol style={{ padding: '0px 28px' }}>
-                        <Schedules lecturer={lecturer_detail} handleModal={this.handleModal} open={open} handleInput={this.handleInput} handleInputChange={this.handleInputChange} />
+                        <Schedules 
+                          lecturer={lecturer_detail} 
+                          handleModal={this.handleModal} 
+                          open={open} 
+                          handleInputChange={this.handleInputChange} 
+                          getTimeFrom={this.getTimeFrom} 
+                          getTimeTo={this.getTimeTo} 
+                          handleSubmit={this.handleSubmit} 
+                          handleCancel={this.handleCancel} 
+                          handleSelectDay={this.handleSelectDay}
+                        />
                       </ListCol>
                     ) : (
                       <NotFound message='Please select lecturer.' />
@@ -178,6 +242,7 @@ const mapStateToProps = (state, props) => createStructuredSelector({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   getLecturers: appointmentAction.getLecturerList,
+  createAppointment: appointmentAction.createAppointment,
 }, dispatch)
 
 export default compose(

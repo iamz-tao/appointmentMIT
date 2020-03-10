@@ -6,6 +6,7 @@ import Cookie from 'js-cookie'
 import isNil from 'lodash/isNil'
 
 import * as http from '~/helpers/axiosWrapperGet'
+import * as httpPost from '~/helpers/axiosWrapperPostToken'
 import * as httpDel from '~/helpers/axiosWrapperDelete'
 import { loginAction } from '~/modules/authentication/actions'
 import { userAction } from '../actions'
@@ -16,6 +17,19 @@ export function* getLecturerAPI() {
 
   return yield call(http.post, {
     url: '/api/ListTeacher',
+    payload: {
+      token,
+      data,
+    },
+  })
+}
+
+export function* createAppointmentAPI() {
+  const token = Cookie.get('token')
+  const data = {}
+
+  return yield call(httpPut.post, {
+    url: '/api/postAppointMent',
     payload: {
       token,
       data,

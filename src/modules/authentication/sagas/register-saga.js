@@ -43,7 +43,7 @@ export function* registerUserRequest({ payload }) {
         id,
       },
     })
-
+    
     const { error } = response
     if (error) {
       yield put(registerAction.registerUserFailure({ message: response.message || 'Error has been occured' }))

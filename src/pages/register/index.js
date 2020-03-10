@@ -63,6 +63,7 @@ class RegisterPage extends Component {
   }
 
   handleState = (status)=> {
+    console.log(status)
   this.setState({ status  })
   }
 
@@ -89,7 +90,6 @@ class RegisterPage extends Component {
     const user = this.state.status
     console.log(user)
     const { registerUser } = this.props
-
     registerUser({
       data: {
         email,
@@ -179,16 +179,20 @@ class RegisterPage extends Component {
                   placeholder='Password'
                 />
               </StyledForm>
+            
 
-              <div role="group" >
-                <Button onClick={() => this.handleState('NISIT')}>STUDENT</Button>  &nbsp;
-                <Button onClick={() => this.handleState('PROFESSOR')}>PROFESSOR</Button>
+              <div role="group" style={{width: 'inherit', marginTop: '2%'}} >
+              
+                <Button style={{backgroundColor:'#c4b1e8'}} onClick={() => this.handleState('NISIT')}>STUDENT</Button>  &nbsp;
+                <Button style={{backgroundColor:'rgb(253, 224, 224)'}}onClick={() => this.handleState('PROFESSOR')}>PROFESSOR</Button>
                 <br/><br/>
+            
               </div>
               
-          
-              
-                 <FormButton
+              {/* style={{backgroundColor:'#c4b1e8'}} */}
+              {/* style={{backgroundColor:'#93acf3'}} */}
+              <div style={{marginTop: '-4%'}}>
+                <FormButton
                 disabled={ pristine || submitting }
                 type='cancel'
                 txtButton='CANCEL'
@@ -207,6 +211,8 @@ class RegisterPage extends Component {
                 onClick={() => {
                 }}
               />
+              </div>
+               
               
             
 
@@ -274,6 +280,12 @@ const Wrapper = styled.div`
     // margin: 20px;
     margin:3px;
     padding-top: 17px;
+  }
+
+  .ant-btn:hover {
+    color: #a915f1;
+    background-color: #fff;
+    border-color: #a915f1;
   }
 
 
@@ -386,7 +398,4 @@ width: 100%;
 display: flex;
 justify-content: flex-end;
 margin-top: 12px;
-`
-const styleButton= styled.div`
-
 `

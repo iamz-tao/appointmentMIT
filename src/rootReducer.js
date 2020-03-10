@@ -6,6 +6,7 @@ import userReducer from '~/modules/user/reducers'
 import loadingReducer from '~/modules/upload/reducers'
 import adminReducer from '~/modules/admin/reducers'
 import modalReducer from '~/modules/modal/reducer'
+import studentReducer from '~/modules/student/reducers'
 
 export default combineReducers({
   authentication: authenticationReducer,
@@ -14,4 +15,5 @@ export default combineReducers({
   loading: loadingReducer,
   admin: adminReducer,
   modal: modalReducer,
+  student: studentReducer,
 })

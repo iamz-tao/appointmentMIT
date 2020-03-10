@@ -192,7 +192,8 @@ class Navbar extends Component {
     const userRole = Cookie.get('role', '')
     const isProfessor = token !== null && userRole === 'PROFESSOR'
     const isAdmin = token !== null && userRole === 'ADMIN'
-    const homePath = isProfessor ? '/professor' : isAdmin ? '/admin' : '/'
+    const isStudent = token !== null && userRole === 'NISIT'
+    const homePath = isProfessor ? '/professor' : isAdmin ? '/admin' : isStudent ? '/student': '/'
 
     return (
       <Wrapper>

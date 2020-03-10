@@ -3,7 +3,9 @@ import styled from 'styled-components'
 import { createStructuredSelector } from 'reselect'
 import { bindActionCreators, compose } from 'redux'
 import { connect } from 'react-redux'
-import { Modal, notification, Menu, Button } from 'antd'
+import {
+  Modal, notification, Menu, Button,
+} from 'antd'
 import {
   AppstoreOutlined,
   MenuUnfoldOutlined,
@@ -12,26 +14,27 @@ import {
   DesktopOutlined,
   InboxOutlined,
   MailOutlined,
-} from '@ant-design/icons';
+} from '@ant-design/icons'
 import Router from 'next/router'
 
 import Cookie from 'js-cookie'
 
-
+import LecturerList from './components/LecturerList'
+import Schedules from './components/schedules'
 import NotFound from '~/components/Table/NotFound'
 import LoadingPulse from '~/components/LoadingPulse'
 import FormButton from '~/components/Form/Button'
 
 import withLayout from '~/hocs/Layouts/withLayout'
-import { userAction } from '~/modules/admin/actions'
-import { userSelector } from '~/modules/admin/selectors'
+import { appointmentAction } from '~/modules/student/actions'
+import { appointmentSelector } from '~/modules/student/selectors'
 
 const { confirm } = Modal
 const { SubMenu } = Menu
 
 const TableHeader = () => (
   <Wrapper>
-    <ButtonWrapper>
+    {/* <ButtonWrapper>
       <FormButton
         colorButton='#006765'
         type='submit'
@@ -41,28 +44,13 @@ const TableHeader = () => (
           Router.push('/adminRegister')
         }}
       />
-    </ButtonWrapper>
+    </ButtonWrapper> */}
 
     <Row>
       <UserDetailGroup>
-        <ListHeader style={{ paddingLeft: '40px' }}>
-          <ItemHeader>
-            ID
-          </ItemHeader>
-        </ListHeader>
         <ListHeader style={{ flex: 2 }}>
           <ItemHeader>
             NAME
-          </ItemHeader>
-        </ListHeader>
-        <ListHeader style={{ flex: 2 }}>
-          <ItemHeader>
-            EMAIL
-          </ItemHeader>
-        </ListHeader>
-        <ListHeader style={{ justifyContent: 'center' }}>
-          <ItemHeader>
-            STATUS
           </ItemHeader>
         </ListHeader>
         <ListHeader />
@@ -73,47 +61,19 @@ const TableHeader = () => (
 
 class StudentHomePage extends Component {
   state = {
-    users: null,
-    filter: {
-      user_role: [],
-      keyword: '',
-    },
-    collapsed: false,
   }
 
   componentDidMount() {
-    // const authToken = Cookie.get('token')
-    // if (!authToken) {
-    //   Router.push('/login')
-    // }
-    // const { getUsers } = this.props
-    // getUsers({})
+    const authToken = Cookie.get('token')
+    if (!authToken) {
+      Router.push('/login')
+    }
+    const { getLecturers } = this.props
+    getLecturers({})
   }
 
-  fetch = () => {
-    const { filter } = this.state
-    const { getUsers } = this.props
-    getUsers({
-      filter: {
-        ...filter,
-      },
-    })
-  }
-
-  handleCheckboxUserType = async (e, data) => {
-    const { value } = data
-    const { filter } = this.state
-
-    const newUserType = [value]
-
-    await this.setState({
-      filter: {
-        ...filter,
-        user_role: newUserType,
-      },
-    })
-
-    this.fetch()
+  handleOpenSchedule = (id) => {
+    console.log('id',id)
   }
 
   handleInputChange = async ({ target }) => {
@@ -127,14 +87,6 @@ class StudentHomePage extends Component {
     this.fetch()
   }
 
-  handleResetFilter = () => {
-    this.setState({
-      filter: {
-        user_role: [],
-        keyword: '',
-      },
-    })
-  }
 
   openNotificationDeleteSuccess = (type) => {
     notification[type]({
@@ -166,114 +118,33 @@ class StudentHomePage extends Component {
     })
   }
 
-  toggleCollapsed = () => {
-    this.setState({
-      collapsed: !this.state.collapsed,
-    });
-  };
-
   render() {
     const {
-      users,
+      lecturerList,
     } = this.props
-
-    const {
-      filter,
-    } = this.state
-
     return (
       <PageWrapper>
         <RowContainer>
-          <RowContainer style={{ paddingTop: 0 }}>
-          <div style={{ width: 256 }}>
-        <Button type="primary" onClick={this.toggleCollapsed} style={{ marginBottom: 16 }}>
-          {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
-        </Button>
-        <Menu
-          defaultSelectedKeys={['1']}
-          defaultOpenKeys={['sub1']}
-          mode="inline"
-          theme="dark"
-          inlineCollapsed={this.state.collapsed}
-        >
-          <Menu.Item key="1">
-            <PieChartOutlined />
-            <span>Option 1</span>
-          </Menu.Item>
-          <Menu.Item key="2">
-            <DesktopOutlined />
-            <span>Option 2</span>
-          </Menu.Item>
-          <Menu.Item key="3">
-            <InboxOutlined />
-            <span>Option 3</span>
-          </Menu.Item>
-          <SubMenu
-            key="sub1"
-            title={
-              <span>
-                <MailOutlined />
-                <span>Navigation One</span>
-              </span>
-            }
-          >
-            <Menu.Item key="5">Option 5</Menu.Item>
-            <Menu.Item key="6">Option 6</Menu.Item>
-            <Menu.Item key="7">Option 7</Menu.Item>
-            <Menu.Item key="8">Option 8</Menu.Item>
-          </SubMenu>
-          <SubMenu
-            key="sub2"
-            title={
-              <span>
-                <AppstoreOutlined />
-                <span>Navigation Two</span>
-              </span>
-            }
-          >
-            <Menu.Item key="9">Option 9</Menu.Item>
-            <Menu.Item key="10">Option 10</Menu.Item>
-            <SubMenu key="sub3" title="Submenu">
-              <Menu.Item key="11">Option 11</Menu.Item>
-              <Menu.Item key="12">Option 12</Menu.Item>
-            </SubMenu>
-          </SubMenu>
-        </Menu>
-      </div>
-            <ListCol
-              style={{
-                position: 'relative',
-              }}
-            >
-              <Fragment>
-                <Space />
-                {/* {
-                    users === null && (
-                      <LoadingPulse />
-                    )
-                  }
-                {
-                    users !== null && users.size > 0 && (
+          <RowContainer style={{ paddingTop: 0, flex: 1 }}>
+            {
+                    lecturerList !== null && lecturerList.size > 0 && (
+                    <ListCol>
+                      <TableHeader />
                       <ListCol>
-                        <TableHeader />
-                        <ListCol>
-                          <ListUsers
-                            users={users}
-                            filter={filter}
-                            handleDeleteUser={this.showDeleteConfirm}
-                          />
-                        </ListCol>
+                        <LecturerList lecturerList={lecturerList} handleOpenSchedule={this.handleOpenSchedule} />
                       </ListCol>
+                    </ListCol>
                     )
-                  }
-
-                {
-                    users !== null && users.size === 0 && (
-                      <NotFound />
-                    )
-                  } */}
-              </Fragment>
+                    }
+          </RowContainer>
+          <RowContainer style={{ paddingTop: 0, flex: 2 }}>
+            <ListCol>
+              <TableHeader />
+              <ListCol>
+                <Schedules  />
+              </ListCol>
             </ListCol>
+
           </RowContainer>
         </RowContainer>
       </PageWrapper>
@@ -282,22 +153,24 @@ class StudentHomePage extends Component {
 }
 
 const mapStateToProps = (state, props) => createStructuredSelector({
-  users: userSelector.getUsers,
+  lecturerList: appointmentSelector.getLecturers,
 })(state, props)
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  getUsers: userAction.getUsers,
-  deleteUser: userAction.deleteUser,
+  getLecturers: appointmentAction.getLecturerList,
 }, dispatch)
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withLayout,
+  // withLayout,
 )(StudentHomePage)
 
 const PageWrapper = styled.div`
   font-family: Sarabun;
   position: relative;
+  width: 100%;
+  margin: 18px;
+  margin-top: 46px;
   .ant-modal-confirm-body .ant-modal-confirm-title {
     font-weight: 400;
     font-size: 20px;
@@ -321,10 +194,9 @@ const OtherWrapper = styled.div`
 
 const RowContainer = styled.div`
   display: flex;
-  padding: 0px 32px;
+  padding: 0px 14px;
   flex: 1;
   justify-content: center;
-  padding-left: 42px;
 `
 const Col = styled.div`
   display: flex;
@@ -338,22 +210,12 @@ const ListCol = styled(Col)`
   }
 `
 
-const FilterWrapper = styled(Col)`
-  transition: 0.5s;
-  margin-top: 50px;
-
-  @media (max-width: 1024px) {
-    position: absolute;
-    transform: translate(-500%, 0px);
-  }
-`
 const Space = styled.div`
 `
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0px 0px 16px 0px;
 `
 
 const ListHeader = styled(OtherWrapper)`
@@ -365,8 +227,9 @@ const Row = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 32%;
+  height: 32px;
   width: 100%;
+  padding-left: 16px;
 `
 const UserDetailGroup = styled.div`
   display: flex;

@@ -25,6 +25,10 @@ const alreadyLogin = (role) => {
     redirectUrl = `/admin`
   }
 
+  if (role === 'NISIT') {
+    redirectUrl = `/student`
+  }
+
   window.location.href = redirectUrl
 }
 

@@ -18,6 +18,8 @@ import isNil from 'lodash/isNil'
 
 import validate from './validate'
 
+import Regis from '~/static/images/regis.png'
+
 import Avatar from '~/components/UploadProfile'
 import FormButton from '~/components/Form/Button'
 import { registerSelector } from '~/modules/authentication/selectors'
@@ -210,7 +212,10 @@ class RegisterPage extends Component {
             </StyleBorder>
           </Wrapper>
         </FormWrapper>
-      </form>
+        <StyleWrapperImg>
+        <img src={Regis} style={{     transform: 'scaleX(-1)' }} />
+        </StyleWrapperImg>
+      </form> 
     )
   }
 }
@@ -247,7 +252,7 @@ const FormWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 36px 90px 0px 90px;
+  margin: 16px 90px 0px 90px;
   @media (max-width: 750px) {
     margin-top: 16px;
     margin-bottom: 16px;
@@ -259,11 +264,7 @@ const Wrapper = styled.div`
   flex-direction: row;
   position: relative;
   margin: 0px;
-  max-width: 100%;
-  @media (max-width: 320px) 
-  {
-    width: 100px
-  }
+  max-width: 46%;
 
   .ui.grid {
     display: flex;
@@ -377,4 +378,11 @@ const StyleBorder = styled(Grid)`
   background: #fff;
   width: 50px
   background: linear-gradient(180deg,#BFCCF6 0%,rgba(255,255,255,0) 100%),#C8CDDF;
+`
+
+const StyleWrapperImg = styled.div`
+width: 100%;
+display: flex;
+justify-content: flex-end;
+margin-top: 12px;
 `

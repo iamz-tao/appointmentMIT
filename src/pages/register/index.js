@@ -188,8 +188,7 @@ class RegisterPage extends Component {
             
               </div>
               
-              {/* style={{backgroundColor:'#c4b1e8'}} */}
-              {/* style={{backgroundColor:'#93acf3'}} */}
+              
               <div style={{marginTop: '-4%'}}>
                 <FormButton
                 disabled={ pristine || submitting }

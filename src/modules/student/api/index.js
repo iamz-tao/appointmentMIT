@@ -25,6 +25,19 @@ export function* getLecturerAPI() {
   })
 }
 
+export function* getRequestAppointmentAPI(){
+  const token = Cookie.get('token')
+  const data = {}
+
+  return yield call(http.get, {
+    url: '/api/ListAppointMent',
+    payload: {
+      token,
+      data,
+    },
+  })
+}
+
 export function* createAppointmentAPI() {
   const token = Cookie.get('token')
   const data = {}
@@ -37,6 +50,7 @@ export function* createAppointmentAPI() {
     },
   })
 }
+
 
 export function* studentGetAppointReqAPI() {
   const token = Cookie.get('token')

@@ -140,7 +140,6 @@ class Home extends Component {
               txtButton='SIGN UP'
               width='50%'
               onClick={() => {
-                console.log('xxxxxx')
                 Router.replace('/register')
               }}
             />

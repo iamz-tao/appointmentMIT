@@ -6,33 +6,42 @@ import FormButton from '~/components/Form/Button'
 import DeleteIcon from '~/components/DeleteIcon'
 
 
-const LecturerList = (props) => {
+const AppointmentRequireList = (props) => {
   const {
-    lecturerList,
-    handleOpenSchedule,
+    appointmentList,
+    // handleOpenSchedule,
+    handleDeleteAppoint,
   } = props
 
   return (
     <Column>
       <Wrapper>
         <Column>
-          {lecturerList.map(lec => (
+          {appointmentList.get('appoints').map(lec => (
             <ItemWrapper>
               <Row>
                 <UserDetailGroup>
                   <ListDetail style={{ flex: 2 }}>
                     <ItemSpan>
-                      {lec.get('firstname')}
-                    &nbsp;
-                      {lec.get('lastname')}
+                      {lec.get('title')}
+                    </ItemSpan>
+                  </ListDetail>
+                  <ListDetail style={{ flex: 2 }}>
+                    <ItemSpan>
+                      {lec.get('teacher_name')}
+                    </ItemSpan>
+                  </ListDetail>
+                  <ListDetail style={{ flex: 1 }}>
+                    <ItemSpan>
+                      {lec.get('approved_status')}
                     </ItemSpan>
                   </ListDetail>
                   <CustomDelete>
                     <Trash
-                      name='table'
+                      name='trash alternate outline'
                       onClick={(e) => {
-                        e.preventDefault()
-                        handleOpenSchedule(lec.get('id'))
+                        e.stopPropagation()
+                        handleDeleteAppoint(lec.get('request_id'))
                       }}
                     />
                   </CustomDelete>
@@ -47,7 +56,7 @@ const LecturerList = (props) => {
   )
 }
 
-export default LecturerList
+export default AppointmentRequireList
 
 const Wrapper = styled.div`
   display: flex;

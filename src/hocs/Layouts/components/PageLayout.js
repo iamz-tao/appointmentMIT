@@ -16,7 +16,7 @@ const PageLayout = ({ children }) => {
   const role = Cookie.get('role', '')
   const token = Cookie.get('token', '')
   const name = Cookie.get('name', '')
-  const isProfessor = role === 'PROFESSOR'
+  const isProfessor = role === 'PROFESSOR' || role === 'NISIT'
 
   useEffect(() => () => {
     setSidebar(false)

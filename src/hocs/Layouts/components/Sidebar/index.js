@@ -36,11 +36,11 @@ const Sidebar = (props) => {
 
   return (
     <Fragment>
-      <SidebarWrapper/>
+      {/* <SidebarWrapper/>
       <SideMenu>
         
         <Menus/>
-      </SideMenu>
+      </SideMenu> */}
     </Fragment>
   )
 }

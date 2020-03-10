@@ -6,20 +6,13 @@ import { connect } from 'react-redux'
 import {
   Modal, notification, Menu, Button,
 } from 'antd'
-import {
-  AppstoreOutlined,
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  PieChartOutlined,
-  DesktopOutlined,
-  InboxOutlined,
-  MailOutlined,
-} from '@ant-design/icons'
 import Router from 'next/router'
 
 import Cookie from 'js-cookie'
+import moment from 'moment'
 
 import LecturerList from './components/LecturerList'
+import AppointmentReqList from './components/AppointmentReqList'
 import Schedules from './components/schedules'
 import NotFound from '~/components/Table/NotFound'
 import LoadingPulse from '~/components/LoadingPulse'
@@ -28,11 +21,13 @@ import FormButton from '~/components/Form/Button'
 import withLayout from '~/hocs/Layouts/withLayout'
 import { appointmentAction } from '~/modules/student/actions'
 import { appointmentSelector } from '~/modules/student/selectors'
+import { userAction } from '~/modules/user/actions'
+import { loginAction } from '~/modules/authentication/actions'
 
 const { confirm } = Modal
 const { SubMenu } = Menu
 
-const TableHeader = () => (
+const TableHeader = props => (
   <Wrapper>
     {/* <ButtonWrapper>
       <FormButton
@@ -46,21 +41,53 @@ const TableHeader = () => (
       />
     </ButtonWrapper> */}
 
-    <Row>
-      <UserDetailGroup>
-        <ListHeader style={{ flex: 2 }}>
-          <ItemHeader>
-            NAME
-          </ItemHeader>
-        </ListHeader>
-        <ListHeader />
-      </UserDetailGroup>
-    </Row>
+    {props.page === 'Req' ? (
+      <Row>
+        <UserDetailGroup>
+          <ListHeader style={{ flex: 2 }}>
+            <ItemHeader>
+              TITLE
+            </ItemHeader>
+          </ListHeader>
+          <ListHeader style={{ flex: 2 }}>
+            <ItemHeader>
+              LECTURER NAME
+            </ItemHeader>
+          </ListHeader>
+          <ListHeader style={{ flex: 1 }}>
+            <ItemHeader>
+              STATUS
+            </ItemHeader>
+          </ListHeader>
+          <ListHeader />
+        </UserDetailGroup>
+      </Row>
+    ) : (
+      <Row>
+        <UserDetailGroup>
+          <ListHeader style={{ flex: 2 }}>
+            <ItemHeader>
+              LECTURER NAME
+            </ItemHeader>
+          </ListHeader>
+          <ListHeader />
+        </UserDetailGroup>
+      </Row>
+    )
+}
+
   </Wrapper>
 )
 
 class StudentHomePage extends Component {
   state = {
+    lecturer_id: '',
+    open: false,
+    title: '',
+    detail: '',
+    day: '',
+    start_time: '',
+    end_time: '',
   }
 
   componentDidMount() {
@@ -68,25 +95,119 @@ class StudentHomePage extends Component {
     if (!authToken) {
       Router.push('/login')
     }
-    const { getLecturers } = this.props
+    const { getLecturers, getAppointReq } = this.props
     getLecturers({})
+    getAppointReq({})
   }
 
   handleOpenSchedule = (id) => {
-    console.log('id',id)
+    this.setState({
+      lecturer_id: id,
+    })
   }
+
+  handleSelectDay = (e, { value }) => {
+    this.setState({
+      day: value,
+    })
+  }
+
+  handleReset = () => {
+    this.setState({
+      lecturer_id: '',
+    })
+  }
+
+  handleSubmit = () => {
+    const {
+      open, title, start_time, end_time, detail, day, lecturer_id,
+    } = this.state
+    const { createAppointment } = this.props
+    const data = {
+      Title: title,
+      Detail: detail,
+      day,
+      start_time,
+      end_time,
+      teacher_id: lecturer_id,
+    }
+
+    createAppointment({
+      data,
+    })
+
+    this.setState({
+      open: !open,
+    })
+  }
+
+  handleModal = () => {
+    const { open } = this.state
+    this.setState({
+      open: !open,
+    })
+  }
+
+  handleCancel = () => {
+    const { open } = this.state
+    this.setState({
+      open: !open,
+      title: '',
+      detail: '',
+      start_time: '',
+      end_time: '',
+      day: '',
+    })
+  }
+
+  handleDeleteAppoint = (id) => {
+    const { cancelAppoints } = this.props
+    const success = 'success'
+    confirm({
+      title: 'Confirm Deletion',
+      content: 'Are you sure delete this user? You can\'t undo this action.',
+      okText: 'Delete',
+      okType: 'danger',
+      cancelText: 'Cancel',
+      onOk() {
+        cancelAppoints({ id })
+        notification[success]({
+          message: 'Delete Success!',
+          description:
+            'Action completed successfully.',
+        })
+      },
+      onCancel() {
+      },
+    })
+  }
+
+  handleInput = (type, e) => {
+    const { change } = this.props
+    change(type, e)
+  }
+
 
   handleInputChange = async ({ target }) => {
     await this.setState(state => ({
       ...state,
-      filter: {
-        ...state.filter,
-        [target.name]: target.value,
-      },
+      [target.name]: target.value,
     }))
-    this.fetch()
   }
 
+  getTimeFrom = (from) => {
+    const newForm = new Date(from)
+    this.setState({
+      start_time: moment(newForm).format('h:mm A'),
+    })
+  }
+
+  getTimeTo = (to) => {
+    const newForm = new Date(to)
+    this.setState({
+      end_time: moment(newForm).format('h:mm A'),
+    })
+  }
 
   openNotificationDeleteSuccess = (type) => {
     notification[type]({
@@ -118,10 +239,40 @@ class StudentHomePage extends Component {
     })
   }
 
+  handleLogout = () => {
+    const { logout, handleLogout } = this.props
+    logout()
+    handleLogout()
+    window.location.href = '/'
+  }
+
+  showConfirm = () => {
+    confirm({
+      title: 'Do you want to delete thids appointment?',
+      icon: <ExclamationCircleOutlined />,
+      content: 'When clicked the OK button, this dialog will be closed after 1 second',
+      onOk() {
+        return new Promise((resolve, reject) => {
+          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+        }).catch(() => console.log('Oops errors!'));
+      },
+      onCancel() {},
+    });
+  }
+
   render() {
     const {
       lecturerList,
+      appointmentList,
     } = this.props
+    const {
+      lecturer_id,
+      open,
+    } = this.state
+    let lecturer_detail = null
+    if (lecturer_id !== '') {
+      lecturer_detail = lecturerList.filter(lec => lec.get('id') === lecturer_id)
+    }
     return (
       <PageWrapper>
         <RowContainer>
@@ -129,7 +280,13 @@ class StudentHomePage extends Component {
             {
                     lecturerList !== null && lecturerList.size > 0 && (
                     <ListCol>
-                      <TableHeader />
+                      <div style={{
+                        width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
+                      }}
+                      >
+                        <Button onClick={() => this.handleReset()}>RESET</Button>
+                      </div>
+                      <TableHeader page='Lecturer' />
                       <ListCol>
                         <LecturerList lecturerList={lecturerList} handleOpenSchedule={this.handleOpenSchedule} />
                       </ListCol>
@@ -137,14 +294,51 @@ class StudentHomePage extends Component {
                     )
                     }
           </RowContainer>
-          <RowContainer style={{ paddingTop: 0, flex: 2 }}>
-            <ListCol>
-              <TableHeader />
-              <ListCol>
-                <Schedules  />
-              </ListCol>
-            </ListCol>
+          <RowContainer style={{ paddingTop: 0, flex: 3 }}>
+            {
+                    lecturer_id !== '' ? (
+                      <ListCol style={{ padding: '0px 28px' }}>
+                        <div style={{
+                          width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
+                        }}
+                        >
+                          <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
+                        </div>
+                        <Schedules
+                          lecturer={lecturer_detail}
+                          handleModal={this.handleModal}
+                          open={open}
+                          handleInputChange={this.handleInputChange}
+                          getTimeFrom={this.getTimeFrom}
+                          getTimeTo={this.getTimeTo}
+                          handleSubmit={this.handleSubmit}
+                          handleCancel={this.handleCancel}
+                          handleSelectDay={this.handleSelectDay}
+                        />
+                      </ListCol>
+                    ) : (
 
+                      <ListCol style={{ padding: '0px 28px' }}>
+                        {appointmentList !== null && appointmentList.size > 0 ? (
+                          <>
+                            <div style={{
+                              width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
+                            }}
+                            >
+                              <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
+                            </div>
+                            <TableHeader page='Req' />
+                            <ListCol>
+                              <AppointmentReqList handleDeleteAppoint={this.handleDeleteAppoint} appointmentList={appointmentList} />
+                            </ListCol>
+                          </>
+                        ) : (
+                          <NotFound message='DO NOT HAVE AN APPOINTMENT' />
+                        )}
+
+                      </ListCol>
+                    )
+                    }
           </RowContainer>
         </RowContainer>
       </PageWrapper>
@@ -154,10 +348,16 @@ class StudentHomePage extends Component {
 
 const mapStateToProps = (state, props) => createStructuredSelector({
   lecturerList: appointmentSelector.getLecturers,
+  appointmentList: appointmentSelector.studentGetAppointment,
 })(state, props)
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   getLecturers: appointmentAction.getLecturerList,
+  createAppointment: appointmentAction.createAppointment,
+  getAppointReq: appointmentAction.getAppointReq,
+  cancelAppoints: appointmentAction.cancelAppointment,
+  logout: userAction.logout,
+  handleLogout: loginAction.handleLogout,
 }, dispatch)
 
 export default compose(
@@ -177,6 +377,19 @@ const PageWrapper = styled.div`
     line-height: 1.4;
     font-family: kanit;
   }
+
+  .ant-btn-primary {
+    color: #fff;
+    background-color: #e57272;
+    border-color: #e57272;
+  }
+
+  .ant-btn-primary:hover {
+    color: #e57272;
+    background-color: #ffffff;
+    border-color: #e57272;
+  }
+
 `
 
 const ItemHeader = styled.span`

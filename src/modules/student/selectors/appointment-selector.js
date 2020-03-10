@@ -25,3 +25,14 @@ export const GetRequestAppointment = createSelector(
     }
   },
 )
+
+export const studentGetAppointment = createSelector(
+  stateSelector,
+  (state) => {
+    try {
+      return state.getIn(['appointment', 'studentAppointment'])
+    } catch (error) {
+      return fromJS({})
+    }
+  },
+)

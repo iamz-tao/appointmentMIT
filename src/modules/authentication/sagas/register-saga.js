@@ -20,7 +20,6 @@ import {
 
 export function* registerUserRequest({ payload }) {
   try {
-    console.log('wwwww',payload)
     const token = Cookie.get('token', '')
     const {
       email,

@@ -234,12 +234,12 @@ class Navbar extends Component {
             </div>
           </a>
           <ul>
-            <li onClick={this.profile}>
+            {/* <li onClick={this.profile}>
             PROFILE
-            </li>
-            <li onClick={this.logout}>
+            </li> */}
+            {/* <li onClick={this.logout}>
             LOGOUT
-            </li>
+            </li> */}
           </ul>
         </Menu>
       </Wrapper>

@@ -165,7 +165,7 @@ class StudentHomePage extends Component {
     const success = 'success'
     confirm({
       title: 'Confirm Deletion',
-      content: 'Are you sure delete this user? You can\'t undo this action.',
+      content: 'Are you sure delete this appointment? You can\'t undo this action.',
       okText: 'Delete',
       okType: 'danger',
       cancelText: 'Cancel',

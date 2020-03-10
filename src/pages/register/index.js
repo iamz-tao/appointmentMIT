@@ -88,7 +88,6 @@ class RegisterPage extends Component {
     } = values.toJS()
 
     const user = this.state.status
-    console.log(user)
     const { registerUser } = this.props
     registerUser({
       data: {

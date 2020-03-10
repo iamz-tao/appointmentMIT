@@ -14,3 +14,14 @@ export const getLecturers = createSelector(
     }
   },
 )
+
+export const GetRequestAppointment = createSelector(
+  stateSelector,
+  (state) => {
+    try {
+      return state.getIn(['appointment', 'requestAppointment'])
+    } catch (error) {
+      return fromJS({})
+    }
+  },
+)

@@ -7,7 +7,7 @@ routes
   .add('register', '/register', 'register')
 
   // Professor
-  .add('professor', '/professor', '/professor')
+  .add('lecturer', '/lecturer', '/lecturer')
   
   // Student 
   .add('student', '/student', '/student')

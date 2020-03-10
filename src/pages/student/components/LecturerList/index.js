@@ -6,6 +6,7 @@ import FormButton from '~/components/Form/Button'
 import DeleteIcon from '~/components/DeleteIcon'
 import { Icon } from 'semantic-ui-react'
 
+
 const LecturerList = (props) => {
   const {
     lecturerList,

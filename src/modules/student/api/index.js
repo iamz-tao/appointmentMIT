@@ -23,6 +23,18 @@ export function* getLecturerAPI() {
   })
 }
 
+export function* getRequestAppointmentAPI(){
+  const token = Cookie.get('token')
+  const data = {}
+
+  return yield call(http.get, {
+    url: '/api/ListAppointMent',
+    payload: {
+      token,
+      data,
+    },
+  })
+}
 // export function* getYearAllAPI() {
 //   const token = Cookie.get('token')
 //   const email = Cookie.get('email')

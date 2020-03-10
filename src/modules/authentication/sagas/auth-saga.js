@@ -18,7 +18,7 @@ const alreadyLogin = (role) => {
   let redirectUrl = ' '
 
   if (role === 'PROFESSOR') {
-    redirectUrl = '/professor'
+    redirectUrl = '/lecturer'
   }
 
   if (role === 'ADMIN') {

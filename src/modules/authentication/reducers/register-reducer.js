@@ -12,7 +12,6 @@ const initialState = fromJS({
 })
 
 export default (state = initialState, { type, payload }) => {
-  console.log('action>>',type)
   switch (type) {
     case REGISTER_USER_REQUEST:
       return state

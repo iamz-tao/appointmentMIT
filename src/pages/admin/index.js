@@ -54,11 +54,11 @@ const TableHeader = props => (
               LECTURER NAME
             </ItemHeader>
           </ListHeader>
-          <ListHeader style={{ flex: 1 }}>
+          {/* <ListHeader style={{ flex: 1 }}>
             <ItemHeader>
               STATUS
             </ItemHeader>
-          </ListHeader>
+          </ListHeader> */}
           <ListHeader />
         </UserDetailGroup>
       </Row>

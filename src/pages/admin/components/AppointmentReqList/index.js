@@ -31,11 +31,11 @@ const AppointmentRequireList = (props) => {
                       {lec.get('teacher_name')}
                     </ItemSpan>
                   </ListDetail>
-                  <ListDetail style={{ flex: 1 }}>
+                  {/* <ListDetail style={{ flex: 1 }}>
                     <ItemSpan>
                       {lec.get('approved_status')}
                     </ItemSpan>
-                  </ListDetail>
+                  </ListDetail> */}
                   <CustomDelete>
                     <Button
                       type='dashed'

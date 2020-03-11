@@ -134,6 +134,7 @@ class AdminHomePage extends Component {
 
     createAppointment({
       data,
+      role: 'ADMIN',
     })
 
     this.setState({
@@ -165,14 +166,14 @@ class AdminHomePage extends Component {
     const success = 'success'
     confirm({
       title: 'Confirm Deletion',
-      content: 'Are you sure delete this appointment? You can\'t undo this action.',
-      okText: 'Delete',
+      content: 'Are you sure cancel this appointment? You can\'t undo this action.',
+      okText: 'OK',
       okType: 'danger',
       cancelText: 'Cancel',
       onOk() {
         cancelAppoints({ id })
         notification[success]({
-          message: 'Delete Success!',
+          message: 'Cancel Success!',
           description:
             'Action completed successfully.',
         })
@@ -217,47 +218,11 @@ class AdminHomePage extends Component {
     })
   }
 
-  showDeleteConfirm = (id) => {
-    const { deleteUser } = this.props
-    const success = 'success'
-    confirm({
-      title: 'Confirm Deletion',
-      content: 'Are you sure delete this user? You can\'t undo this action.',
-      okText: 'Delete',
-      okType: 'danger',
-      cancelText: 'Cancel',
-      onOk() {
-        deleteUser({ id })
-        notification[success]({
-          message: 'Delete Success!',
-          description:
-            'Action completed successfully.',
-        })
-      },
-      onCancel() {
-      },
-    })
-  }
-
   handleLogout = () => {
     const { logout, handleLogout } = this.props
     logout()
     handleLogout()
     window.location.href = '/'
-  }
-
-  showConfirm = () => {
-    confirm({
-      title: 'Do you want to delete thids appointment?',
-      icon: <ExclamationCircleOutlined />,
-      content: 'When clicked the OK button, this dialog will be closed after 1 second',
-      onOk() {
-        return new Promise((resolve, reject) => {
-          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
-        }).catch(() => console.log('Oops errors!'))
-      },
-      onCancel() {},
-    })
   }
 
   render() {
@@ -272,6 +237,11 @@ class AdminHomePage extends Component {
     let lecturer_detail = null
     if (lecturer_id !== '') {
       lecturer_detail = lecturerList.filter(lec => lec.get('id') === lecturer_id)
+    }
+    if (!lecturerList) {
+      return (
+        <LoadingPulse />
+      )
     }
     return (
       <PageWrapper>
@@ -317,37 +287,37 @@ class AdminHomePage extends Component {
                         />
                       </ListCol>
                     ) : (
-                      <ListCol>
-                        <div style={{
-                          width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
-                        }}
-                        >
-                          <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
-                        </div>
-                        <NotFound message='PLEASE SELECT LECTURER NAME.' />
-                      </ListCol>
-                    )
-
-                    //   <ListCol style={{ padding: '0px 28px' }}>
-                    //     {appointmentList !== null && appointmentList.size > 0 ? (
-                    //       <>
-                            // <div style={{
-                            //   width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
-                            // }}
-                            // >
-                            //   <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
-                            // </div>
-                    //         <TableHeader page='Req' />
-                    //         <ListCol>
-                    //           <AppointmentReqList handleDeleteAppoint={this.handleDeleteAppoint} appointmentList={appointmentList} />
-                    //         </ListCol>
-                    //       </>
-                    //     ) : (
-                    //       <NotFound message='DO NOT HAVE AN APPOINTMENT' />
-                    //     )}
-
+                    //   <ListCol>
+                    //     <div style={{
+                    //       width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
+                    //     }}
+                    //     >
+                    //       <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
+                    //     </div>
+                    //     <NotFound message='PLEASE SELECT LECTURER NAME.' />
                     //   </ListCol>
                     // )
+
+                      <ListCol style={{ padding: '0px 28px' }}>
+                        {appointmentList !== null && appointmentList.size > 0 ? (
+                          <>
+                            <div style={{
+                              width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
+                            }}
+                            >
+                              <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
+                            </div>
+                            <TableHeader page='Req' />
+                            <ListCol>
+                              <AppointmentReqList handleDeleteAppoint={this.handleDeleteAppoint} appointmentList={appointmentList} />
+                            </ListCol>
+                          </>
+                        ) : (
+                          <NotFound message='DO NOT HAVE AN APPOINTMENT' />
+                        )}
+
+                      </ListCol>
+                    )
                     }
           </RowContainer>
         </RowContainer>

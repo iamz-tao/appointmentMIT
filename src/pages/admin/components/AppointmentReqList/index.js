@@ -37,13 +37,22 @@ const AppointmentRequireList = (props) => {
                     </ItemSpan>
                   </ListDetail>
                   <CustomDelete>
-                    <Trash
+                    <Button
+                      type='dashed'
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleDeleteAppoint(lec.get('request_id'))
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    {/* <Trash
                       name='trash alternate outline'
                       onClick={(e) => {
                         e.stopPropagation()
                         handleDeleteAppoint(lec.get('request_id'))
                       }}
-                    />
+                    /> */}
                   </CustomDelete>
                 </UserDetailGroup>
 
@@ -63,19 +72,27 @@ const Wrapper = styled.div`
   align-items: flex-start;
   width: 100%;
   .ant-btn {
-    width: 100px;
-    height: 38px;
+    width: 72px;
+    height: 36px;
     margin-right: 23px;
     border-radius: 24px;
-    background-color: #CA5353 !important;
-    border: 0.8px solid #CA5353;
     box-sizing: border-box;
-    color: #ffff !important;
+    color: #e49a9a  !important;
     :hover {
-      background-color: #ffff !important;
-      color: #CA5353 !important;
+      background-color: #ffff;
+      color: #CA5353;
     }
   }
+  .ant-btn-dashed:hover {
+    color: #d46dc0;
+    background-color: #fff;
+    border-color: #d46dc0;
+}
+.ant-btn:hover {
+    color: #e57272;
+    background-color: #fff;
+    border-color: #e57272;
+}
 `
 
 const ItemWrapper = styled(Segment)`

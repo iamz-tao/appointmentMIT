@@ -37,13 +37,15 @@ const AppointmentRequireList = (props) => {
                     </ItemSpan>
                   </ListDetail>
                   <CustomDelete>
-                    <Trash
-                      name='trash alternate outline'
+                    <Button
+                      type='dashed'
                       onClick={(e) => {
                         e.stopPropagation()
                         handleDeleteAppoint(lec.get('request_id'))
                       }}
-                    />
+                    >
+                      Cancel
+                    </Button>
                   </CustomDelete>
                 </UserDetailGroup>
 

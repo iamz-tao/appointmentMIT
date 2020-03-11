@@ -82,7 +82,7 @@ export function* studentGetAppointReq() {
 
 export function* createAppointment({ payload }) {
   try {
-    const { data } = payload
+    const { data, role } = payload
 
     const response = yield call(httpToken.post, {
       url: '/api/postAppointMent',
@@ -97,7 +97,12 @@ export function* createAppointment({ payload }) {
       return
     }
     yield put(appointmentAction.createAppointmentSuccess(response.data))
-    Router.replace('/student')
+    if (role === 'ADMIN') {
+      window.location.href = '/admin'
+    }
+    if (role === 'NISIT') {
+    window.location.href = '/student'
+    }
   } catch (exception) {
     yield put(appointmentAction.createAppointmentFailed({ message: 'Internal Error' }))
   }

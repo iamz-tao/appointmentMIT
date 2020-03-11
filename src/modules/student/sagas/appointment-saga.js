@@ -9,12 +9,14 @@ import isNil from 'lodash/isNil'
 import Router from 'next/router'
 
 import {
-  GET_LECTURER_LIST,GET_REQUEST_APPOINTMENT, CREATE_APPOINTMENT, STUDENT_GET_APPOINT_REQ_LIST, CANCEL_APPOINT,
+  GET_LECTURER_LIST, GET_REQUEST_APPOINTMENT, CREATE_APPOINTMENT, STUDENT_GET_APPOINT_REQ_LIST, CANCEL_APPOINT,
 } from '../constants'
 import * as httpToken from '~/helpers/axiosWrapperPostToken'
 import * as httpPut from '~/helpers/axiosWrapperPut'
 import { appointmentAction } from '../actions'
-import { getLecturerAPI, studentGetAppointReqAPI, cancelAppointmentAPI, getRequestAppointmentAPI } from '../api'
+import {
+  getLecturerAPI, studentGetAppointReqAPI, cancelAppointmentAPI, getRequestAppointmentAPI,
+} from '../api'
 
 export function* getLecturer() {
   try {
@@ -31,29 +33,26 @@ export function* getLecturer() {
   }
 }
 
-export function* getRequestAppointment(){
-try{
-  const token = Cookie.get('token')
-  if (!isNil(token)) {
-    const { data, error } = yield getRequestAppointmentAPI()
-    if (error) {
-      return
-
+export function* getRequestAppointment() {
+  try {
+    const token = Cookie.get('token')
+    if (!isNil(token)) {
+      const { data, error } = yield getRequestAppointmentAPI()
+      if (error) {
+        return
+      }
+      yield put(appointmentAction.setRequesAppointmentList(data.data))
     }
-    console.log(data.data)
-    yield put(appointmentAction.setRequesAppointmentList(data.data))
+  } catch (error) {
+
   }
-
-}catch(error){
-
-}
 }
 
 export function* approveAppointment({ payload }) {
   try {
     const response = yield call(httpPut.post, {
       url: `/api/approveRequest/${payload.id}`,
-       })
+    })
 
     const { error } = response
     if (error) {
@@ -101,7 +100,7 @@ export function* createAppointment({ payload }) {
       window.location.href = '/admin'
     }
     if (role === 'NISIT') {
-    window.location.href = '/student'
+      window.location.href = '/student'
     }
   } catch (exception) {
     yield put(appointmentAction.createAppointmentFailed({ message: 'Internal Error' }))
@@ -126,4 +125,3 @@ export default function* userSaga() {
     takeLatest(CANCEL_APPOINT, cancelAppointment),
   ])
 }
-

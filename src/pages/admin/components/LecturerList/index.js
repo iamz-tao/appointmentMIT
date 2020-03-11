@@ -6,46 +6,36 @@ import FormButton from '~/components/Form/Button'
 import DeleteIcon from '~/components/DeleteIcon'
 
 
-const AppointmentRequireList = (props) => {
+
+const LecturerList = (props) => {
   const {
-    appointmentList,
-    // handleOpenSchedule,
-    handleDeleteAppoint,
+    lecturerList,
+    handleOpenSchedule,
   } = props
 
   return (
     <Column>
       <Wrapper>
         <Column>
-          {appointmentList.get('appoints').map(lec => (
+          {lecturerList.map(lec => (
             <ItemWrapper>
               <Row>
                 <UserDetailGroup>
                   <ListDetail style={{ flex: 2 }}>
                     <ItemSpan>
-                      {lec.get('title')}
-                    </ItemSpan>
-                  </ListDetail>
-                  <ListDetail style={{ flex: 2 }}>
-                    <ItemSpan>
-                      {lec.get('teacher_name')}
-                    </ItemSpan>
-                  </ListDetail>
-                  <ListDetail style={{ flex: 1 }}>
-                    <ItemSpan>
-                      {lec.get('approved_status')}
+                      {lec.get('firstname')}
+                    &nbsp;
+                      {lec.get('lastname')}
                     </ItemSpan>
                   </ListDetail>
                   <CustomDelete>
-                    <Button
-                      type='dashed'
+                    <Trash
+                      name='table'
                       onClick={(e) => {
-                        e.stopPropagation()
-                        handleDeleteAppoint(lec.get('request_id'))
+                        e.preventDefault()
+                        handleOpenSchedule(lec.get('id'))
                       }}
-                    >
-                      Cancel
-                    </Button>
+                    />
                   </CustomDelete>
                 </UserDetailGroup>
 
@@ -58,7 +48,7 @@ const AppointmentRequireList = (props) => {
   )
 }
 
-export default AppointmentRequireList
+export default LecturerList
 
 const Wrapper = styled.div`
   display: flex;

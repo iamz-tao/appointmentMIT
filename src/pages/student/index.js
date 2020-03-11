@@ -134,6 +134,7 @@ class StudentHomePage extends Component {
 
     createAppointment({
       data,
+      role: 'NISIT',
     })
 
     this.setState({
@@ -165,14 +166,14 @@ class StudentHomePage extends Component {
     const success = 'success'
     confirm({
       title: 'Confirm Deletion',
-      content: 'Are you sure delete this appointment? You can\'t undo this action.',
-      okText: 'Delete',
+      content: 'Are you sure cancel this appointment? You can\'t undo this action.',
+      okText: 'OK',
       okType: 'danger',
       cancelText: 'Cancel',
       onOk() {
         cancelAppoints({ id })
         notification[success]({
-          message: 'Delete Success!',
+          message: 'Cancel Success!',
           description:
             'Action completed successfully.',
         })
@@ -273,6 +274,13 @@ class StudentHomePage extends Component {
     if (lecturer_id !== '') {
       lecturer_detail = lecturerList.filter(lec => lec.get('id') === lecturer_id)
     }
+
+    if (!lecturerList) {
+      return (
+        <LoadingPulse />
+      )
+    }
+
     return (
       <PageWrapper>
         <RowContainer>

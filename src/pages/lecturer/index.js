@@ -12,7 +12,9 @@ import NotFound from '~/components/Table/NotFound'
 
 import { appointmentAction } from '~/modules/student/actions'
 import { appointmentSelector } from '~/modules/student/selectors'
-// import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { userAction } from '~/modules/user/actions'
+import { loginAction } from '~/modules/authentication/actions'
+
 const { confirm } = Modal
 
 const TableHeader = () => (
@@ -37,13 +39,13 @@ class LecturerHomePage extends Component {
       Router.push('/login')
     }
     const { getRequestAppointment } = this.props
-    getRequestAppointment({})
+    // getRequestAppointment({})
   }
 
-    showConfirm = () => {
+    showConfirm = (action) => {
       confirm({
-        title: 'Do you want to delete these items?',
-        content: 'When clicked the OK button, this dialog will be closed after 1 second',
+        title: `Do you want to ${action} this appointment?`,
+        content: 'If you click confirm, You can\'t undo this action.',
         onOk() {
           return new Promise((resolve, reject) => {
             setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
@@ -53,13 +55,20 @@ class LecturerHomePage extends Component {
       })
     }
 
+    handleLogout = () => {
+      const { logout, handleLogout } = this.props
+      logout()
+      handleLogout()
+      window.location.href = '/'
+    }
+
 
     render() {
-      const { AppointmentList } = this.props
+      // const { AppointmentList } = this.props
       return (
         <PageWrapper>
           <RowContainer>
-            <RowContainer style={{ paddingTop: 0, flex: 1 }}>
+            <RowContainer style={{ padding: '0px 8px 0px 0px', flex: 1 }}>
               <ListCol>
                 <div style={{
                   width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
@@ -67,67 +76,44 @@ class LecturerHomePage extends Component {
                 >
                   <Button onClick={() => this.handleReset()}>RESET</Button>
                 </div>
-                <TableHeader page='Lecturer' />
-                {/* <ListCol>
-                        <LecturerList lecturerList={lecturerList} handleOpenSchedule={this.handleOpenSchedule} />
-                      </ListCol> */}
-              </ListCol>
-            </RowContainer>
-            <RowContainer style={{ paddingTop: 0, flex: 3 }}>
-              {
-                    // lecturer_id !== '' ? (
-                    //   <ListCol style={{ padding: '0px 28px' }}>
-                    //     <div style={{
-                    //       width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
-                    //     }}
-                    //     >
-                    //       <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
-                    //     </div>
-                    //     <Schedules
-                    //       lecturer={lecturer_detail}
-                    //       handleModal={this.handleModal}
-                    //       open={open}
-                    //       handleInputChange={this.handleInputChange}
-                    //       getTimeFrom={this.getTimeFrom}
-                    //       getTimeTo={this.getTimeTo}
-                    //       handleSubmit={this.handleSubmit}
-                    //       handleCancel={this.handleCancel}
-                    //       handleSelectDay={this.handleSelectDay}
-                    //     />
-                    //   </ListCol>
-                    // ) : (
-                      AppointmentList !== null && AppointmentList.size > 0 ? (
+                <TableHeader page='Req' />
+                <ListCol>
+                  <ColumnTest>
+                    <WrapperTest>
+                      <ColumnTest>
+                        {/* {AppointmentList.map(lec => ( */}
+                        <ItemWrapperTest>
+                          <RowTest>
+                            <UserDetailGroupTest>
+                              <ListDetailTest style={{ flex: 1 }}>
+                                <ItemSpanTest>
+                                  {/* {lec.get('title')} */}
+                                  <span style={{ color: 'black', fontWeight: '600' }}>TITLE :&nbsp;</span>
+                                  Update final project
+                                </ItemSpanTest>
+                                <CustomDeleteTest>
+                                  <TrashTest
+                                    name='list alternate outline'
+                                    onClick={(e) => {}}
+                                  />
+                                </CustomDeleteTest>
+                              </ListDetailTest>
+                              <ListDetailTest style={{ flex: 1 }}>
+                                <ItemSpanTest>
+                                  <span style={{ color: 'black', fontWeight: '600' }}>STUDENT NAME :&nbsp;</span>
+                                               &nbsp;
+                                  {' '}
+                                  phiyada srikhenkan
+                                  {/* {lec.get('student_name')} */}
+                                </ItemSpanTest>
+                              </ListDetailTest>
+                              <ListDetailTest>
+                                <ItemSpanTest style={{ color: 'blue' }}>
+                                  <span style={{ color: 'black', fontWeight: '600' }}>STATUS :&nbsp;</span>
 
-                        <ListCol style={{ padding: '0px 28px' }}>
-                          <div style={{
-                            width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
-                          }}
-                          >
-                            <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
-                          </div>
-                          <TableHeader page='Req' />
-                          <ListCol>
-                            <ColumnTest>
-                              <WrapperTest>
-                                <ColumnTest>
-                                  {AppointmentList.map(lec => (
-                                    <ItemWrapperTest>
-                                      <RowTest>
-                                        <UserDetailGroupTest>
-                                          <ListDetailTest style={{ flex: 1 }}>
-                                            <ItemSpanTest>
-                                              {lec.get('title')}
-                                            </ItemSpanTest>
-                                          </ListDetailTest>
-                                          <ListDetailTest style={{ flex: 1 }}>
-                                            <ItemSpanTest>
-                                              from &nbsp;
-                                              {' '}
-                                              {lec.get('student_name')}
-                                            </ItemSpanTest>
-                                          </ListDetailTest>
-                                          <ListDetailTest>
-                                            {lec.get('approved_status') === 'PENDING' && (
+                                  APPROVE
+                                </ItemSpanTest>
+                                {/* {lec.get('approved_status') === 'PENDING' && (
                                             <ItemSpanTest style={{ color: 'blue' }}>
                                               {lec.get('approved_status')}
                                             </ItemSpanTest>
@@ -136,132 +122,49 @@ class LecturerHomePage extends Component {
                                             <ItemSpanTest style={{ color: '#36c10d' }}>
                                               {lec.get('approved_status')}
                                             </ItemSpanTest>
-                                            )}
-                                          </ListDetailTest>
-                                          <CustomDeleteTest>
-                                            <TrashTest
-                                              name='list alternate outline'
-                                              onClick={(e) => {}}
-                                            />
-                                          </CustomDeleteTest>
-
-                                        </UserDetailGroupTest>
-                                        {lec.get('approved_status') === 'PENDING' && (
-                                        <div>
+                                            )} */}
+                              </ListDetailTest>
+                              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                <CustomButton onClick={() => this.showConfirm('approve')}>APPROVE</CustomButton>
+                                <CustomButtonReject type='primary' onClick={() => this.showConfirm('reject')}>REJECT</CustomButtonReject>
+                              </div>
+                            </UserDetailGroupTest>
+                            {/* {lec.get('approved_status') === 'PENDING' && ( */}
+                            {/* <div>
                                           <Button onClick={() => this.showConfirm()}>APPROVE</Button>
                                           <Button type='primary'>REJECT</Button>
-                                        </div>
-                                        // <ItemSpanTest style={{ color: 'blue'}}>
+                                        </div> */}
+                            {/* // <ItemSpanTest style={{ color: 'blue'}}>
                                         //     {lec.get('approved_status')}
-                                        // </ItemSpanTest>
-                                        )}
+                                        // </ItemSpanTest> */}
+                            {/* )} */}
 
 
-                                      </RowTest>
-                                    </ItemWrapperTest>
-                                  ))}
-                                </ColumnTest>
-                              </WrapperTest>
-                            </ColumnTest>
-                            {/* <AppointmentReqList handleDeleteAppoint={this.handleDeleteAppoint} appointmentList={appointmentList} /> */}
-                          </ListCol>
-                        </ListCol>
-                      ) : (
-                        <NotFound message='DO NOT HAVE AN APPOINTMENT' />
-                      )}
+                          </RowTest>
+                        </ItemWrapperTest>
+                        {/* ))} */}
+                      </ColumnTest>
+                    </WrapperTest>
+                  </ColumnTest>
+                </ListCol>
+              </ListCol>
+            </RowContainer>
+            <RowContainer style={{ paddingTop: 0, flex: 3 }}>
+              <ListCol>
+                <div style={{
+                  width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
+                }}
+                >
+                  <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
+                </div>
+                <TableHeader page='Lecturer' />
+                {/* <ListCol>
+                        <LecturerList lecturerList={lecturerList} handleOpenSchedule={this.handleOpenSchedule} />
+                      </ListCol> */}
+              </ListCol>
             </RowContainer>
           </RowContainer>
         </PageWrapper>
-      // <Column>
-      //   <Wrapper>
-      //     {/* <Row>
-      //          <UserDetailGroup>
-      //             <ListHeader style={{ flex: 2 }}>
-      //               <ItemHeader>
-      //                   Appointment Requests
-      //               </ItemHeader>
-      //             </ListHeader>
-
-      //         </UserDetailGroup>
-      //         </Row> */}
-
-      //     <Column>
-      //       <TableHeader />
-
-      //       {
-      //                 AppointmentList !== null && AppointmentList.size > 0 && AppointmentList.map(lec => (
-
-      //                   // <Row>
-
-      //                   //   <UserDetailGroup>
-      //                   //     <ListDetail style={{ flex: 2 }}>
-      //                   //       {lec.get('title')} from {lec.get('student_name')}
-
-      //                   //     </ListDetail>
-      //                   //   </UserDetailGroup>
-
-      //                   // </Row>
-      // <ColumnTest>
-      //   <WrapperTest>
-      //     <ColumnTest>
-      //       {AppointmentList.map(lec => (
-      //         <ItemWrapperTest>
-      //           <RowTest>
-      //             <UserDetailGroupTest>
-      //               <ListDetailTest style={{ flex: 1 }}>
-      //                 <ItemSpanTest>
-      //                   {lec.get('title')}
-      //                 </ItemSpanTest>
-      //               </ListDetailTest>
-      //               <ListDetailTest style={{ flex: 1 }}>
-      //                 <ItemSpanTest>
-      //                   from &nbsp;
-      //       {' '}
-      //                   {lec.get('student_name')}
-      //                 </ItemSpanTest>
-      //               </ListDetailTest>
-      //               <ListDetailTest>
-      //                 {lec.get('approved_status') === 'PENDING' && (
-      //                 <ItemSpanTest style={{ color: 'blue' }}>
-      //         {lec.get('approved_status')}
-      //       </ItemSpanTest>
-      //                 )}
-      //                 {lec.get('approved_status') === 'APPROVE' && (
-      //                 <ItemSpanTest style={{ color: 'blue' }}>
-      //         {lec.get('approved_status')}
-      //       </ItemSpanTest>
-      //                 )}
-      //               </ListDetailTest>
-      //               <CustomDeleteTest>
-      //                 <TrashTest
-      //                   name='list alternate outline'
-      //                   onClick={(e) => {}}
-      //                 />
-      //               </CustomDeleteTest>
-
-      //             </UserDetailGroupTest>
-      //             {lec.get('approved_status') === 'PENDING' && (
-      //             <div>
-      //               <Button onClick={() => this.showConfirm()}>APPROVE</Button>
-      //               <Button type='primary'>REJECT</Button>
-      //             </div>
-      //             // <ItemSpanTest style={{ color: 'blue'}}>
-      //             //     {lec.get('approved_status')}
-      //             // </ItemSpanTest>
-      //             )}
-
-
-      //           </RowTest>
-      //         </ItemWrapperTest>
-      //       ))}
-      //     </ColumnTest>
-      //   </WrapperTest>
-      // </ColumnTest>
-      //                 ))
-      //         }
-      //     </Column>
-      //   </Wrapper>
-      //  </Column>
       )
     }
 }
@@ -272,6 +175,8 @@ const mapStateToProps = (state, props) => createStructuredSelector({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   getRequestAppointment: appointmentAction.getRequesAppointmentList,
+  logout: userAction.logout,
+  handleLogout: loginAction.handleLogout,
 }, dispatch)
 
 export default compose(
@@ -291,6 +196,36 @@ const PageWrapper = styled.div`
     line-height: 1.4;
     font-family: kanit;
   }
+  .ant-btn-primary {
+    color: #fff;
+    background-color: #e57272;
+    border-color: #e57272;
+  }
+
+  .ant-btn-primary:hover {
+    color: #e57272;
+    background-color: #ffffff;
+    border-color: #e57272;
+  }
+`
+const CustomButton = styled(Button)`
+  margin-right: 6px !important;
+  width: 60px !important;
+  font-size: 10px !important;
+  padding: 0 !important;
+  height: 32px !important;
+  background-color: #21ba45 !important;
+  border-color: #21ba45 !important;
+`
+const CustomButtonReject = styled(Button)`
+  margin-right: 6px !important;
+  width: 60px !important;
+  font-size: 10px !important;
+  padding: 0 !important;
+  height: 32px !important;
+  background-color: #b22525 !important;
+  border-color: #b22525 !important;
+
 `
 
 const ItemHeader = styled.span`
@@ -454,7 +389,7 @@ const RowTest = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 52px;
+  height: fit-content;;
   width: 100%;
 `
 
@@ -463,7 +398,7 @@ const ItemSpanTest = styled.span`
     font-family: Sarabun;
     font-weight: 600;
     word-break: break-word;
-
+    line-height: 23px;
     .b {
       font-weight: bold;
     }
@@ -485,13 +420,14 @@ const ListDetailTest = styled(OtherWrapper)`
 const CustomDeleteTest = styled(OtherWrapper)`
   flex: 1;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
 `
 const UserDetailGroupTest = styled.div`
   display: flex;
   flex: 5;
- 
+  flex-direction: column;
+  padding: 12px;
 `
 const TrashTest = styled(Icon)`
   color: #E1E1E1;

@@ -5,7 +5,10 @@ import {
   SET_REQUEST_APPOINTMENT,
   APPROVE_APPOINTMENT,
   REJECT_APPOINTMENT,
-  SUCCESS_APPROVE_APPOINTMENT,
+  APPROVE_APPOINTMENT_SUCCESS,
+  APPROVE_APPOINTMENT_FAILED,
+  REJECT_APPOINTMENT_SUCCESS,
+  REJECT_APPOINTMENT_FAILED,
   CREATE_APPOINTMENT_SUCCESS,
   CREATE_APPOINTMENT_FAILED,
   CREATE_APPOINTMENT,
@@ -35,20 +38,36 @@ export const setRequesAppointmentList = payload => ({
   type: SET_REQUEST_APPOINTMENT,
 })
 
-export const approveAppointment = payload =>({
+export const approveAppointment = payload => ({
   payload,
   type: APPROVE_APPOINTMENT,
 })
 
-export const successAppointment = payload =>({
+export const appointmentApproveSuccess = payload => ({
   payload,
-  type: SUCCESS_APPROVE_APPOINTMENT,
+  type: APPROVE_APPOINTMENT_SUCCESS,
+})
+
+export const appointmentApproveFailed = payload => ({
+  payload,
+  type: APPROVE_APPOINTMENT_FAILED,
 })
 
 export const rejectAppointment = payload => ({
   payload,
   type: REJECT_APPOINTMENT,
 })
+
+export const appointmentRejectSuccess = payload => ({
+  payload,
+  type: REJECT_APPOINTMENT_SUCCESS,
+})
+
+export const appointmentRejectFailed = payload => ({
+  payload,
+  type: REJECT_APPOINTMENT_FAILED,
+})
+
 export const createAppointment = payload => ({
   payload,
   type: CREATE_APPOINTMENT,
@@ -83,3 +102,6 @@ export const cancelAppointmentSuccess = payload => ({
   payload,
   type: CANCEL_APPOINT_SUCCESS,
 })
+
+
+ex

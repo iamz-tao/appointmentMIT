@@ -1,79 +1,48 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Segment } from 'semantic-ui-react'
+import { Segment, Icon } from 'semantic-ui-react'
 import { Button } from 'antd'
 import FormButton from '~/components/Form/Button'
 import DeleteIcon from '~/components/DeleteIcon'
 
-const UserList = (props) => {
+
+const AppointmentRequireList = (props) => {
   const {
-    users,
-    filter,
-    handleDeleteUser,
+    appointmentList,
+    // handleOpenSchedule,
+    handleDeleteAppoint,
   } = props
-
-  const types = filter.user_role.reduce((acc, curr) => [...acc, ...curr], [])
-
-  const keyword_lower = filter.keyword.toLowerCase()
 
   return (
     <Column>
       <Wrapper>
         <Column>
-          {users.map(user => (
+          {appointmentList.get('appoints').map(lec => (
             <ItemWrapper>
               <Row>
                 <UserDetailGroup>
-                  <ListDetail style={{ paddingLeft: '40px' }}>
+                  <ListDetail style={{ flex: 2 }}>
                     <ItemSpan>
-                      {user.get('id')}
+                      {lec.get('title')}
                     </ItemSpan>
                   </ListDetail>
                   <ListDetail style={{ flex: 2 }}>
                     <ItemSpan>
-                      {user.get('firstname')}
-                    &nbsp;
-                      {user.get('lastname')}
+                      {lec.get('teacher_name')}
                     </ItemSpan>
                   </ListDetail>
-                  <ListDetail style={{ flex: 2 }}>
+                  <ListDetail style={{ flex: 1 }}>
                     <ItemSpan>
-                      {user.get('email')}
-                    </ItemSpan>
-                  </ListDetail>
-                  <ListDetail style={{ justifyContent: 'center' }}>
-                    <ItemSpan>
-                      {
-                        user.get('role') === 'ADMIN' && (
-                          <ItemSpan style={{ color: '#001AFF' }}>
-                            ADMIN
-                          </ItemSpan>
-                        )
-                      }
-                      {
-                        user.get('role') === 'PROFESSOR' && (
-                          <ItemSpan style={{ color: '#F08282' }}>
-                            LECTURER
-                          </ItemSpan>
-                        )
-                      }
-                      {
-                        user.get('role') === 'NISIT' && (
-                          <ItemSpan style={{ color: '#1AB433' }}>
-                            STUDENT
-                          </ItemSpan>
-                        )
-                      }
+                      {lec.get('approved_status')}
                     </ItemSpan>
                   </ListDetail>
                   <CustomDelete>
-                    <DeleteIcon
-                      className='trash'
+                    <Trash
+                      name='trash alternate outline'
                       onClick={(e) => {
-                        e.preventDefault()
-                        handleDeleteUser(user.get('uid'))
-                      }
-                      }
+                        e.stopPropagation()
+                        handleDeleteAppoint(lec.get('request_id'))
+                      }}
                     />
                   </CustomDelete>
                 </UserDetailGroup>
@@ -87,7 +56,7 @@ const UserList = (props) => {
   )
 }
 
-export default UserList
+export default AppointmentRequireList
 
 const Wrapper = styled.div`
   display: flex;
@@ -135,7 +104,7 @@ const Row = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 76px;
+  height: 52px;
   width: 100%;
 `
 
@@ -153,6 +122,7 @@ const ItemSpan = styled.span`
 const OtherWrapper = styled.div`
     display: flex;
     line-height: 40px;
+    padding-left: 16px;
 `
 
 const ListDetail = styled(OtherWrapper)`
@@ -165,9 +135,16 @@ const CustomDelete = styled(OtherWrapper)`
   flex: 1;
   display: flex;
   justify-content: center;
-  padding-top: 8px;
+  align-items: center;
 `
 const UserDetailGroup = styled.div`
   display: flex;
   flex: 5;
+`
+const Trash = styled(Icon)`
+  color: #E1E1E1;
+  margin: 0px !important;
+  line-height: 24px !important;
+  font-size: 1.7em !important;
+  cursor: pointer;
 `

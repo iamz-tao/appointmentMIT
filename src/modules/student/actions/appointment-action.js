@@ -102,6 +102,3 @@ export const cancelAppointmentSuccess = payload => ({
   payload,
   type: CANCEL_APPOINT_SUCCESS,
 })
-
-
-ex

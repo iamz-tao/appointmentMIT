@@ -9,13 +9,13 @@ import isNil from 'lodash/isNil'
 import Router from 'next/router'
 
 import {
-  GET_LECTURER_LIST, GET_REQUEST_APPOINTMENT, CREATE_APPOINTMENT, STUDENT_GET_APPOINT_REQ_LIST, CANCEL_APPOINT, APPROVE_APPOINTMENT, REJECT_APPOINTMENT,
+  GET_LECTURER_LIST, GET_REQUEST_APPOINTMENT, CREATE_APPOINTMENT, STUDENT_GET_APPOINT_REQ_LIST, CANCEL_APPOINT, APPROVE_APPOINTMENT, REJECT_APPOINTMENT, GET_APPOINT_TEACHER
 } from '../constants'
 import * as httpToken from '~/helpers/axiosWrapperPostToken'
 import * as httpPut from '~/helpers/axiosWrapperPut'
 import { appointmentAction } from '../actions'
 import {
-  getLecturerAPI, studentGetAppointReqAPI, cancelAppointmentAPI, getRequestAppointmentAPI,
+  getLecturerAPI, studentGetAppointReqAPI, cancelAppointmentAPI, getRequestAppointmentAPI, getAppointTeacherAPI,
 } from '../api'
 
 export function* getLecturer() {
@@ -27,6 +27,21 @@ export function* getLecturer() {
         return
       }
       yield put(appointmentAction.setLecturerList(data.data))
+    }
+  } catch (error) {
+    console.log('error', error)
+  }
+}
+
+export function* getAppointTeacher() {
+  try {
+    const token = Cookie.get('token')
+    if (!isNil(token)) {
+      const { data, error } = yield getAppointTeacherAPI()
+      if (error) {
+        return
+      }
+      yield put(appointmentAction.setAppointTeacher(data.data))
     }
   } catch (error) {
     console.log('error', error)
@@ -142,5 +157,7 @@ export default function* userSaga() {
     takeLatest(STUDENT_GET_APPOINT_REQ_LIST, studentGetAppointReq),
     takeLatest(CANCEL_APPOINT, cancelAppointment),
     takeLatest(APPROVE_APPOINTMENT, approveAppointment),
+    takeLatest(REJECT_APPOINTMENT, rejectAppointment),
+    takeLatest(GET_APPOINT_TEACHER, getAppointTeacher),
   ])
 }

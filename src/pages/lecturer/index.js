@@ -18,6 +18,7 @@ import { appointmentSelector } from '~/modules/student/selectors'
 import { userAction } from '~/modules/user/actions'
 import { loginAction } from '~/modules/authentication/actions'
 
+
 const { confirm } = Modal
 const { Header, Content, Footer } = Layout
 
@@ -25,12 +26,11 @@ const TableHeader = () => (
   <Wrapper>
     <Row>
       <UserDetailGroup>
-        <ListHeader style={{ flex: 2 }}>
+        <ListHeader style={{ width: '100%' }}>
           <ItemHeader>
             APPOINTMENT
           </ItemHeader>
         </ListHeader>
-        <ListHeader />
       </UserDetailGroup>
     </Row>
   </Wrapper>
@@ -121,8 +121,11 @@ class LecturerHomePage extends Component {
     if (!authToken) {
       Router.push('/login')
     }
-    const { getRequestAppointment } = this.props
+    const { getRequestAppointment, getAppointTeacher } = this.props
     getRequestAppointment({
+      authToken,
+    })
+    getAppointTeacher({
       authToken,
     })
   }
@@ -263,7 +266,7 @@ class LecturerHomePage extends Component {
 
 
     render() {
-      const { AppointmentList } = this.props
+      const { AppointmentList, AllAppoint } = this.props
       const {
         visible, confirmLoading, title, detail, std_name, day, s_time, e_time, status, id, open, key,
       } = this.state
@@ -279,7 +282,7 @@ class LecturerHomePage extends Component {
         ) === 'PENDING').toJS()
       }
 
-      // console.log(appointApprove)
+      // console.log(AllAppoint && AllAppoint.toJS())
       return (
         <PageWrapper>
           <ApproveModal
@@ -301,12 +304,11 @@ class LecturerHomePage extends Component {
             <RowContainer style={{ padding: '0px 8px 0px 0px', flex: 1 }}>
 
               <ListCol>
-                <div style={{
+                {/* <div style={{
                   width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
                 }}
                 >
-                  {/* <i className='bell icon' size='large' onClick /> */}
-                </div>
+                </div> */}
                 <TableHeader page='Req' />
                 <ListCol>
                   <ColumnTest>
@@ -381,31 +383,31 @@ class LecturerHomePage extends Component {
                             </RowTest>
                           </ItemWrapperTest>
                         ))}
-                        { key === 2 && (
+                        { key === 2 &&  AllAppoint !== null && AllAppoint.size > 0 && AllAppoint.toJS().map(all => (
                           <ItemWrapperTest>
                             <RowTest>
                               <UserDetailGroupTest>
                                 <ListDetailTest style={{ flex: 1 }}>
                                   <ItemSpanTest>
                                     <StyleTextModal style={{ fontWeight: 500 }}>TITLE :&nbsp;</StyleTextModal>
-                                    <StyleTextModal>XXXXXX</StyleTextModal>
+                                    <StyleTextModal>{all.title}</StyleTextModal>
                                   </ItemSpanTest>
                                   <CustomDeleteTest>
                                     <TrashTest
                                       name='list alternate outline'
-                                      // onClick={() => {
-                                      //   const data = {
-                                      //     title: lec.get('title'),
-                                      //     detail: lec.get('detail'),
-                                      //     std_name: lec.get('student_name'),
-                                      //     day: lec.get('day'),
-                                      //     s_time: lec.get('start_time'),
-                                      //     e_time: lec.get('end_time'),
-                                      //     status: lec.get('approved_status'),
-                                      //     id: lec.get('appoint_id'),
-                                      //   }
-                                      //   this.showModal(data)
-                                      // }}
+                                      onClick={() => {
+                                        const data = {
+                                          title: all.title,
+                                          detail: all.detail,
+                                          std_name: all.student_name,
+                                          day: all.day,
+                                          s_time: all.start_time,
+                                          e_time: all.end_time,
+                                          status: 'APPROVE',
+                                          id: all.appoint_id,
+                                        }
+                                        this.showModal(data)
+                                      }}
                                     />
 
                                   </CustomDeleteTest>
@@ -415,19 +417,13 @@ class LecturerHomePage extends Component {
                                     <StyleTextModal style={{ fontWeight: 500 }}>STUDENT NAME :&nbsp;</StyleTextModal>
                                                &nbsp;
                                     {' '}
-                                    <StyleTextModal>BBBB TEST</StyleTextModal>
-                                  </ItemSpanTest>
-                                </ListDetailTest>
-                                <ListDetailTest>
-                                  <ItemSpanTest>
-                                    <StyleTextModal style={{ fontWeight: 500 }}>STATUS :&nbsp;</StyleTextModal>
-                                    <StyleTextModal style={{ color: '#0038FF' }}>APPROVE</StyleTextModal>
+                                    <StyleTextModal>{all.student_name}</StyleTextModal>
                                   </ItemSpanTest>
                                 </ListDetailTest>
                               </UserDetailGroupTest>
                             </RowTest>
                           </ItemWrapperTest>
-                        )}
+                        ))}
                       </ColumnTest>
                     </WrapperTest>
                   </ColumnTest>
@@ -472,6 +468,7 @@ class LecturerHomePage extends Component {
 
 const mapStateToProps = (state, props) => createStructuredSelector({
   AppointmentList: appointmentSelector.GetRequestAppointment,
+  AllAppoint: appointmentSelector.lecturerGetAppointApprove,
 })(state, props)
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -480,6 +477,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   rejectAppointment: appointmentAction.rejectAppointment,
   logout: userAction.logout,
   createAppointment: appointmentAction.createAppointment,
+  getAppointTeacher: appointmentAction.getAppointTeacher,
   handleLogout: loginAction.handleLogout,
 }, dispatch)
 
@@ -520,6 +518,17 @@ const PageWrapper = styled.div`
     background-color: #e57272;
 }
 `
+
+const StyleImgWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column; 
+  margin-bottom: 16px;
+`
+
 const CustomButton = styled(Button)`
   margin-right: 6px !important;
   width: 60px !important;
@@ -595,8 +604,8 @@ const ListCol = styled(Col)`
 `
 
 const ListHeader = styled(OtherWrapper)`
-  flex: 1;
   display: flex;
+  justify-content: center;
 `
 
 const Row = styled.div`

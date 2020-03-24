@@ -23,6 +23,7 @@ import { appointmentAction } from '~/modules/student/actions'
 import { appointmentSelector } from '~/modules/student/selectors'
 import { userAction } from '~/modules/user/actions'
 import { loginAction } from '~/modules/authentication/actions'
+import studentImg from '~/static/images/student.png'
 
 const { confirm } = Modal
 const { SubMenu } = Menu
@@ -70,7 +71,9 @@ const TableHeader = props => (
               LECTURER NAME
             </ItemHeader>
           </ListHeader>
-          <ListHeader />
+          <ListHeader>
+          <Button onClick={() => props.handleReset()} style={{marginBottom: 6}}>RESET</Button>
+          </ListHeader>
         </UserDetailGroup>
       </Row>
     )
@@ -295,13 +298,13 @@ class StudentHomePage extends Component {
             {
                     lecturerList !== null && lecturerList.size > 0 && (
                     <ListCol>
-                      <div style={{
-                        width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
-                      }}
-                      >
-                        <Button onClick={() => this.handleReset()}>RESET</Button>
-                      </div>
-                      <TableHeader page='Lecturer' />
+                      <StyleImgWrapper>
+                        <img src={studentImg} />
+                        <ItemHeader>{Cookie.get('name')}</ItemHeader>
+                        <span>{Cookie.get('role')}</span>
+
+                      </StyleImgWrapper>
+                      <TableHeader page='Lecturer' handleReset={this.handleReset}/>
                       <ListCol>
                         <LecturerList lecturerList={lecturerList} handleOpenSchedule={this.handleOpenSchedule} />
                       </ListCol>
@@ -407,7 +410,15 @@ const PageWrapper = styled.div`
   }
 
 `
-
+const StyleImgWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column; 
+  margin-bottom: 16px;
+`
 const ItemHeader = styled.span`
     font-family: kanit;
     font-size: 18px;

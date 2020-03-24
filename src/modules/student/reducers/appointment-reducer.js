@@ -17,9 +17,12 @@ import {
   REJECT_APPOINTMENT,
   REJECT_APPOINTMENT_SUCCESS,
   REJECT_APPOINTMENT_FAILED,
+  GET_APPOINT_TEACHER,
+  SET_APPOINT_TEACHER,
 } from '../constants'
 
 const initialState = fromJS({
+  appointmentTeacher: null,
   lecturers: null,
   requestAppointment: null,
   studentAppointment: null,
@@ -128,6 +131,17 @@ export default (state = initialState, { type, payload }) => {
         .set('isFetching', false)
         .set('status', 400)
         .set('payload', payload)
+    }
+
+    case GET_APPOINT_TEACHER: {
+      return state
+        .set('isFetching', true)
+    }
+
+    case SET_APPOINT_TEACHER: {
+      return state
+        .set('appointmentTeacher', fromJS(payload))
+        .set('isFetching', false)
     }
 
     default:

@@ -6,18 +6,13 @@ import {
 } from 'antd'
 
 import FormButton from '~/components/Form/Button'
-import AddAppointment from './components/addAppointment'
+// import AddAppointment from './components/addAppointment'
 // import DeleteIcon from '~/components/DeleteIcon'
 
 const Schdules = (props) => {
-  const {
-    lecturer, open, handleModal, handleInputChange, getTimeFrom, getTimeTo, handleSubmit, handleCancel, handleSelectDay,
-  } = props
-  const name = `${lecturer.getIn([0, 'firstname'])} ${lecturer.getIn([0, 'lastname'])}`
-  // console.log(lecturer.toJS())
   return (
     <>
-      <AddAppointment
+      {/* <AddAppointment
         open={open}
         handleModal={handleModal}
         handleInputChange={handleInputChange}
@@ -26,14 +21,15 @@ const Schdules = (props) => {
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         handleSelectDay={handleSelectDay}
-      />
+        handleSelectTime={handleSelectTime}
+      /> */}
       <ItemHeader>
         <div style={{ flex: 1 }}>
           SCHEDULE
           <br />
           Lecturer :
           {' '}
-          {name}
+          {/* {name} */}smfks nwnfj
         </div>
         <div>
           <ButtonWrapper>
@@ -41,7 +37,7 @@ const Schdules = (props) => {
               type='submit'
               size='large'
               onClick={() => {
-                handleModal()
+                // handleModal()
               }}
             >
               ADD APPOINTMENT

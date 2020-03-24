@@ -12,7 +12,7 @@ import {
 } from 'antd'
 import FormButton from '~/components/Form/Button'
 
-import { day } from '~/config/constants'
+import { day, time } from '~/config/constants'
 import DefaultForm from '~/components/DefaultForm'
 
 const format = 'h:mm a'
@@ -82,7 +82,15 @@ const AddAppointment = (props) => {
               label='SELECT TIME'
             >
               <ShowTimeWrapper>
-                <TimePicker
+                <Dropdown
+                  placeholder='Time'
+                  fluid
+                  selection
+                  options={time}
+              // onChange={handleSelectDay}
+                  name='time'
+                />
+                {/* <TimePicker
                   format={format}
                   placeholder='Start Time'
                   onChange={getTimeFrom}
@@ -92,7 +100,7 @@ const AddAppointment = (props) => {
                   format={format}
                   placeholder='End Time'
                   onChange={getTimeTo}
-                />
+                /> */}
               </ShowTimeWrapper>
             </DefaultForm>
           </BlankWrapper>

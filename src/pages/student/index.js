@@ -112,6 +112,13 @@ class StudentHomePage extends Component {
     })
   }
 
+  handleSelectTime = (e, { value }) => {
+    this.setState({
+      start_time: value.start_time,
+      end_time: value.end_time,
+    })
+  }
+
   handleReset = () => {
     this.setState({
       lecturer_id: '',
@@ -254,11 +261,11 @@ class StudentHomePage extends Component {
       content: 'When clicked the OK button, this dialog will be closed after 1 second',
       onOk() {
         return new Promise((resolve, reject) => {
-          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-        }).catch(() => console.log('Oops errors!'));
+          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
+        }).catch(() => console.log('Oops errors!'))
       },
       onCancel() {},
-    });
+    })
   }
 
   render() {
@@ -322,6 +329,7 @@ class StudentHomePage extends Component {
                           handleSubmit={this.handleSubmit}
                           handleCancel={this.handleCancel}
                           handleSelectDay={this.handleSelectDay}
+                          handleSelectTime={this.handleSelectTime}
                         />
                       </ListCol>
                     ) : (

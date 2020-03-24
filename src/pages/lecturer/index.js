@@ -9,7 +9,7 @@ import { Modal, Button } from 'antd'
 import Cookie from 'js-cookie'
 import { createStructuredSelector } from 'reselect'
 import NotFound from '~/components/Table/NotFound'
-
+import Schedules from './components/schedules'
 import { appointmentAction } from '~/modules/student/actions'
 import { appointmentSelector } from '~/modules/student/selectors'
 import { userAction } from '~/modules/user/actions'
@@ -39,7 +39,9 @@ class LecturerHomePage extends Component {
       Router.push('/login')
     }
     const { getRequestAppointment } = this.props
-    // getRequestAppointment({})
+    getRequestAppointment({
+      authToken,
+    })
   }
 
     showConfirm = (action) => {
@@ -64,7 +66,14 @@ class LecturerHomePage extends Component {
 
 
     render() {
-      // const { AppointmentList } = this.props
+      const { AppointmentList } = this.props
+      let appointApprove = []
+      if (AppointmentList) {
+        appointApprove = AppointmentList.filter((app) => app.get(
+          'approved_status') === 'APPROVE').toJS()
+      }
+
+      // console.log(appointApprove)
       return (
         <PageWrapper>
           <RowContainer>
@@ -81,68 +90,50 @@ class LecturerHomePage extends Component {
                   <ColumnTest>
                     <WrapperTest>
                       <ColumnTest>
-                        {/* {AppointmentList.map(lec => ( */}
-                        <ItemWrapperTest>
-                          <RowTest>
-                            <UserDetailGroupTest>
-                              <ListDetailTest style={{ flex: 1 }}>
-                                <ItemSpanTest>
-                                  {/* {lec.get('title')} */}
-                                  <span style={{ color: 'black', fontWeight: '600' }}>TITLE :&nbsp;</span>
-                                  Update final project
-                                </ItemSpanTest>
-                                <CustomDeleteTest>
-                                  <TrashTest
-                                    name='list alternate outline'
-                                    onClick={(e) => {}}
-                                  />
-                                </CustomDeleteTest>
-                              </ListDetailTest>
-                              <ListDetailTest style={{ flex: 1 }}>
-                                <ItemSpanTest>
-                                  <span style={{ color: 'black', fontWeight: '600' }}>STUDENT NAME :&nbsp;</span>
+                        {AppointmentList !== null && AppointmentList.size > 0 && AppointmentList.map(lec => (
+                          <ItemWrapperTest>
+                            <RowTest>
+                              <UserDetailGroupTest>
+                                <ListDetailTest style={{ flex: 1 }}>
+                                  <ItemSpanTest>
+                                    <span style={{ color: 'black', fontWeight: '600' }}>TITLE :&nbsp;</span>
+                                    {lec.get('title')}
+                                  </ItemSpanTest>
+                                  <CustomDeleteTest>
+                                    <TrashTest
+                                      name='list alternate outline'
+                                      onClick={(e) => {}}
+                                    />
+                                  </CustomDeleteTest>
+                                </ListDetailTest>
+                                <ListDetailTest style={{ flex: 1 }}>
+                                  <ItemSpanTest>
+                                    <span style={{ color: 'black', fontWeight: '600' }}>STUDENT NAME :&nbsp;</span>
                                                &nbsp;
-                                  {' '}
-                                  phiyada srikhenkan
-                                  {/* {lec.get('student_name')} */}
-                                </ItemSpanTest>
-                              </ListDetailTest>
-                              <ListDetailTest>
-                                <ItemSpanTest style={{ color: 'blue' }}>
-                                  <span style={{ color: 'black', fontWeight: '600' }}>STATUS :&nbsp;</span>
+                                    {' '}
+                                    {lec.get('student_name')}
+                                  </ItemSpanTest>
+                                </ListDetailTest>
+                                <ListDetailTest>
+                                  <ItemSpanTest style={{ color: 'blue' }}>
+                                    <span style={{ color: 'black', fontWeight: '600' }}>STATUS :&nbsp;</span>
 
-                                  APPROVE
-                                </ItemSpanTest>
-                                {/* {lec.get('approved_status') === 'PENDING' && (
-                                            <ItemSpanTest style={{ color: 'blue' }}>
-                                              {lec.get('approved_status')}
-                                            </ItemSpanTest>
-                                            )}
-                                            {lec.get('approved_status') === 'APPROVE' && (
-                                            <ItemSpanTest style={{ color: '#36c10d' }}>
-                                              {lec.get('approved_status')}
-                                            </ItemSpanTest>
-                                            )} */}
-                              </ListDetailTest>
-                              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                <CustomButton onClick={() => this.showConfirm('approve')}>APPROVE</CustomButton>
-                                <CustomButtonReject type='primary' onClick={() => this.showConfirm('reject')}>REJECT</CustomButtonReject>
-                              </div>
-                            </UserDetailGroupTest>
-                            {/* {lec.get('approved_status') === 'PENDING' && ( */}
-                            {/* <div>
-                                          <Button onClick={() => this.showConfirm()}>APPROVE</Button>
-                                          <Button type='primary'>REJECT</Button>
-                                        </div> */}
-                            {/* // <ItemSpanTest style={{ color: 'blue'}}>
-                                        //     {lec.get('approved_status')}
-                                        // </ItemSpanTest> */}
-                            {/* )} */}
+                                    {lec.get('approved_status')}
+                                  </ItemSpanTest>
+                                </ListDetailTest>
+                                {
+                                lec.get('approved_status') === 'PENDING' && (
+                                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                    <CustomButton onClick={() => this.showConfirm('approve')}>APPROVE</CustomButton>
+                                    <CustomButtonReject type='primary' onClick={() => this.showConfirm('reject')}>REJECT</CustomButtonReject>
+                                  </div>
+                                )
+                              }
 
-
-                          </RowTest>
-                        </ItemWrapperTest>
-                        {/* ))} */}
+                              </UserDetailGroupTest>
+                            </RowTest>
+                          </ItemWrapperTest>
+                        ))}
                       </ColumnTest>
                     </WrapperTest>
                   </ColumnTest>
@@ -157,12 +148,13 @@ class LecturerHomePage extends Component {
                 >
                   <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
                 </div>
-                <TableHeader page='Lecturer' />
-                {/* <ListCol>
-                        <LecturerList lecturerList={lecturerList} handleOpenSchedule={this.handleOpenSchedule} />
-                      </ListCol> */}
+                {/* <TableHeader page='Lecturer' /> */}
+                <ListCol>
+                  <Schedules  appointApprove={appointApprove}/>
+                </ListCol>
               </ListCol>
             </RowContainer>
+
           </RowContainer>
         </PageWrapper>
       )

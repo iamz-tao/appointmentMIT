@@ -31,17 +31,16 @@ export default (state = initialState, { type, payload }) => {
         .set('lecturers', fromJS(payload))
         .set('isFetching', false)
     }
-    case GET_REQUEST_APPOINTMENT:{
+    case GET_REQUEST_APPOINTMENT: {
       return state
         .set('isFetching', true)
-
     }
-    case SET_REQUEST_APPOINTMENT:{
+    case SET_REQUEST_APPOINTMENT: {
       return state
-        .set('requestAppointment',fromJS(payload))
+        .set('requestAppointment', fromJS(payload))
         .set('isFetching', false)
     }
-    
+
     case CREATE_APPOINTMENT: {
       return state
         .set('isFetching', true)
@@ -80,7 +79,7 @@ export default (state = initialState, { type, payload }) => {
       const index = state.getIn(['studentAppointment']).get('appoints')
         .findIndex(rec => rec.get('request_id') === payload)
       return state
-      .removeIn(['studentAppointment','appoints', index])
+        .removeIn(['studentAppointment', 'appoints', index])
         .set('isFetching', false)
     }
 

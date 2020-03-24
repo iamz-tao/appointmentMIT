@@ -53,6 +53,7 @@ export function* loginWithUsernameRequest({ payload }) {
     yield put(loginAction.loginWithUsernameSuccess({
       token: resp.data.data.token,
       email,
+      id: resp.data.data.user.id,
       role: resp.data.data.user.role,
       name: resp.data.data.user.displayName,
     }))

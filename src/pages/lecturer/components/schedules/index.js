@@ -12,7 +12,16 @@ import AddAppointment from './components/addAppointment'
 const day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Firday']
 const Schedules = (props) => {
   const {
-    appointApprove, open, handleModal, handleInputChange, getTimeFrom, getTimeTo, handleSubmit, handleCancel, handleSelectDay, handleSelectTime,
+    appointApprove,
+    open,
+    handleModal,
+    handleInputChange,
+    getTimeFrom, 
+    getTimeTo, 
+    handleSubmit, 
+    handleCancel, 
+    handleSelectDay, 
+    handleSelectTime,
   } = props
   // const name = `${lecturer.getIn([0, 'firstname'])} ${lecturer.getIn([0, 'lastname'])}`
   // console.log(appointApprove)
@@ -27,7 +36,7 @@ const Schedules = (props) => {
   // console.log(appoint)
   return (
     <>
-      {/* <AddAppointment
+      <AddAppointment
         open={open}
         handleModal={handleModal}
         handleInputChange={handleInputChange}
@@ -37,7 +46,7 @@ const Schedules = (props) => {
         handleCancel={handleCancel}
         handleSelectDay={handleSelectDay}
         handleSelectTime={handleSelectTime}
-      /> */}
+      />
       <ItemHeader>
         <div style={{ flex: 1 }}>
           SCHEDULE
@@ -81,12 +90,12 @@ const Schedules = (props) => {
         <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>14.00 - 15.00</div></Col>
         <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>15.00 - 16.00</div></Col>
       </Row>
-      
+
       {
         day.map(d => (
           <Row justify='start' style={{ height: '54px' }}>
             <Col span={4} style={{ width: '11%' }}>{d}</Col>
-           
+
             {
 appoint[0].day === d && appoint[0].time === '08.00 - 09.00' ? (
   <Col span={4} style={{ width: '11%', height: '100%', backgroundColor: 'white' }}>
@@ -111,7 +120,7 @@ appoint[0].day === d && appoint[0].time === '09.00 - 10.00' ? (
             }
 
 
-{
+            {
 appoint[0].day === d && appoint[0].time === '10.00 - 11.00' ? (
   <Col span={4} style={{ width: '11%', height: '100%', backgroundColor: 'white' }}>
     xxxxx
@@ -176,9 +185,9 @@ appoint[0].day === d && appoint[0].time === '15.00 - 16.00' ? (
     xxxxx
   </Col>
 )
-             } 
+             }
           </Row>
-        // ))
+          // ))
 
         ))
       }

@@ -11,6 +11,7 @@ import {
 } from '../constants'
 
 const initialState = fromJS({
+  user: null,
   isFetching: false,
   isAuthenticated: !isNil(Cookie.get('token')),
   token: Cookie.get('token') || '',
@@ -25,6 +26,7 @@ export default (state = initialState, { type, payload }) => {
       Cookie.set('email', payload.email)
       Cookie.set('role', payload.role)
       Cookie.set('name', payload.name)
+      Cookie.set('id', payload.id)
       return state
         .set('isFetching', false)
         .set('isAuthenticated', true)

@@ -25,11 +25,7 @@ const Schdules = (props) => {
       /> */}
       <ItemHeader>
         <div style={{ flex: 1 }}>
-          SCHEDULE
-          <br />
-          Lecturer :
-          {' '}
-          {/* {name} */}smfks nwnfj
+          SCHEDULE of Phiyada srikhenkan
         </div>
         <div>
           <ButtonWrapper>

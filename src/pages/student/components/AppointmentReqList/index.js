@@ -32,17 +32,17 @@ const AppointmentRequireList = (props) => {
                     </ItemSpan>
                   </ListDetail>
                   <ListDetail style={{ flex: 1 }}>
-                  {lec.get('approved_status') === 'APPROVE' && (
-                    <ItemSpan style={{color: '#21ba45'}}>
+                    {lec.get('approved_status') === 'APPROVE' && (
+                    <ItemSpan style={{ color: '#21ba45' }}>
                       APPROVE
-                      </ItemSpan>
-                  )}
-                  {lec.get('approved_status') === 'PENDING' && (
-                    <ItemSpan style={{color: '#1890ff'}}>
+                    </ItemSpan>
+                    )}
+                    {lec.get('approved_status') === 'PENDING' && (
+                    <ItemSpan style={{ color: '#1890ff' }}>
                       PENDING
                     </ItemSpan>
                     )}
-                    
+
                   </ListDetail>
                   <CustomDelete>
                     <Button
@@ -73,17 +73,16 @@ const Wrapper = styled.div`
   align-items: flex-start;
   width: 100%;
   .ant-btn {
-    width: 100px;
-    height: 38px;
+    width: 72px;
+    height: 36px;
     margin-right: 23px;
     border-radius: 24px;
-    background-color: #CA5353 !important;
-    border: 0.8px solid #CA5353;
     box-sizing: border-box;
-    color: #ffff !important;
+    color: #e49a9a  !important;
     :hover {
-      background-color: #ffff !important;
-      color: #CA5353 !important;
+      background-color: #ffff;
+      color: #CA5353;
+      border-color: #CA5353;
     }
   }
 `

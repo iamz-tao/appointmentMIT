@@ -9,7 +9,7 @@ import isNil from 'lodash/isNil'
 import Router from 'next/router'
 
 import {
-  GET_LECTURER_LIST, GET_REQUEST_APPOINTMENT, CREATE_APPOINTMENT, STUDENT_GET_APPOINT_REQ_LIST, CANCEL_APPOINT,
+  GET_LECTURER_LIST, GET_REQUEST_APPOINTMENT, CREATE_APPOINTMENT, STUDENT_GET_APPOINT_REQ_LIST, CANCEL_APPOINT, APPROVE_APPOINTMENT, REJECT_APPOINTMENT,
 } from '../constants'
 import * as httpToken from '~/helpers/axiosWrapperPostToken'
 import * as httpPut from '~/helpers/axiosWrapperPut'
@@ -58,9 +58,27 @@ export function* approveAppointment({ payload }) {
     if (error) {
       return
     }
-    yield put(appointmentAction.approveAppointment(payload.id))
+    yield put(appointmentAction.appointmentApproveSuccess(payload.id))
   } catch (error) {
     console.log('error', error)
+    yield put(appointmentAction.appointmentApproveFailed())
+  }
+}
+
+export function* rejectAppointment({ payload }) {
+  try {
+    const response = yield call(httpPut.post, {
+      url: `/api/rejectRequest/${payload.id}`,
+    })
+
+    const { error } = response
+    if (error) {
+      return
+    }
+    yield put(appointmentAction.appointmentRejectSuccess(payload.id))
+  } catch (error) {
+    console.log('error', error)
+    yield put(appointmentAction.appointmentRejectFailed())
   }
 }
 
@@ -123,5 +141,6 @@ export default function* userSaga() {
     takeLatest(CREATE_APPOINTMENT, createAppointment),
     takeLatest(STUDENT_GET_APPOINT_REQ_LIST, studentGetAppointReq),
     takeLatest(CANCEL_APPOINT, cancelAppointment),
+    takeLatest(APPROVE_APPOINTMENT, approveAppointment),
   ])
 }

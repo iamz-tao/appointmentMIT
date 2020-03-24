@@ -32,7 +32,79 @@ const TableHeader = () => (
   </Wrapper>
 )
 
+const ApproveModal = (props) => {
+  const {
+    title, detail, std_name, day, s_time, e_time, visible, status, id, confirmLoading, handleApprove, handleReject, closeModal,
+  } = props
+  return (
+    <Modal
+      title={`Title : ${title}`}
+      visible={visible}
+      maskClosable={false}
+      closable={false}
+      confirmLoading={confirmLoading}
+      footer={null}
+    >
+      <div>
+        <StyleDivModal>
+          <StyleTextModal>Request From :</StyleTextModal>
+          {' '}
+          {' '}
+          {' '}
+          {std_name}
+        </StyleDivModal>
+        <StyleDivModal>
+          <StyleTextModal> Detail : </StyleTextModal>
+          {' '}
+          {' '}
+          {detail}
+        </StyleDivModal>
+        <StyleDivModal>
+          <StyleTextModal> Day : </StyleTextModal>
+          {' '}
+          {' '}
+          {day}
+          {' '}
+          {s_time}
+          {' '}
+          -
+          {' '}
+          {e_time}
+        </StyleDivModal>
+      </div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <CustomButtonCancel type='primary' onClick={() => closeModal()}>Cancel</CustomButtonCancel>
+          {
+      status === 'PENDING' && (
+        <dvi>
+          <CustomButtonReject type='primary' onClick={() => handleReject(id)}>REJECT</CustomButtonReject>
+          <CustomButton type='primary' onClick={() => handleApprove(id)}>APPROVE</CustomButton>
+          </dvi>
+          )
+        }
+        </div>
+    </Modal>
+  )
+}
+
 class LecturerHomePage extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      visible: false,
+      confirmLoading: false,
+      title: '',
+      detail: '',
+      std_name: '',
+      day: '',
+      s_time: '',
+      e_time: '',
+      status: '',
+      id: '',
+    }
+  }
+
+
   componentDidMount() {
     const authToken = Cookie.get('token')
     if (!authToken) {
@@ -44,18 +116,42 @@ class LecturerHomePage extends Component {
     })
   }
 
-    showConfirm = (action) => {
-      confirm({
-        title: `Do you want to ${action} this appointment?`,
-        content: 'If you click confirm, You can\'t undo this action.',
-        onOk() {
-          return new Promise((resolve, reject) => {
-            setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
-          }).catch(() => console.log('Oops errors!'))
-        },
-        onCancel() {},
+  showModal = (data) => {
+    this.setState({
+      visible: true,
+      ...data,
+    })
+  };
+
+  closeModal = () => {
+    this.setState({
+      visible: false,
+    })
+  }
+
+  handleApprove = (id) => {
+    const { approveAppointment } = this.props
+    approveAppointment({
+      id,
+    })
+    this.setState({
+      confirmLoading: true,
+    })
+    setTimeout(() => {
+      this.setState({
+        visible: false,
+        confirmLoading: false,
       })
-    }
+    }, 2000)
+  };
+
+  handleReject = (id) => {
+    const { rejectAppointment } = this.props
+    rejectAppointment({ id })
+    this.setState({
+      visible: false,
+    })
+  };
 
     handleLogout = () => {
       const { logout, handleLogout } = this.props
@@ -67,15 +163,34 @@ class LecturerHomePage extends Component {
 
     render() {
       const { AppointmentList } = this.props
+      const {
+        visible, confirmLoading, title, detail, std_name, day, s_time, e_time, status, id, 
+      } = this.state
       let appointApprove = []
       if (AppointmentList) {
-        appointApprove = AppointmentList.filter((app) => app.get(
-          'approved_status') === 'APPROVE').toJS()
+        appointApprove = AppointmentList.filter(app => app.get(
+          'approved_status',
+        ) === 'APPROVE').toJS()
       }
 
       // console.log(appointApprove)
       return (
         <PageWrapper>
+          <ApproveModal 
+            visible={visible} 
+            confirmLoading={confirmLoading} 
+            title={title} 
+            status={status} 
+            detail={detail} 
+            std_name={std_name} 
+            day={day} 
+            s_time={s_time} 
+            e_time={e_time}
+            id={id}
+            handleReject={this.handleReject}
+            handleApprove={this.handleApprove}
+            closeModal={this.closeModal}
+            />
           <RowContainer>
             <RowContainer style={{ padding: '0px 8px 0px 0px', flex: 1 }}>
               <ListCol>
@@ -96,40 +211,52 @@ class LecturerHomePage extends Component {
                               <UserDetailGroupTest>
                                 <ListDetailTest style={{ flex: 1 }}>
                                   <ItemSpanTest>
-                                    <span style={{ color: 'black', fontWeight: '600' }}>TITLE :&nbsp;</span>
-                                    {lec.get('title')}
+                                    <StyleTextModal style={{ fontWeight: 500 }}>TITLE :&nbsp;</StyleTextModal>
+                                    <StyleTextModal>{lec.get('title')}</StyleTextModal>
                                   </ItemSpanTest>
                                   <CustomDeleteTest>
                                     <TrashTest
                                       name='list alternate outline'
-                                      onClick={(e) => {}}
+                                      onClick={() => {
+                                        const data = {
+                                          title: lec.get('title'),
+                                          detail: lec.get('detail'),
+                                          std_name: lec.get('student_name'),
+                                          day: lec.get('day'),
+                                          s_time: lec.get('start_time'),
+                                          e_time: lec.get('end_time'),
+                                          status: lec.get('approved_status'),
+                                          id: lec.get('appoint_id')
+                                        }
+                                        this.showModal(data)
+                                      }}
                                     />
+
                                   </CustomDeleteTest>
                                 </ListDetailTest>
                                 <ListDetailTest style={{ flex: 1 }}>
                                   <ItemSpanTest>
-                                    <span style={{ color: 'black', fontWeight: '600' }}>STUDENT NAME :&nbsp;</span>
+                                    <StyleTextModal style={{ fontWeight: 500 }}>STUDENT NAME :&nbsp;</StyleTextModal>
                                                &nbsp;
                                     {' '}
-                                    {lec.get('student_name')}
+                                    <StyleTextModal>{lec.get('student_name')}</StyleTextModal>
                                   </ItemSpanTest>
                                 </ListDetailTest>
                                 <ListDetailTest>
-                                  <ItemSpanTest style={{ color: 'blue' }}>
-                                    <span style={{ color: 'black', fontWeight: '600' }}>STATUS :&nbsp;</span>
+                                  <ItemSpanTest>
+                                    <StyleTextModal style={{ fontWeight: 500 }}>STATUS :&nbsp;</StyleTextModal>
 
-                                    {lec.get('approved_status')}
+                                    {lec.get('approved_status') === 'APPROVE' && (
+                                    <StyleTextModal style={{ color: '#0038FF' }}>APPROVE</StyleTextModal>
+
+                                    )}
+                                    {lec.get('approved_status') === 'PENDING' && (
+                                    <StyleTextModal style={{ color: '#1AB433' }}>PENDING&nbsp;</StyleTextModal>
+
+                                    )}
+
                                   </ItemSpanTest>
                                 </ListDetailTest>
-                                {
-                                lec.get('approved_status') === 'PENDING' && (
-                                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                    <CustomButton onClick={() => this.showConfirm('approve')}>APPROVE</CustomButton>
-                                    <CustomButtonReject type='primary' onClick={() => this.showConfirm('reject')}>REJECT</CustomButtonReject>
-                                  </div>
-                                )
-                              }
-
                               </UserDetailGroupTest>
                             </RowTest>
                           </ItemWrapperTest>
@@ -150,7 +277,7 @@ class LecturerHomePage extends Component {
                 </div>
                 {/* <TableHeader page='Lecturer' /> */}
                 <ListCol>
-                  <Schedules  appointApprove={appointApprove}/>
+                  {/* <Schedules  appointApprove={appointApprove}/> */}
                 </ListCol>
               </ListCol>
             </RowContainer>
@@ -167,6 +294,8 @@ const mapStateToProps = (state, props) => createStructuredSelector({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   getRequestAppointment: appointmentAction.getRequesAppointmentList,
+  approveAppointment: appointmentAction.approveAppointment,
+  rejectAppointment: appointmentAction.rejectAppointment,
   logout: userAction.logout,
   handleLogout: loginAction.handleLogout,
 }, dispatch)
@@ -208,6 +337,11 @@ const CustomButton = styled(Button)`
   height: 32px !important;
   background-color: #21ba45 !important;
   border-color: #21ba45 !important;
+
+  :hover {
+    background-color: #6dd799 !important;
+    border-color: #6dd799 !important;
+  }
 `
 const CustomButtonReject = styled(Button)`
   margin-right: 6px !important;
@@ -218,6 +352,24 @@ const CustomButtonReject = styled(Button)`
   background-color: #b22525 !important;
   border-color: #b22525 !important;
 
+  :hover {
+    background-color: #cf7ca1 !important;
+    border-color: #cf7ca1 !important;
+  }
+`
+const CustomButtonCancel = styled(Button)`
+  margin-right: 6px !important;
+  width: 60px !important;
+  font-size: 10px !important;
+  padding: 0 !important;
+  height: 32px !important;
+  background-color: #FFFFFF !important;
+  border-color: #525252 !important;
+  color: #525252 !important;
+  :hover {
+    color: #40a9ff !important; 
+    border-color: #40a9ff !important;
+  }
 `
 
 const ItemHeader = styled.span`
@@ -251,10 +403,6 @@ const ListCol = styled(Col)`
   }
 `
 
-const Space = styled.div`
-`
-
-
 const ListHeader = styled(OtherWrapper)`
   flex: 1;
   display: flex;
@@ -273,11 +421,6 @@ const UserDetailGroup = styled.div`
   color: #000000;
   font-size: 16px;
   flex: 5;
-`
-const ButtonWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
 `
 // แสดง appointment list
 const Wrapper = styled.div`
@@ -299,42 +442,6 @@ const Wrapper = styled.div`
     }
   }
 `
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 14px;
-  width: 100%;
-`
-const ItemWrapper = styled(Segment)`
-  background-color: white;
-  width: 100%;
-  border-radius: 4px;
-  margin-bottom: 0px !important;
-  padding: 0 !important;
-  cursor: pointer;
-  background: #FFFFFF !important;
-  border: 1px solid #D0CDCD !important;
-  box-sizing: border-box !important;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
-  border-radius: 18px !important;
-`
-const ItemSpan = styled.span`
-    font-size: 14px;
-    font-family: Sarabun;
-    font-weight: 600;
-    word-break: break-word;
-
-    .b {
-      font-weight: bold;
-    }
-`
-const ListDetail = styled(OtherWrapper)`
-  // flex: 1;
-  // display: flex;
-  // text-align: start;
-`
-
 const WrapperTest = styled.div`
   display: flex;
   align-items: flex-start;
@@ -396,12 +503,6 @@ const ItemSpanTest = styled.span`
     }
 `
 
-const OtherWrapperTest = styled.div`
-    display: flex;
-    line-height: 40px;
-    padding-left: 16px;
-`
-
 const ListDetailTest = styled(OtherWrapper)`
   flex: 1;
   display: flex;
@@ -427,4 +528,11 @@ const TrashTest = styled(Icon)`
   line-height: 24px !important;
   font-size: 1.7em !important;
   cursor: pointer;
+`
+const StyleTextModal = styled.span`
+  color: #525252;
+  font-weight: 400; 
+`
+const StyleDivModal = styled.div`
+  margin-bottom: 6px;
 `

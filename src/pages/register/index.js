@@ -16,6 +16,7 @@ import get from 'lodash/get'
 import Cookie from 'js-cookie'
 import isNil from 'lodash/isNil'
 
+import { marginLeft } from 'styled-system'
 import validate from './validate'
 
 import Regis from '~/static/images/regis.png'
@@ -27,7 +28,6 @@ import { registerAction } from '~/modules/authentication/actions'
 
 import LoadingPulse from '~/components/LoadingPulse'
 import renderInput from '~/components/ReduxForm/NomalInput'
-import { marginLeft } from 'styled-system'
 
 const FORM_NAME = 'CREATE_ACCOUNT'
 
@@ -49,22 +49,23 @@ class RegisterPage extends Component {
 
     return {}
   }
+
   state = {
     status: '',
   }
 
 
   componentDidMount() {
- 
+
   }
 
   handleInputChange = ({ target }) => {
     this.setState({ [target.name]: target.value })
   }
 
-  handleState = (status)=> {
+  handleState = (status) => {
     console.log(status)
-  this.setState({ status  })
+    this.setState({ status })
   }
 
   openNotificationRegisterSuccess = (type) => {
@@ -77,7 +78,7 @@ class RegisterPage extends Component {
 
   handleRegister = (values) => {
     // console.log(values.toJS())
-    
+
     // const { status } = this.state
     const {
       id,
@@ -98,8 +99,7 @@ class RegisterPage extends Component {
         lastname,
         role: user,
       },
-    }
-    )
+    })
 
     this.openNotificationRegisterSuccess('success')
   }
@@ -178,49 +178,50 @@ class RegisterPage extends Component {
                   placeholder='Password'
                 />
               </StyledForm>
-            
 
-              <div role="group" style={{width: 'inherit', marginTop: '2%'}} >
-              
-                <Button style={{backgroundColor:'#c4b1e8'}} onClick={() => this.handleState('NISIT')}>STUDENT</Button>  &nbsp;
-                <Button style={{backgroundColor:'rgb(253, 224, 224)'}}onClick={() => this.handleState('PROFESSOR')}>PROFESSOR</Button>
-                <br/><br/>
-            
+
+              <div role='group' style={{ width: 'inherit', marginTop: '2%' }}>
+
+                <Button style={{ backgroundColor: '#c4b1e8' }} onClick={() => this.handleState('NISIT')}>STUDENT</Button>
+                {' '}
+&nbsp;
+                <Button style={{ backgroundColor: 'rgb(253, 224, 224)' }} onClick={() => this.handleState('PROFESSOR')}>PROFESSOR</Button>
+                <br />
+                <br />
+
               </div>
-              
-              
-              <div style={{marginTop: '-4%'}}>
+
+
+              <div style={{ marginTop: '-4%' }}>
                 <FormButton
-                disabled={ pristine || submitting }
-                type='cancel'
-                txtButton='CANCEL'
-                width='50%'
-                onClick={() => {
-                  Router.replace('/home')
-                }}
-              />
+                  // disabled={pristine || submitting}
+                  type='cancel'
+                  txtButton='CANCEL'
+                  width='50%'
+                  onClick={() => {
+                    Router.replace('/')
+                  }}
+                />
                   &nbsp; &nbsp;
-              <FormButton
-                disabled={submitting}
-                colorButton='#8c72c0'
-                type='submit'
-                txtButton='REGISTER'
-                width='50%'
-                onClick={() => {
-                }}
-              />
+                <FormButton
+                  disabled={submitting}
+                  colorButton='#8c72c0'
+                  type='submit'
+                  txtButton='REGISTER'
+                  width='50%'
+                  onClick={() => {
+                  }}
+                />
               </div>
-               
-              
-            
+
 
             </StyleBorder>
           </Wrapper>
         </FormWrapper>
         <StyleWrapperImg>
-        <img src={Regis} style={{    transform: 'scaleX(-1)' }} />
+          <img src={Regis} style={{ transform: 'scaleX(-1)' }} />
         </StyleWrapperImg>
-      </form> 
+      </form>
     )
   }
 }

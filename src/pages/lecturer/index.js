@@ -4,7 +4,10 @@ import { bindActionCreators, compose } from 'redux'
 import { connect } from 'react-redux'
 import Router from 'next/router'
 import { Segment, Icon } from 'semantic-ui-react'
-import { Modal, Button } from 'antd'
+import {
+  Modal, Button, Breadcrumb, Layout, Menu,
+} from 'antd'
+import moment from 'moment'
 
 import Cookie from 'js-cookie'
 import { createStructuredSelector } from 'reselect'
@@ -15,18 +18,19 @@ import { appointmentSelector } from '~/modules/student/selectors'
 import { userAction } from '~/modules/user/actions'
 import { loginAction } from '~/modules/authentication/actions'
 
+
 const { confirm } = Modal
+const { Header, Content, Footer } = Layout
 
 const TableHeader = () => (
   <Wrapper>
     <Row>
       <UserDetailGroup>
-        <ListHeader style={{ flex: 2 }}>
+        <ListHeader style={{ width: '100%' }}>
           <ItemHeader>
-            Appointment Requests
+            APPOINTMENT
           </ItemHeader>
         </ListHeader>
-        <ListHeader />
       </UserDetailGroup>
     </Row>
   </Wrapper>
@@ -72,17 +76,17 @@ const ApproveModal = (props) => {
           {e_time}
         </StyleDivModal>
       </div>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <CustomButtonCancel type='primary' onClick={() => closeModal()}>Cancel</CustomButtonCancel>
-          {
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <CustomButtonCancel type='primary' onClick={() => closeModal()}>Cancel</CustomButtonCancel>
+        {
       status === 'PENDING' && (
         <dvi>
           <CustomButtonReject type='primary' onClick={() => handleReject(id)}>REJECT</CustomButtonReject>
           <CustomButton type='primary' onClick={() => handleApprove(id)}>APPROVE</CustomButton>
-          </dvi>
-          )
+        </dvi>
+      )
         }
-        </div>
+      </div>
     </Modal>
   )
 }
@@ -91,6 +95,7 @@ class LecturerHomePage extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      open: false,
       visible: false,
       confirmLoading: false,
       title: '',
@@ -101,6 +106,12 @@ class LecturerHomePage extends Component {
       e_time: '',
       status: '',
       id: '',
+      titleAppoint: '',
+      detailAppoint: '',
+      dayAppoint: '',
+      start_time: '',
+      end_time: '',
+      key: 1,
     }
   }
 
@@ -110,9 +121,102 @@ class LecturerHomePage extends Component {
     if (!authToken) {
       Router.push('/login')
     }
-    const { getRequestAppointment } = this.props
+    const { getRequestAppointment, getAppointTeacher } = this.props
     getRequestAppointment({
       authToken,
+    })
+    getAppointTeacher({
+      authToken,
+    })
+  }
+
+  handleRender = (key) => {
+    this.setState({
+      key,
+    })
+  }
+
+  handleSelectDay = (e, { value }) => {
+    this.setState({
+      dayAppoint: value,
+    })
+  }
+
+  handleSelectTime = (e, { value }) => {
+    this.setState({
+      start_time: value.start_time,
+      end_time: value.end_time,
+    })
+  }
+
+  handleSubmit = () => {
+    const id = Cookie.get('id')
+    const {
+      open, titleAppoint, start_time, end_time, detailAppoint, dayAppoint,
+    } = this.state
+    const { createAppointment } = this.props
+    const data = {
+      Title: titleAppoint,
+      Detail: detailAppoint,
+      day: dayAppoint,
+      start_time,
+      end_time,
+      teacher_id: id,
+    }
+
+    createAppointment({
+      data,
+      role: 'PROFESSOR',
+    })
+
+    this.setState({
+      open: !open,
+    })
+  }
+
+  handleModalCreateAppoint = () => {
+    const { open } = this.state
+    this.setState({
+      open: !open,
+    })
+  }
+
+  handleCancel = () => {
+    const { open } = this.state
+    this.setState({
+      open: !open,
+      titleAppoint: '',
+      detailAppoint: '',
+      start_time: '',
+      end_time: '',
+      dayAppoint: '',
+    })
+  }
+
+  handleInput = (type, e) => {
+    const { change } = this.props
+    change(type, e)
+  }
+
+
+  handleInputChange = async ({ target }) => {
+    await this.setState(state => ({
+      ...state,
+      [target.name]: target.value,
+    }))
+  }
+
+  getTimeFrom = (from) => {
+    const newForm = new Date(from)
+    this.setState({
+      start_time: moment(newForm).format('h:mm A'),
+    })
+  }
+
+  getTimeTo = (to) => {
+    const newForm = new Date(to)
+    this.setState({
+      end_time: moment(newForm).format('h:mm A'),
     })
   }
 
@@ -162,71 +266,89 @@ class LecturerHomePage extends Component {
 
 
     render() {
-      const { AppointmentList } = this.props
+      const { AppointmentList, AllAppoint } = this.props
       const {
-        visible, confirmLoading, title, detail, std_name, day, s_time, e_time, status, id, 
+        visible, confirmLoading, title, detail, std_name, day, s_time, e_time, status, id, open, key,
       } = this.state
       let appointApprove = []
+      let appointPending = []
+
       if (AppointmentList) {
         appointApprove = AppointmentList.filter(app => app.get(
           'approved_status',
         ) === 'APPROVE').toJS()
+        appointPending = AppointmentList.filter(app => app.get(
+          'approved_status',
+        ) === 'PENDING').toJS()
       }
 
-      // console.log(appointApprove)
+      // console.log(AllAppoint && AllAppoint.toJS())
       return (
         <PageWrapper>
-          <ApproveModal 
-            visible={visible} 
-            confirmLoading={confirmLoading} 
-            title={title} 
-            status={status} 
-            detail={detail} 
-            std_name={std_name} 
-            day={day} 
-            s_time={s_time} 
+          <ApproveModal
+            visible={visible}
+            confirmLoading={confirmLoading}
+            title={title}
+            status={status}
+            detail={detail}
+            std_name={std_name}
+            day={day}
+            s_time={s_time}
             e_time={e_time}
             id={id}
             handleReject={this.handleReject}
             handleApprove={this.handleApprove}
             closeModal={this.closeModal}
-            />
+          />
           <RowContainer>
             <RowContainer style={{ padding: '0px 8px 0px 0px', flex: 1 }}>
+
               <ListCol>
-                <div style={{
+                {/* <div style={{
                   width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
                 }}
                 >
-                  <Button onClick={() => this.handleReset()}>RESET</Button>
-                </div>
+                </div> */}
                 <TableHeader page='Req' />
                 <ListCol>
                   <ColumnTest>
                     <WrapperTest>
+                      <Layout>
+                        <Header>
+                          <div className='logo' />
+                          <Menu
+                            theme='dark'
+                            mode='horizontal'
+                            defaultSelectedKeys={['1']}
+                          >
+                            <Menu.Item key='1' onClick={() => this.handleRender(1)}>REQUEST</Menu.Item>
+                            <Menu.Item key='2' onClick={() => this.handleRender(2)}>APPOINTMENT</Menu.Item>
+                          </Menu>
+                        </Header>
+                      </Layout>
                       <ColumnTest>
-                        {AppointmentList !== null && AppointmentList.size > 0 && AppointmentList.map(lec => (
+                        { key === 1 && AppointmentList !== null && appointPending.length > 0 && appointPending.map(lec => (
                           <ItemWrapperTest>
                             <RowTest>
                               <UserDetailGroupTest>
                                 <ListDetailTest style={{ flex: 1 }}>
                                   <ItemSpanTest>
                                     <StyleTextModal style={{ fontWeight: 500 }}>TITLE :&nbsp;</StyleTextModal>
-                                    <StyleTextModal>{lec.get('title')}</StyleTextModal>
+                                    <StyleTextModal>{lec.title}</StyleTextModal>
                                   </ItemSpanTest>
                                   <CustomDeleteTest>
                                     <TrashTest
                                       name='list alternate outline'
                                       onClick={() => {
                                         const data = {
-                                          title: lec.get('title'),
-                                          detail: lec.get('detail'),
-                                          std_name: lec.get('student_name'),
-                                          day: lec.get('day'),
-                                          s_time: lec.get('start_time'),
-                                          e_time: lec.get('end_time'),
-                                          status: lec.get('approved_status'),
-                                          id: lec.get('appoint_id')
+                                          title: lec.title,
+                                          detail: lec.detail,
+                                          std_name: lec.student_name,
+                                          day: lec.day,
+                                          s_time: lec.start_time,
+                                          e_time: lec.end_time,
+                                          status: lec.approved_status,
+                                          id: lec.appoint_id,
                                         }
                                         this.showModal(data)
                                       }}
@@ -239,22 +361,63 @@ class LecturerHomePage extends Component {
                                     <StyleTextModal style={{ fontWeight: 500 }}>STUDENT NAME :&nbsp;</StyleTextModal>
                                                &nbsp;
                                     {' '}
-                                    <StyleTextModal>{lec.get('student_name')}</StyleTextModal>
+                                    <StyleTextModal>{lec.student_name}</StyleTextModal>
                                   </ItemSpanTest>
                                 </ListDetailTest>
                                 <ListDetailTest>
                                   <ItemSpanTest>
                                     <StyleTextModal style={{ fontWeight: 500 }}>STATUS :&nbsp;</StyleTextModal>
 
-                                    {lec.get('approved_status') === 'APPROVE' && (
+                                    {lec.approved_status === 'APPROVE' && (
                                     <StyleTextModal style={{ color: '#0038FF' }}>APPROVE</StyleTextModal>
 
                                     )}
-                                    {lec.get('approved_status') === 'PENDING' && (
+                                    {lec.approved_status === 'PENDING' && (
                                     <StyleTextModal style={{ color: '#1AB433' }}>PENDING&nbsp;</StyleTextModal>
 
                                     )}
 
+                                  </ItemSpanTest>
+                                </ListDetailTest>
+                              </UserDetailGroupTest>
+                            </RowTest>
+                          </ItemWrapperTest>
+                        ))}
+                        { key === 2 &&  AllAppoint !== null && AllAppoint.size > 0 && AllAppoint.toJS().map(all => (
+                          <ItemWrapperTest>
+                            <RowTest>
+                              <UserDetailGroupTest>
+                                <ListDetailTest style={{ flex: 1 }}>
+                                  <ItemSpanTest>
+                                    <StyleTextModal style={{ fontWeight: 500 }}>TITLE :&nbsp;</StyleTextModal>
+                                    <StyleTextModal>{all.title}</StyleTextModal>
+                                  </ItemSpanTest>
+                                  <CustomDeleteTest>
+                                    <TrashTest
+                                      name='list alternate outline'
+                                      onClick={() => {
+                                        const data = {
+                                          title: all.title,
+                                          detail: all.detail,
+                                          std_name: all.student_name,
+                                          day: all.day,
+                                          s_time: all.start_time,
+                                          e_time: all.end_time,
+                                          status: 'APPROVE',
+                                          id: all.appoint_id,
+                                        }
+                                        this.showModal(data)
+                                      }}
+                                    />
+
+                                  </CustomDeleteTest>
+                                </ListDetailTest>
+                                <ListDetailTest style={{ flex: 1 }}>
+                                  <ItemSpanTest>
+                                    <StyleTextModal style={{ fontWeight: 500 }}>STUDENT NAME :&nbsp;</StyleTextModal>
+                                               &nbsp;
+                                    {' '}
+                                    <StyleTextModal>{all.student_name}</StyleTextModal>
                                   </ItemSpanTest>
                                 </ListDetailTest>
                               </UserDetailGroupTest>
@@ -277,7 +440,22 @@ class LecturerHomePage extends Component {
                 </div>
                 {/* <TableHeader page='Lecturer' /> */}
                 <ListCol>
-                  {/* <Schedules  appointApprove={appointApprove}/> */}
+                  { appointApprove.length > 0 && (
+                    <Schedules
+                      // lecturer={lecturer_detail}
+                      handleModal={this.handleModalCreateAppoint}
+                      open={open}
+                      handleInputChange={this.handleInputChange}
+                      getTimeFrom={this.getTimeFrom}
+                      getTimeTo={this.getTimeTo}
+                      handleSubmit={this.handleSubmit}
+                      handleCancel={this.handleCancel}
+                      handleSelectDay={this.handleSelectDay}
+                      handleSelectTime={this.handleSelectTime}
+                      appointApprove={appointApprove}
+                    />
+                  )}
+
                 </ListCol>
               </ListCol>
             </RowContainer>
@@ -290,6 +468,7 @@ class LecturerHomePage extends Component {
 
 const mapStateToProps = (state, props) => createStructuredSelector({
   AppointmentList: appointmentSelector.GetRequestAppointment,
+  AllAppoint: appointmentSelector.lecturerGetAppointApprove,
 })(state, props)
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -297,6 +476,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   approveAppointment: appointmentAction.approveAppointment,
   rejectAppointment: appointmentAction.rejectAppointment,
   logout: userAction.logout,
+  createAppointment: appointmentAction.createAppointment,
+  getAppointTeacher: appointmentAction.getAppointTeacher,
   handleLogout: loginAction.handleLogout,
 }, dispatch)
 
@@ -328,7 +509,26 @@ const PageWrapper = styled.div`
     background-color: #ffffff;
     border-color: #e57272;
   }
+
+  i.icon, i.icons {
+    font-size: 1.5em;
+}
+
+.ant-menu.ant-menu-dark .ant-menu-item-selected {
+    background-color: #e57272;
+}
 `
+
+const StyleImgWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column; 
+  margin-bottom: 16px;
+`
+
 const CustomButton = styled(Button)`
   margin-right: 6px !important;
   width: 60px !important;
@@ -404,8 +604,8 @@ const ListCol = styled(Col)`
 `
 
 const ListHeader = styled(OtherWrapper)`
-  flex: 1;
   display: flex;
+  justify-content: center;
 `
 
 const Row = styled.div`
@@ -445,6 +645,7 @@ const Wrapper = styled.div`
 const WrapperTest = styled.div`
   display: flex;
   align-items: flex-start;
+  flex-direction: column;
   width: 100%;
   .ant-btn {
     width: 100px;
@@ -482,6 +683,9 @@ const ColumnTest = styled.div`
   align-items: center;
   margin-bottom: 14px;
   width: 100%;
+  background-color: #001529;
+  padding: 4px;
+  border-radius: 16px;;
 `
 
 const RowTest = styled.div`

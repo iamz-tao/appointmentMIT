@@ -36,3 +36,14 @@ export const studentGetAppointment = createSelector(
     }
   },
 )
+
+export const lecturerGetAppointApprove = createSelector(
+  stateSelector,
+  (state) => {
+    try {
+      return state.getIn(['appointment', 'appointmentTeacher'])
+    } catch (error) {
+      return fromJS({})
+    }
+  },
+)

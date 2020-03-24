@@ -49,7 +49,7 @@ const AddAppointment = (props) => {
             width='103px'
             marginBottom='6px'
           >
-            <StyleInput placeholder='Title' name='title' onChange={handleInputChange} />
+            <StyleInput placeholder='Title' name='titleAppoint' onChange={handleInputChange} />
           </DefaultForm>
           <DefaultForm
             isRequired
@@ -57,7 +57,7 @@ const AddAppointment = (props) => {
             width='103px'
             marginBottom='6px'
           >
-            <StyleInput style={{ height: 152 }} placeholder='Detail' name='detail' onChange={handleInputChange} />
+            <StyleInput style={{ height: 152 }} placeholder='Detail' name='detailAppoint' onChange={handleInputChange} />
           </DefaultForm>
           <DefaultForm
             isRequired

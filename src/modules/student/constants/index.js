@@ -9,6 +9,8 @@ export const APPROVE_APPOINTMENT_SUCCESS = 'app/lecturer/appointment/APPROVE_APP
 export const APPROVE_APPOINTMENT_FAILED = 'app/lecturer/appointment/APPROVE_APPOINTMENT_FAILED'
 export const REJECT_APPOINTMENT_SUCCESS = 'app/lecturer/appointment/REJECT_APPOINTMENT_SUCCESS'
 export const REJECT_APPOINTMENT_FAILED = 'app/lecturer/appointment/REJECT_APPOINTMENT_FAILED'
+export const GET_APPOINT_TEACHER = 'app/lecturer/appointment/GET_APPOINT_TEACHER'
+export const SET_APPOINT_TEACHER = 'app/lecturer/appointment/SET_APPOINT_TEACHER'
 
 export const STUDENT_GET_APPOINT_REQ_LIST = 'app/student/appointment/STUDENT_GET_APPOINT_REQ_LIST'
 export const STUDENT_SET_APPOINT_REQ_LIST = 'app/student/appointment/STUDENT_SET_APPOINT_REQ_LIST'
@@ -19,3 +21,5 @@ export const CREATE_APPOINTMENT_FAILED = 'app/student/appointment/CREATE_APPOINT
 
 export const CANCEL_APPOINT = 'app/student/appointment/CANCEL_APPOINT'
 export const CANCEL_APPOINT_SUCCESS = 'app/student/appointment/CANCEL_APPOINT_SUCCESS'
+
+

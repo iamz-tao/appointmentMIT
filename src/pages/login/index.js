@@ -132,12 +132,12 @@ class LoginPage extends Component {
                 </ForgetLink>
 
                 <FormButton
-                  disabled={pristine || submitting}
+                  // disabled={pristine || submitting}
                   type='cancel'
                   txtButton='CANCEL'
                   width='50%'
                   onClick={() => {
-                    Router.replace('/home')
+                    Router.replace('/register')
                   }}
                 />
                    &nbsp; &nbsp;

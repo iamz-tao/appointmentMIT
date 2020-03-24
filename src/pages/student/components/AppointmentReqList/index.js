@@ -32,9 +32,17 @@ const AppointmentRequireList = (props) => {
                     </ItemSpan>
                   </ListDetail>
                   <ListDetail style={{ flex: 1 }}>
-                    <ItemSpan>
-                      {lec.get('approved_status')}
+                  {lec.get('approved_status') === 'APPROVE' && (
+                    <ItemSpan style={{color: '#21ba45'}}>
+                      APPROVE
+                      </ItemSpan>
+                  )}
+                  {lec.get('approved_status') === 'PENDING' && (
+                    <ItemSpan style={{color: '#1890ff'}}>
+                      PENDING
                     </ItemSpan>
+                    )}
+                    
                   </ListDetail>
                   <CustomDelete>
                     <Button

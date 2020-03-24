@@ -4,7 +4,9 @@ import { bindActionCreators, compose } from 'redux'
 import { connect } from 'react-redux'
 import Router from 'next/router'
 import { Segment, Icon } from 'semantic-ui-react'
-import { Modal, Button, Breadcrumb, Layout, Menu } from 'antd'
+import {
+  Modal, Button, Breadcrumb, Layout, Menu,
+} from 'antd'
 import moment from 'moment'
 
 import Cookie from 'js-cookie'
@@ -297,31 +299,31 @@ class LecturerHomePage extends Component {
           />
           <RowContainer>
             <RowContainer style={{ padding: '0px 8px 0px 0px', flex: 1 }}>
-            
+
               <ListCol>
                 <div style={{
                   width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
                 }}
                 >
-                  <i className='bell icon' size='large' onClick />
+                  {/* <i className='bell icon' size='large' onClick /> */}
                 </div>
                 <TableHeader page='Req' />
                 <ListCol>
                   <ColumnTest>
                     <WrapperTest>
-                    <Layout>
-    <Header >
-      <div className="logo" />
-      <Menu
-        theme="dark"
-        mode="horizontal"
-        defaultSelectedKeys={['1']}
-      >
-        <Menu.Item key="1"  onClick={ () => this.handleRender(1)}>REQUEST</Menu.Item>
-        <Menu.Item key="2" onClick={() => this.handleRender(2)}>APPOINTMENT</Menu.Item>
-      </Menu>
-    </Header>
-  </Layout>
+                      <Layout>
+                        <Header>
+                          <div className='logo' />
+                          <Menu
+                            theme='dark'
+                            mode='horizontal'
+                            defaultSelectedKeys={['1']}
+                          >
+                            <Menu.Item key='1' onClick={() => this.handleRender(1)}>REQUEST</Menu.Item>
+                            <Menu.Item key='2' onClick={() => this.handleRender(2)}>APPOINTMENT</Menu.Item>
+                          </Menu>
+                        </Header>
+                      </Layout>
                       <ColumnTest>
                         { key === 1 && AppointmentList !== null && appointPending.length > 0 && appointPending.map(lec => (
                           <ItemWrapperTest>

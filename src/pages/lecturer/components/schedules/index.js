@@ -4,6 +4,8 @@ import { Segment, Icon } from 'semantic-ui-react'
 import {
   Row, Col, Button, Divider,
 } from 'antd'
+import Cookie from 'js-cookie'
+
 
 import FormButton from '~/components/Form/Button'
 import AddAppointment from './components/addAppointment'
@@ -23,13 +25,13 @@ const Schedules = (props) => {
     handleSelectDay, 
     handleSelectTime,
   } = props
-  // const name = `${lecturer.getIn([0, 'firstname'])} ${lecturer.getIn([0, 'lastname'])}`
-  // console.log(appointApprove)
+  const name = Cookie.get('name')
 
   const appoint = []
   appointApprove.map(a => appoint.push({
-    day: a.day,
-    time: `${a.start_time} - ${a.end_time}`,
+    day: a.get('day'),
+    time: `${a.get('start_time')} - ${a.get('end_time')}`,
+    title: a.get('title')
   }))
 
 
@@ -51,10 +53,9 @@ const Schedules = (props) => {
         <div style={{ flex: 1 }}>
           SCHEDULE
           <br />
-          Lecturer :6
+          Lecturer :
           {' '}
-          {/* {name} */}
-          cdv,lemvlemvle
+          {name}
           {' '}
         </div>
         <div>

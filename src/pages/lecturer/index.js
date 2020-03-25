@@ -440,9 +440,8 @@ class LecturerHomePage extends Component {
                 </div>
                 {/* <TableHeader page='Lecturer' /> */}
                 <ListCol>
-                  { appointApprove.length > 0 && (
+                  { AllAppoint !== null && AllAppoint.size > 0 && (
                     <Schedules
-                      // lecturer={lecturer_detail}
                       handleModal={this.handleModalCreateAppoint}
                       open={open}
                       handleInputChange={this.handleInputChange}
@@ -452,7 +451,7 @@ class LecturerHomePage extends Component {
                       handleCancel={this.handleCancel}
                       handleSelectDay={this.handleSelectDay}
                       handleSelectTime={this.handleSelectTime}
-                      appointApprove={appointApprove}
+                      appointApprove={AllAppoint}
                     />
                   )}
 

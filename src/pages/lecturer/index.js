@@ -64,7 +64,7 @@ const ApproveModal = (props) => {
           {detail}
         </StyleDivModal>
         <StyleDivModal>
-          <StyleTextModal> Day : </StyleTextModal>
+          <StyleTextModal> Time : </StyleTextModal>
           {' '}
           {' '}
           {day}
@@ -282,7 +282,7 @@ class LecturerHomePage extends Component {
         ) === 'PENDING').toJS()
       }
 
-      // console.log(AllAppoint && AllAppoint.toJS())
+      // console.log(appointPending)
       return (
         <PageWrapper>
           <ApproveModal
@@ -348,7 +348,7 @@ class LecturerHomePage extends Component {
                                           s_time: lec.start_time,
                                           e_time: lec.end_time,
                                           status: lec.approved_status,
-                                          id: lec.appoint_id,
+                                          id: lec.request_id,
                                         }
                                         this.showModal(data)
                                       }}
@@ -404,7 +404,7 @@ class LecturerHomePage extends Component {
                                           s_time: all.start_time,
                                           e_time: all.end_time,
                                           status: 'APPROVE',
-                                          id: all.appoint_id,
+                                          id: all.request_id,
                                         }
                                         this.showModal(data)
                                       }}

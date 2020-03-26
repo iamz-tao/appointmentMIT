@@ -100,7 +100,7 @@ export default (state = initialState, { type, payload }) => {
 
     case APPROVE_APPOINTMENT_SUCCESS: {
       const index = state.getIn(['requestAppointment'])
-        .findIndex(rec => rec.get('appoint_id') === payload)
+        .findIndex(rec => rec.get('request_id') === payload)
       return state
         .setIn(['requestAppointment', index, 'approved_status'], 'APPROVE')
         .set('isFetching', false)
@@ -120,7 +120,7 @@ export default (state = initialState, { type, payload }) => {
 
     case REJECT_APPOINTMENT_SUCCESS: {
       const index = state.getIn(['requestAppointment'])
-        .findIndex(rec => rec.get('appoint_id') === payload)
+        .findIndex(rec => rec.get('request_id') === payload)
       return state
         .removeIn(['requestAppointment', index])
         .set('isFetching', false)

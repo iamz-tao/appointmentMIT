@@ -12,7 +12,6 @@ const AppointmentRequireList = (props) => {
     // handleOpenSchedule,
     handleDeleteAppoint,
   } = props
-
   return (
     <Column>
       <Wrapper>

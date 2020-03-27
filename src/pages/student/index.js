@@ -285,7 +285,7 @@ class StudentHomePage extends Component {
       lecturer_detail = lecturerList.filter(lec => lec.get('id') === lecturer_id)
     }
 
-    if (!lecturerList) {
+    if (!lecturerList && !appointmentList) {
       return (
         <LoadingPulse />
       )
@@ -323,7 +323,7 @@ class StudentHomePage extends Component {
                           <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
                         </div>
                         <Schedules
-                        appointmentList={appointmentList}
+                          appointmentList={appointmentList}
                           lecturer={lecturer_detail}
                           handleModal={this.handleModal}
                           open={open}
@@ -339,7 +339,7 @@ class StudentHomePage extends Component {
                     ) : (
 
                       <ListCol style={{ padding: '0px 28px' }}>
-                        {appointmentList !== null && appointmentList.size > 0 ? (
+                        {appointmentList !== null && appointmentList.get('appoints').size > 0 && (
                           <>
                             <div style={{
                               width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
@@ -352,9 +352,19 @@ class StudentHomePage extends Component {
                               <AppointmentReqList handleDeleteAppoint={this.handleDeleteAppoint} appointmentList={appointmentList} />
                             </ListCol>
                           </>
-                        ) : (
+                        ) }
+                        
+                        {(appointmentList !== null && appointmentList.get('appoints').size === 0 && (
+                          <>
+                          <div style={{
+                            width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
+                          }}
+                          >
+                            <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
+                          </div>
                           <NotFound message='DO NOT HAVE AN APPOINTMENT' />
-                        )}
+                          </>
+                        ))}
 
                       </ListCol>
                     )

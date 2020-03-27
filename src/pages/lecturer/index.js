@@ -12,6 +12,7 @@ import moment from 'moment'
 import Cookie from 'js-cookie'
 import { createStructuredSelector } from 'reselect'
 import NotFound from '~/components/Table/NotFound'
+import LoadingPulse from '~/components/LoadingPulse'
 import Schedules from './components/schedules'
 import { appointmentAction } from '~/modules/student/actions'
 import { appointmentSelector } from '~/modules/student/selectors'
@@ -294,6 +295,12 @@ class LecturerHomePage extends Component {
         appointPending = AppointmentList.filter(app => app.get(
           'approved_status',
         ) === 'PENDING').toJS()
+      }
+
+      if (!AppointmentList && !AllAppoint) {
+        return (
+          <LoadingPulse />
+        )
       }
 
       // console.log(appointPending)

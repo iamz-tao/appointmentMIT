@@ -24,15 +24,69 @@ const Schdules = (props) => {
     handleSelectTime,
   } = props
 
+  const name = `${lecturer.getIn([0, 'firstname'])} ${lecturer.getIn([0, 'lastname'])}`
   const appoint = []
-  console.log(lecturer && lecturer.toJS())
-  console.log(appointmentList && appointmentList.toJS())
+  // console.log(lecturer && lecturer.toJS())
+  // console.log(appointmentList && appointmentList.toJS())
   // lecturer.get('appoints').map(a => appoint.push({
   //   // day: a.get('day'),
   //   id: `${a.get('day')} ${a.get('start_time')} - ${a.get('end_time')}`,
   //   title: a.get('title'),
   //   detail: a.get('detail'),
   // }))
+
+  // const schedules = {
+  //   Monday: {
+  //     1: appoint.filter(a => a.id === 'Monday 08.00 - 09.00').length === 0 ? null : appoint.filter(a => a.id === 'Monday 08.00 - 09.00'),
+  //     2: appoint.filter(a => a.id === 'Monday 09.00 - 10.00').length === 0 ? null : appoint.filter(a => a.id === 'Monday 09.00 - 10.00'),
+  //     3: appoint.filter(a => a.id === 'Monday 10.00 - 11.00').length === 0 ? null : appoint.filter(a => a.id === 'Monday 10.00 - 11.00'),
+  //     4: appoint.filter(a => a.id === 'Monday 11.00 - 12.00').length === 0 ? null : appoint.filter(a => a.id === 'Monday 11.00 - 12.00'),
+  //     5: appoint.filter(a => a.id === 'Monday 12.00 - 13.00').length === 0 ? null : appoint.filter(a => a.id === 'Monday 12.00 - 13.00'),
+  //     6: appoint.filter(a => a.id === 'Monday 13.00 - 14.00').length === 0 ? null : appoint.filter(a => a.id === 'Monday 13.00 - 14.00'),
+  //     7: appoint.filter(a => a.id === 'Monday 14.00 - 15.00').length === 0 ? null : appoint.filter(a => a.id === 'Monday 14.00 - 15.00'),
+  //     8: appoint.filter(a => a.id === 'Monday 15.00 - 16.00').length === 0 ? null : appoint.filter(a => a.id === 'Monday 15.00 - 16.00'),
+  //   },
+  //   Tuesday: {
+  //     1: appoint.filter(a => a.id === 'Tuesday 08.00 - 09.00').length === 0 ? null : appoint.filter(a => a.id === 'Tuesday 08.00 - 09.00'),
+  //     2: appoint.filter(a => a.id === 'Tuesday 09.00 - 10.00').length === 0 ? null : appoint.filter(a => a.id === 'Tuesday 09.00 - 10.00'),
+  //     3: appoint.filter(a => a.id === 'Tuesday 10.00 - 11.00').length === 0 ? null : appoint.filter(a => a.id === 'Tuesday 10.00 - 11.00'),
+  //     4: appoint.filter(a => a.id === 'Tuesday 11.00 - 12.00').length === 0 ? null : appoint.filter(a => a.id === 'Tuesday 11.00 - 12.00'),
+  //     5: appoint.filter(a => a.id === 'Tuesday 12.00 - 13.00').length === 0 ? null : appoint.filter(a => a.id === 'Tuesday 12.00 - 13.00'),
+  //     6: appoint.filter(a => a.id === 'Tuesday 13.00 - 14.00').length === 0 ? null : appoint.filter(a => a.id === 'Tuesday 13.00 - 14.00'),
+  //     7: appoint.filter(a => a.id === 'Tuesday 14.00 - 15.00').length === 0 ? null : appoint.filter(a => a.id === 'Tuesday 14.00 - 15.00'),
+  //     8: appoint.filter(a => a.id === 'Tuesday 15.00 - 16.00').length === 0 ? null : appoint.filter(a => a.id === 'Tuesday 15.00 - 16.00'),
+  //   },
+  //   Wednesday: {
+  //     1: appoint.filter(a => a.id === 'Wednesday 08.00 - 09.00').length === 0 ? null : appoint.filter(a => a.id === 'Wednesday 08.00 - 09.00'),
+  //     2: appoint.filter(a => a.id === 'Wednesday 09.00 - 10.00').length === 0 ? null : appoint.filter(a => a.id === 'Wednesday 09.00 - 10.00'),
+  //     3: appoint.filter(a => a.id === 'Wednesday 10.00 - 11.00').length === 0 ? null : appoint.filter(a => a.id === 'Wednesday 10.00 - 11.00'),
+  //     4: appoint.filter(a => a.id === 'Wednesday 11.00 - 12.00').length === 0 ? null : appoint.filter(a => a.id === 'Wednesday 11.00 - 12.00'),
+  //     5: appoint.filter(a => a.id === 'Wednesday 12.00 - 13.00').length === 0 ? null : appoint.filter(a => a.id === 'Wednesday 12.00 - 13.00'),
+  //     6: appoint.filter(a => a.id === 'Wednesday 13.00 - 14.00').length === 0 ? null : appoint.filter(a => a.id === 'Wednesday 13.00 - 14.00'),
+  //     7: appoint.filter(a => a.id === 'Wednesday 14.00 - 15.00').length === 0 ? null : appoint.filter(a => a.id === 'Wednesday 14.00 - 15.00'),
+  //     8: appoint.filter(a => a.id === 'Wednesday 15.00 - 16.00').length === 0 ? null : appoint.filter(a => a.id === 'Wednesday 15.00 - 16.00'),
+  //   },
+  //   Thursday: {
+  //     1: appoint.filter(a => a.id === 'Thursday 08.00 - 09.00').length === 0 ? null : appoint.filter(a => a.id === 'Thursday 08.00 - 09.00'),
+  //     2: appoint.filter(a => a.id === 'Thursday 09.00 - 10.00').length === 0 ? null : appoint.filter(a => a.id === 'Thursday 09.00 - 10.00'),
+  //     3: appoint.filter(a => a.id === 'Thursday 10.00 - 11.00').length === 0 ? null : appoint.filter(a => a.id === 'Thursday 10.00 - 11.00'),
+  //     4: appoint.filter(a => a.id === 'Thursday 11.00 - 12.00').length === 0 ? null : appoint.filter(a => a.id === 'Thursday 11.00 - 12.00'),
+  //     5: appoint.filter(a => a.id === 'Thursday 12.00 - 13.00').length === 0 ? null : appoint.filter(a => a.id === 'Thursday 12.00 - 13.00'),
+  //     6: appoint.filter(a => a.id === 'Thursday 13.00 - 14.00').length === 0 ? null : appoint.filter(a => a.id === 'Thursday 13.00 - 14.00'),
+  //     7: appoint.filter(a => a.id === 'Thursday 14.00 - 15.00').length === 0 ? null : appoint.filter(a => a.id === 'Thursday 14.00 - 15.00'),
+  //     8: appoint.filter(a => a.id === 'Thursday 15.00 - 16.00').length === 0 ? null : appoint.filter(a => a.id === 'Thursday 15.00 - 16.00'),
+  //   },
+  //   Friday: {
+  //     1: appoint.filter(a => a.id === 'Friday 08.00 - 09.00').length === 0 ? null : appoint.filter(a => a.id === 'Friday 08.00 - 09.00'),
+  //     2: appoint.filter(a => a.id === 'Friday 09.00 - 10.00').length === 0 ? null : appoint.filter(a => a.id === 'Friday 09.00 - 10.00'),
+  //     3: appoint.filter(a => a.id === 'Friday 10.00 - 11.00').length === 0 ? null : appoint.filter(a => a.id === 'Friday 10.00 - 11.00'),
+  //     4: appoint.filter(a => a.id === 'Friday 11.00 - 12.00').length === 0 ? null : appoint.filter(a => a.id === 'Friday 11.00 - 12.00'),
+  //     5: appoint.filter(a => a.id === 'Friday 12.00 - 13.00').length === 0 ? null : appoint.filter(a => a.id === 'Friday 12.00 - 13.00'),
+  //     6: appoint.filter(a => a.id === 'Friday 13.00 - 14.00').length === 0 ? null : appoint.filter(a => a.id === 'Friday 13.00 - 14.00'),
+  //     7: appoint.filter(a => a.id === 'Friday 14.00 - 15.00').length === 0 ? null : appoint.filter(a => a.id === 'Friday 14.00 - 15.00'),
+  //     8: appoint.filter(a => a.id === 'Friday 15.00 - 16.00').length === 0 ? null : appoint.filter(a => a.id === 'Friday 15.00 - 16.00'),
+  //   },
+  // }
 
   return (
     <>
@@ -49,7 +103,11 @@ const Schdules = (props) => {
       />
       <ItemHeader>
         <div style={{ flex: 1 }}>
-          SCHEDULE of Phiyada srikhenkan
+          SCHEDULE
+          <br />
+          Lecturer :
+          {' '}
+          {name}
         </div>
         <div>
           <ButtonWrapper>

@@ -6,7 +6,7 @@ import {
 } from 'antd'
 import Cookie from 'js-cookie'
 
-
+import NotFound from '~/components/Table/NotFound'
 import FormButton from '~/components/Form/Button'
 import AddAppointment from './components/addAppointment'
 // import DeleteIcon from '~/components/DeleteIcon'
@@ -887,6 +887,13 @@ const Schedules = (props) => {
         </Col>
       </Row>
       </>
+        )
+      }
+      {
+        appointApprove.size === 0 && (
+          <>
+                          <NotFound message='DO NOT HAVE AN APPOINTMENT' />
+          </>
         )
       }
     </>

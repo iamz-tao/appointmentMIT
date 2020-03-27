@@ -143,7 +143,7 @@ export function* createAppointment({ payload }) {
 
 export function* cancelAppointment({ payload }) {
   try {
-    yield cancelAppointmentAPI(payload.id)
+    yield cancelAppointmentAPI(payload.id, payload.role)
   } catch (error) {
     console.log('error', error)
   }

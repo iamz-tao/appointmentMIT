@@ -181,7 +181,7 @@ class StudentHomePage extends Component {
       okType: 'danger',
       cancelText: 'Cancel',
       onOk() {
-        cancelAppoints({ id })
+        cancelAppoints({ id, role: 'NISIT' })
         notification[success]({
           message: 'Cancel Success!',
           description:

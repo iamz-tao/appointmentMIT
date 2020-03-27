@@ -38,7 +38,7 @@ const TableHeader = () => (
 
 const ApproveModal = (props) => {
   const {
-    title, detail, std_name, day, s_time, e_time, visible, status, id, confirmLoading, handleApprove, handleReject, closeModal,
+    title, detail, std_name, day, s_time, e_time, visible, status, id, confirmLoading, handleApprove, handleReject, closeModal, isApprove, handleCancelAppoint,
   } = props
   return (
     <Modal
@@ -77,7 +77,7 @@ const ApproveModal = (props) => {
         </StyleDivModal>
       </div>
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <CustomButtonCancel type='primary' onClick={() => closeModal()}>Cancel</CustomButtonCancel>
+        <CustomButtonCancel type='primary' onClick={() => closeModal()}>CLOSE</CustomButtonCancel>
         {
       status === 'PENDING' && (
         <dvi>
@@ -86,6 +86,11 @@ const ApproveModal = (props) => {
         </dvi>
       )
         }
+        {isApprove && (
+          <dvi>
+            <CustomButtonReject type='primary' onClick={() => handleCancelAppoint(id)}>CANCEL</CustomButtonReject>
+          </dvi>
+        )}
       </div>
     </Modal>
   )
@@ -112,6 +117,7 @@ class LecturerHomePage extends Component {
       start_time: '',
       end_time: '',
       key: 1,
+      isApprove: false,
     }
   }
 
@@ -178,6 +184,14 @@ class LecturerHomePage extends Component {
     const { open } = this.state
     this.setState({
       open: !open,
+    })
+  }
+
+  handleCancelAppoint = (id) => {
+    const { cancelAppoints } = this.props
+    cancelAppoints({ id, role: 'LECTURER' })
+    this.setState({
+      visible: false,
     })
   }
 
@@ -268,7 +282,7 @@ class LecturerHomePage extends Component {
     render() {
       const { AppointmentList, AllAppoint } = this.props
       const {
-        visible, confirmLoading, title, detail, std_name, day, s_time, e_time, status, id, open, key,
+        visible, confirmLoading, title, detail, std_name, day, s_time, e_time, status, id, open, key, isApprove,
       } = this.state
       let appointApprove = []
       let appointPending = []
@@ -296,9 +310,11 @@ class LecturerHomePage extends Component {
             s_time={s_time}
             e_time={e_time}
             id={id}
+            isApprove={isApprove}
             handleReject={this.handleReject}
             handleApprove={this.handleApprove}
             closeModal={this.closeModal}
+            handleCancelAppoint={this.handleCancelAppoint}
           />
           <RowContainer>
             <RowContainer style={{ padding: '0px 8px 0px 0px', flex: 1 }}>
@@ -349,6 +365,7 @@ class LecturerHomePage extends Component {
                                           e_time: lec.end_time,
                                           status: lec.approved_status,
                                           id: lec.request_id,
+                                          isApprove: false,
                                         }
                                         this.showModal(data)
                                       }}
@@ -383,7 +400,7 @@ class LecturerHomePage extends Component {
                             </RowTest>
                           </ItemWrapperTest>
                         ))}
-                        { key === 2 &&  AllAppoint !== null && AllAppoint.size > 0 && AllAppoint.toJS().map(all => (
+                        { key === 2 && AllAppoint !== null && AllAppoint.size > 0 && AllAppoint.toJS().map(all => (
                           <ItemWrapperTest>
                             <RowTest>
                               <UserDetailGroupTest>
@@ -405,6 +422,7 @@ class LecturerHomePage extends Component {
                                           e_time: all.end_time,
                                           status: 'APPROVE',
                                           id: all.request_id,
+                                          isApprove: true,
                                         }
                                         this.showModal(data)
                                       }}
@@ -476,6 +494,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   rejectAppointment: appointmentAction.rejectAppointment,
   logout: userAction.logout,
   createAppointment: appointmentAction.createAppointment,
+  cancelAppoints: appointmentAction.cancelAppointment,
   getAppointTeacher: appointmentAction.getAppointTeacher,
   handleLogout: loginAction.handleLogout,
 }, dispatch)

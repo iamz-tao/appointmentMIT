@@ -21,5 +21,8 @@ export const CREATE_APPOINTMENT_FAILED = 'app/student/appointment/CREATE_APPOINT
 
 export const CANCEL_APPOINT = 'app/student/appointment/CANCEL_APPOINT'
 export const CANCEL_APPOINT_SUCCESS = 'app/student/appointment/CANCEL_APPOINT_SUCCESS'
+export const LECTURER_CANCEL_APPOINT_SUCCESS = 'app/student/appointment/LECTURER_CANCEL_APPOINT_SUCCESS'
+
+
 
 

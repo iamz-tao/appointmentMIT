@@ -136,11 +136,11 @@ const Schedules = (props) => {
         }}
       >
 
-        <Col span={4} style={{ width: '11%' }}>DAY</Col>
+        <Col span={4} style={{ width: '12%' }}>DAY</Col>
         <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>08.00 - 09.00</div></Col>
         <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>09.00 - 10.00</div></Col>
-        <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>10.00 - 11.00</div></Col>
-        <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>11.00 - 12.00</div></Col>
+        <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>10.00 - 12.00</div></Col>
+        <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>12.00 - 12.00</div></Col>
         <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>12.00 - 13.00</div></Col>
         <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>13.00 - 14.00</div></Col>
         <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>14.00 - 15.00</div></Col>
@@ -148,7 +148,7 @@ const Schedules = (props) => {
       </Row>
 
       <Row justify='start' style={{ height: '54px' }}>
-        <Col span={4} style={{ width: '11%', height: '100%' }}>Monday</Col>
+        <Col span={4} style={{ width: '12%', height: '100%' }}>Monday</Col>
         <Col span={4} style={{ width: '11%', height: '100%' }}>
           <StyleColMon span={4} style={{ backgroundColor: schedules.Monday['1'] ? 'pink' : 'white' }}>
           {' '}
@@ -295,7 +295,7 @@ const Schedules = (props) => {
         </Col>
       </Row>
       <Row justify='start' style={{ height: '54px' }}>
-        <Col span={4} style={{ width: '11%' }}>Tuesday</Col>
+        <Col span={4} style={{ width: '12%' }}>Tuesday</Col>
         <Col span={4} style={{ width: '11%', height: '100%' }}>
           <StyleColMon span={4} style={{ backgroundColor: schedules.Tuesday['1'] ? '#c0fff3' : 'white' }}>
             {' '}
@@ -442,7 +442,7 @@ const Schedules = (props) => {
         </Col>
       </Row>
       <Row justify='start' style={{ height: '54px' }}>
-        <Col span={4} style={{ width: '11%' }}>Wednesday</Col>
+        <Col span={4} style={{ width: '12%' }}>Wednesday</Col>
         <Col span={4} style={{ width: '11%', height: '100%' }}>
           <StyleColMon span={4} style={{ backgroundColor: schedules.Wednesday['1'] ? '#faf4c8' : 'white' }}>
           {' '}
@@ -589,7 +589,7 @@ const Schedules = (props) => {
         </Col>
       </Row>
       <Row justify='start' style={{ height: '54px' }}>
-        <Col span={4} style={{ width: '11%' }}>Thursday</Col>
+        <Col span={4} style={{ width: '12%' }}>Thursday</Col>
         <Col span={4} style={{ width: '11%', height: '100%' }}>
           <StyleColMon span={4} style={{ backgroundColor: schedules.Thursday['1'] ? '#eabda7' : 'white' }}>
           {' '}
@@ -736,7 +736,7 @@ const Schedules = (props) => {
         </Col>
       </Row>
       <Row justify='start' style={{ height: '54px' }}>
-        <Col span={4} style={{ width: '11%' }}>Friday</Col>
+        <Col span={4} style={{ width: '12%' }}>Friday</Col>
         <Col span={4} style={{ width: '11%', height: '100%' }}>
           <StyleColMon span={4} style={{ backgroundColor: schedules.Friday['1'] ? '#d9d4f6' : 'white' }}>
           {' '}

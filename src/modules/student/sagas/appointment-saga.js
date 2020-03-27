@@ -13,6 +13,7 @@ import {
 } from '../constants'
 import * as httpToken from '~/helpers/axiosWrapperPostToken'
 import * as httpPut from '~/helpers/axiosWrapperPut'
+import * as httpDel from '~/helpers/axiosWrapperDelete'
 import { appointmentAction } from '../actions'
 import {
   getLecturerAPI, studentGetAppointReqAPI, cancelAppointmentAPI, getRequestAppointmentAPI, getAppointTeacherAPI,
@@ -82,7 +83,7 @@ export function* approveAppointment({ payload }) {
 
 export function* rejectAppointment({ payload }) {
   try {
-    const response = yield call(httpPut.post, {
+    const response = yield call(httpDel.post, {
       url: `/api/rejectRequest/${payload.id}`,
     })
 
@@ -142,7 +143,7 @@ export function* createAppointment({ payload }) {
 
 export function* cancelAppointment({ payload }) {
   try {
-    yield cancelAppointmentAPI(payload.id)
+    yield cancelAppointmentAPI(payload.id, payload.role)
   } catch (error) {
     console.log('error', error)
   }

@@ -177,11 +177,11 @@ class StudentHomePage extends Component {
     confirm({
       title: 'Confirm Deletion',
       content: 'Are you sure cancel this appointment? You can\'t undo this action.',
-      okText: 'OK',
+      okText: 'OK', 
       okType: 'danger',
       cancelText: 'Cancel',
       onOk() {
-        cancelAppoints({ id })
+        cancelAppoints({ id, role: 'NISIT' })
         notification[success]({
           message: 'Cancel Success!',
           description:
@@ -285,7 +285,7 @@ class StudentHomePage extends Component {
       lecturer_detail = lecturerList.filter(lec => lec.get('id') === lecturer_id)
     }
 
-    if (!lecturerList) {
+    if (!lecturerList && !appointmentList) {
       return (
         <LoadingPulse />
       )
@@ -323,6 +323,7 @@ class StudentHomePage extends Component {
                           <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
                         </div>
                         <Schedules
+                          appointmentList={appointmentList}
                           lecturer={lecturer_detail}
                           handleModal={this.handleModal}
                           open={open}
@@ -338,7 +339,7 @@ class StudentHomePage extends Component {
                     ) : (
 
                       <ListCol style={{ padding: '0px 28px' }}>
-                        {appointmentList !== null && appointmentList.size > 0 ? (
+                        {appointmentList !== null && appointmentList.get('appoints').size > 0 && (
                           <>
                             <div style={{
                               width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
@@ -351,9 +352,19 @@ class StudentHomePage extends Component {
                               <AppointmentReqList handleDeleteAppoint={this.handleDeleteAppoint} appointmentList={appointmentList} />
                             </ListCol>
                           </>
-                        ) : (
+                        ) }
+                        
+                        {(appointmentList !== null && appointmentList.get('appoints').size === 0 && (
+                          <>
+                          <div style={{
+                            width: '100%', display: 'flex', justifyContent: 'flex-end', width: '100%',
+                          }}
+                          >
+                            <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
+                          </div>
                           <NotFound message='DO NOT HAVE AN APPOINTMENT' />
-                        )}
+                          </>
+                        ))}
 
                       </ListCol>
                     )

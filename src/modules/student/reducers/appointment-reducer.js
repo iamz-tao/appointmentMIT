@@ -19,6 +19,7 @@ import {
   REJECT_APPOINTMENT_FAILED,
   GET_APPOINT_TEACHER,
   SET_APPOINT_TEACHER,
+  LECTURER_CANCEL_APPOINT_SUCCESS,
 } from '../constants'
 
 const initialState = fromJS({
@@ -93,6 +94,13 @@ export default (state = initialState, { type, payload }) => {
         .set('isFetching', false)
     }
 
+    case LECTURER_CANCEL_APPOINT_SUCCESS: {
+      const index = state.get('appointmentTeacher').findIndex(rec => rec.get('request_id') === payload)
+      return state
+        .removeIn(['appointmentTeacher', index])
+        .set('isFetching', false)
+    }
+
     case APPROVE_APPOINTMENT: {
       return state
         .set('isFetching', true)
@@ -100,7 +108,7 @@ export default (state = initialState, { type, payload }) => {
 
     case APPROVE_APPOINTMENT_SUCCESS: {
       const index = state.getIn(['requestAppointment'])
-        .findIndex(rec => rec.get('appoint_id') === payload)
+        .findIndex(rec => rec.get('request_id') === payload)
       return state
         .setIn(['requestAppointment', index, 'approved_status'], 'APPROVE')
         .set('isFetching', false)
@@ -120,7 +128,7 @@ export default (state = initialState, { type, payload }) => {
 
     case REJECT_APPOINTMENT_SUCCESS: {
       const index = state.getIn(['requestAppointment'])
-        .findIndex(rec => rec.get('appoint_id') === payload)
+        .findIndex(rec => rec.get('request_id') === payload)
       return state
         .removeIn(['requestAppointment', index])
         .set('isFetching', false)

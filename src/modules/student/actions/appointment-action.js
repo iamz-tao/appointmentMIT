@@ -18,6 +18,7 @@ import {
   CANCEL_APPOINT_SUCCESS,
   GET_APPOINT_TEACHER,
   SET_APPOINT_TEACHER,
+  LECTURER_CANCEL_APPOINT_SUCCESS,
 } from '../constants'
 
 export const getLecturerList = payload => ({
@@ -103,6 +104,11 @@ export const cancelAppointment = payload => ({
 export const cancelAppointmentSuccess = payload => ({
   payload,
   type: CANCEL_APPOINT_SUCCESS,
+})
+
+export const LecturercancelAppointmentSuccess = payload => ({
+  payload,
+  type: LECTURER_CANCEL_APPOINT_SUCCESS,
 })
 
 export const getAppointTeacher = payload => ({

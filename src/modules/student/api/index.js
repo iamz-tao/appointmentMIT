@@ -38,7 +38,7 @@ export function* getAppointTeacherAPI() {
   })
 }
 
-export function* getRequestAppointmentAPI(){
+export function* getRequestAppointmentAPI() {
   const token = Cookie.get('token')
   const data = {}
 
@@ -78,10 +78,9 @@ export function* studentGetAppointReqAPI() {
   })
 }
 
-export function* cancelAppointmentAPI(id) {
+export function* cancelAppointmentAPI(id, role) {
   try {
     const token = Cookie.get('token')
-
     if (!isNil(token)) {
       const response = yield call(httpDel.post, {
         url: `/api/cancel_request/${id}`,
@@ -102,8 +101,13 @@ export function* cancelAppointmentAPI(id) {
         return
       }
 
+      if (role === 'LECTURER') {
+        yield put(appointmentAction.LecturercancelAppointmentSuccess(id))
+      }
+      if (role === 'NISIT') {
       yield put(appointmentAction.cancelAppointmentSuccess(id))
-      
+      }
+
     } else {
       yield put(loginAction.handleLogout())
       window.location.href = '/login'

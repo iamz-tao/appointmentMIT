@@ -125,6 +125,11 @@ const Schedules = (props) => {
           </ButtonWrapper>
         </div>
       </ItemHeader>
+      {
+        appointApprove.size > 0 && (
+          <>
+
+        
       <Divider orientation='left' style={{ color: '#333', fontWeight: 'normal' }}>
         {/* sub-element align left */}
       </Divider>
@@ -881,6 +886,9 @@ const Schedules = (props) => {
           </StyleColMon>
         </Col>
       </Row>
+      </>
+        )
+      }
     </>
   )
 }

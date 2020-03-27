@@ -465,7 +465,7 @@ class LecturerHomePage extends Component {
                 </div>
                 {/* <TableHeader page='Lecturer' /> */}
                 <ListCol>
-                  { AllAppoint !== null && AllAppoint.size > 0 && (
+                  { AllAppoint !== null && (
                     <Schedules
                       handleModal={this.handleModalCreateAppoint}
                       open={open}

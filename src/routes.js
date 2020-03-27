@@ -3,7 +3,6 @@ const routes = require('next-routes')()
 
 routes
   .add('home', '/', 'home')
-  .add('login', '/login', 'login')
   .add('register', '/register', 'register')
 
   // Professor

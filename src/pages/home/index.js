@@ -136,7 +136,7 @@ class Home extends Component {
             <FormButton
               margin='8px 0 25px 0'
               colorButton='#9e7fc6'
-              type='submit'
+              type='cancel'
               txtButton='SIGN UP'
               width='50%'
               onClick={() => {

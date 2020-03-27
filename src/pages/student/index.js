@@ -177,7 +177,7 @@ class StudentHomePage extends Component {
     confirm({
       title: 'Confirm Deletion',
       content: 'Are you sure cancel this appointment? You can\'t undo this action.',
-      okText: 'OK',
+      okText: 'OK', 
       okType: 'danger',
       cancelText: 'Cancel',
       onOk() {
@@ -323,6 +323,7 @@ class StudentHomePage extends Component {
                           <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
                         </div>
                         <Schedules
+                        appointmentList={appointmentList}
                           lecturer={lecturer_detail}
                           handleModal={this.handleModal}
                           open={open}

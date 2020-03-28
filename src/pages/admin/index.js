@@ -253,7 +253,7 @@ class AdminHomePage extends Component {
         <LoadingPulse />
       )
     }
-    console.log(lecturer_detail && lecturer_detail.toJS())
+    // console.log(lecturer_detail && lecturer_detail.toJS())
     return (
       <PageWrapper>
         <RowContainer>
@@ -292,7 +292,6 @@ class AdminHomePage extends Component {
                         </div>
                         <Schedules
                           appointmentList={lecturer_detail}
-                          lecturer={lecturer_detail}
                           handleModal={this.handleModal}
                           open={open}
                           handleInputChange={this.handleInputChange}

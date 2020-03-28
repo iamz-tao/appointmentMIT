@@ -8,11 +8,11 @@ import AddAppointment from './components/addAppointment'
 
 const Schdules = (props) => {
   const {
-    lecturer, open, handleModal, handleInputChange, getTimeFrom, getTimeTo, handleSubmit, handleCancel, handleSelectDay, appointmentList, handleSelectTime,
+    open, handleModal, handleInputChange, getTimeFrom, getTimeTo, handleSubmit, handleCancel, handleSelectDay, appointmentList, handleSelectTime,
   } = props
-  const name = `${lecturer.getIn([0, 'firstname'])} ${lecturer.getIn([0, 'lastname'])}`
+  const name = `${appointmentList.getIn([0, 'firstname'])} ${appointmentList.getIn([0, 'lastname'])}`
   const appoint = []
-  appointmentList.get('appoints').map(a => appoint.push({
+  appointmentList.getIn([0,'appoints']).map(a => appoint.push({
     id: `${a.get('day')} ${a.get('start_time')} - ${a.get('end_time')}`,
     title: a.get('title'),
     detail: a.get('detail'),

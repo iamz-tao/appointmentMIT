@@ -26,7 +26,7 @@ const Schdules = (props) => {
 
   const name = `${lecturer.getIn([0, 'firstname'])} ${lecturer.getIn([0, 'lastname'])}`
   const appoint = []
-  appointmentList.get('appoints').map(a => appoint.push({
+  lecturer.getIn([0,'appoints']).map(a => appoint.push({
     // day: a.get('day'),
     id: `${a.get('day')} ${a.get('start_time')} - ${a.get('end_time')}`,
     title: a.get('title'),

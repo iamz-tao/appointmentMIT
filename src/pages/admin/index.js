@@ -121,6 +121,13 @@ class AdminHomePage extends Component {
     })
   }
 
+  handleSelectTime = (e, { value }) => {
+    this.setState({
+      start_time: value.start_time,
+      end_time: value.end_time,
+    })
+  }
+
   handleSubmit = () => {
     const {
       open, title, start_time, end_time, detail, day, lecturer_id,
@@ -246,6 +253,7 @@ class AdminHomePage extends Component {
         <LoadingPulse />
       )
     }
+    console.log(lecturer_detail && lecturer_detail.toJS())
     return (
       <PageWrapper>
         <RowContainer>
@@ -283,7 +291,7 @@ class AdminHomePage extends Component {
                           <Button type='primary' danger onClick={() => this.handleLogout()}>LOGOUT</Button>
                         </div>
                         <Schedules
-                          appointmentList={appointmentList}
+                          appointmentList={lecturer_detail}
                           lecturer={lecturer_detail}
                           handleModal={this.handleModal}
                           open={open}
@@ -293,6 +301,7 @@ class AdminHomePage extends Component {
                           handleSubmit={this.handleSubmit}
                           handleCancel={this.handleCancel}
                           handleSelectDay={this.handleSelectDay}
+                          handleSelectTime={this.handleSelectTime}
                         />
                       </ListCol>
                     ) : (

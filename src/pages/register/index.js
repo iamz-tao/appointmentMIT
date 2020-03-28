@@ -185,7 +185,7 @@ class RegisterPage extends Component {
                 <Button style={{ backgroundColor: '#c4b1e8' }} onClick={() => this.handleState('NISIT')}>STUDENT</Button>
                 {' '}
 &nbsp;
-                <Button style={{ backgroundColor: 'rgb(253, 224, 224)' }} onClick={() => this.handleState('PROFESSOR')}>PROFESSOR</Button>
+                <Button style={{ backgroundColor: 'rgb(253, 224, 224)' }} onClick={() => this.handleState('PROFESSOR')}>LECTURER</Button>
                 <br />
                 <br />
 

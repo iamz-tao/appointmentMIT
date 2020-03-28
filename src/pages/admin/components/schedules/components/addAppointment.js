@@ -27,6 +27,7 @@ const AddAppointment = (props) => {
     handleSubmit,
     handleCancel,
     handleSelectDay,
+    handleSelectTime,
   } = props
 
   return (
@@ -87,20 +88,10 @@ const AddAppointment = (props) => {
                   fluid
                   selection
                   options={time}
-              // onChange={handleSelectDay}
+                  onChange={handleSelectTime}
                   name='time'
                 />
-                {/* <TimePicker
-                  format={format}
-                  placeholder='Start Time'
-                  onChange={getTimeFrom}
-                />
-      &nbsp;&nbsp;&nbsp;~&nbsp;&nbsp;&nbsp;
-                <TimePicker
-                  format={format}
-                  placeholder='End Time'
-                  onChange={getTimeTo}
-                /> */}
+               
               </ShowTimeWrapper>
             </DefaultForm>
           </BlankWrapper>

@@ -143,8 +143,8 @@ const Schedules = (props) => {
         <Col span={4} style={{ width: '12%' }}>DAY</Col>
         <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>08.00 - 09.00</div></Col>
         <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>09.00 - 10.00</div></Col>
-        <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>10.00 - 12.00</div></Col>
-        <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>12.00 - 12.00</div></Col>
+        <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>10.00 - 11.00</div></Col>
+        <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>11.00 - 12.00</div></Col>
         <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>12.00 - 13.00</div></Col>
         <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>13.00 - 14.00</div></Col>
         <Col span={4} style={{ width: '11%' }}><div style={{ display: 'flex', justifyContent: 'center' }}>14.00 - 15.00</div></Col>
